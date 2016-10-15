@@ -22,8 +22,38 @@
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 
+#include "uMath.h"
+#include "cObject.h"
+#include "uHash.h"
+#include "cComponent.h"
+#include "cObjectManager.h"
+#include "cTransform.h"
+#include "cGameObject.h"
+
+#include <map>
+
 int main(void)
 {
+    using namespace std;
+    using namespace Spore3D;
+    
+    ObjectManager *om = ObjectManager::getInstance();
+    om->init();
+    
+    GameObject *go = (GameObject*)(om->createGameObject("sprite1"));
+    go->addComponent("Component");
+    if (go != nullptr) {
+        cout<<go->toString()<<endl;
+        Transform *t = (Transform*)(go->getComponent<Transform>());
+        if (t != nullptr) {
+            cout<<t->toString()<<endl;
+        }
+        Component *c = (Component*)(go->getComponent<Component>());
+        if (c != nullptr) {
+            cout<<c->toString()<<endl;
+        }
+    }
+    
     GLFWwindow* window;
     
     /* Initialize the library */
