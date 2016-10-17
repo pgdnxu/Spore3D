@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57051DC11DB517EC0053A081 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57051DC01DB517EC0053A081 /* libpng16.a */; };
+		57051DC31DB51B090053A081 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 57051DC21DB51B090053A081 /* libz.1.dylib */; };
 		57106F4E1DA8DEE800365220 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57106F4D1DA8DEE800365220 /* main.cpp */; };
 		57106F561DA8EABC00365220 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F551DA8EABC00365220 /* CoreVideo.framework */; };
 		57106F581DA8EAC800365220 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F571DA8EAC800365220 /* IOKit.framework */; };
@@ -35,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		57051DC01DB517EC0053A081 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
+		57051DC21DB51B090053A081 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		57106F4A1DA8DEE800365220 /* spore3d */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = spore3d; sourceTree = BUILT_PRODUCTS_DIR; };
 		57106F4D1DA8DEE800365220 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		57106F551DA8EABC00365220 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -66,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57051DC31DB51B090053A081 /* libz.1.dylib in Frameworks */,
+				57051DC11DB517EC0053A081 /* libpng16.a in Frameworks */,
 				57106F601DA8EB0900365220 /* libglfw3.a in Frameworks */,
 				57106F5E1DA8EADF00365220 /* GLUT.framework in Frameworks */,
 				57106F5C1DA8EAD800365220 /* OpenGL.framework in Frameworks */,
@@ -111,6 +117,8 @@
 		57106F541DA8EABC00365220 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				57051DC21DB51B090053A081 /* libz.1.dylib */,
+				57051DC01DB517EC0053A081 /* libpng16.a */,
 				57106F5F1DA8EB0900365220 /* libglfw3.a */,
 				57106F5D1DA8EADF00365220 /* GLUT.framework */,
 				57106F5B1DA8EAD800365220 /* OpenGL.framework */,

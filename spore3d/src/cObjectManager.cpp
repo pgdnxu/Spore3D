@@ -115,6 +115,7 @@ namespace Spore3D {
             go->init();
             m_DB->mObjectMap[go->getInstanceId()] = go;
             go->addComponent<Transform>();
+            go->transform = go->getComponent<Transform>();
         }
         return go;
     }

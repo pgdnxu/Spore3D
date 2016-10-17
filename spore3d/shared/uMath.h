@@ -213,16 +213,25 @@ namespace Spore3D {
         
         Quaternion() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
         
+        explicit Quaternion(math::NoInitHint) {}
+        
         explicit Quaternion(const float x, const float y, const float z, const float w) :
         x(x), y(y), z(z), w(w) {}
         
-        Quaternion( const float eulerX, const float eulerY, const float eulerZ ) {
+        Quaternion(const float eulerX, const float eulerY, const float eulerZ) {
             Quaternion roll(sinf(eulerX * 0.5f), 0, 0, cosf(eulerX * 0.5f));
             Quaternion pitch(0, sinf(eulerY * 0.5f), 0, cosf(eulerY * 0.5f));
             Quaternion yaw(0, 0, sinf(eulerZ * 0.5f), cosf(eulerZ * 0.5f));
             
             // Order: y * x * z
             *this = pitch * roll * yaw;
+            
+//            x = sinf(y/2)*sinf(z/2)*cosf(x/2)+cosf(y/2)*cosf(z/2)*sinf(x/2);
+//            y = sinf(y/2)*cosf(z/2)*cosf(x/2)+cosf(y/2)*sinf(z/2)*sinf(x/2);
+//            z = cosf(y/2)*sinf(z/2)*cosf(x/2)-sinf(y/2)*cosf(z/2)*sinf(x/2);
+//            w = cosf(y/2)*cosf(z/2)*cosf(x/2)-sinf(y/2)*sinf(z/2)*sinf(x/2);
+//            *this = Quaternion(x,y,z,w);
+
         }
         
         Quaternion operator*(const Quaternion &q) const {
@@ -234,6 +243,20 @@ namespace Spore3D {
         
         Quaternion &operator*=(const Quaternion &q) {
             return *this = *this * q;
+        }
+        
+        static Quaternion eulerAngle(const float eulerX, const float eulerY, const float eulerZ) {
+            return Quaternion(eulerX, eulerY, eulerZ);
+        }
+        
+        Vec3 eulerAngle() const {
+            Vec3 re(math::NO_INIT);
+            
+            re.y = atan2f(x*z + w*y, 0.5 - (x*x + y*y));
+            re.x = asinf(-2 * (y*z - w*x));
+            re.z = atan2f(x*y + w*z, 0.5 - (x*x + z*z));
+            
+            return re;
         }
         
         Quaternion slerp(const Quaternion &q, const float t) const {
@@ -442,6 +465,10 @@ namespace Spore3D {
             return rm;
         }
         
+        static Mat4 RotMat(const Quaternion &q) {
+            return Mat4(q);
+        }
+        
         static Mat4 RotMat(const float eulerX, const float eulerY, const float eulerZ) {
             return Mat4(Quaternion(eulerX, eulerY, eulerZ));
         }
@@ -451,14 +478,14 @@ namespace Spore3D {
             return Mat4(Quaternion(axis.x, axis.y, axis.z, cosf(angle * 0.5f)));
         }
         
-        static Mat4 PerspectiveMat(const float left, const float right, const float top, const float bottom, const float near, const float far) {
+        static Mat4 PerspectiveMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
             Mat4 rm;
             
-            rm.s[0] = 2 * near / (right - left);
-            rm.s[5] = 2 * near / (top - bottom);
+            rm.s[0] = -2 * near / (right - left);
+            rm.s[5] = -2 * near / (top - bottom);
             rm.s[8] = (right + left) / (right - left);
             rm.s[9] = (top + bottom) / (top - bottom);
-            rm.s[10] = -(far + near) / (far - near);
+            rm.s[10] = (far + near) / (far - near);
             rm.s[11] = -1;
             rm.s[14] = -2 * far * near / (far - near);
             rm.s[15] = 0;
@@ -466,7 +493,7 @@ namespace Spore3D {
             return rm;
         }
         
-        static Mat4 OrthoMat(const float left, const float right, const float top, const float bottom, const float near, const float far) {
+        static Mat4 OrthoMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
             Mat4 rm;
             
             rm.s[0] = 2 / (right - left);
@@ -475,6 +502,7 @@ namespace Spore3D {
             rm.s[12] = -(right + left) / (right - left);
             rm.s[13] = -(top + bottom) / (top - bottom);
             rm.s[14] = -(far + near) / (far - near);
+            rm.s[15] = 1.0f;
             
             return rm;
         }

@@ -60,6 +60,8 @@ namespace Spore3D {
         virtual void init();
         virtual void deinit();
         
+        Component *transform;
+        
     protected:
         GameObject(const std::string&);
         virtual ~GameObject();

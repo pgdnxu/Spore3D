@@ -20,8 +20,6 @@
 #include "cTransform.h"
 #include "cObjectManager.h"
 
-#include <iostream>
-
 namespace Spore3D {
     
     CoreObject *Transform::Create(const std::string &name) {
@@ -49,11 +47,56 @@ namespace Spore3D {
         return _componentTypeId.get();
     }
     
-    Transform::Transform(const std::string &name) : Component(name) {
+    Transform::Transform(const std::string &name)
+    : Component(name), m_Parent(nullptr){
     }
     
     Transform::~Transform() {
         
+    }
+    
+    void Transform::setParent(Transform *) {
+        
+    }
+    
+    void Transform::setPosition(const Vec3 &position) {
+        
+    }
+    
+    void Transform::setRotation(const Quaternion &rotation) {
+        
+    }
+    
+    void Transform::setLocalPosition(const Vec3 &localPosition) {
+        
+    }
+    
+    void Transform::setLocalRotation(const Quaternion &localRotation) {
+        
+    }
+    
+    Vec3 Transform::getPosition() const {
+        return m_Position;
+    }
+    
+    Quaternion Transform::getRotation() const {
+        return m_Rotation;
+    }
+    
+    Vec3 Transform::getEulerAngle() const {
+        return m_EulerAngle;
+    }
+    
+    Vec3 Transform::getLocalPosition() const {
+        return m_LocalPosition;
+    }
+    
+    Quaternion Transform::getLocalRotation() const {
+        return m_LocalRotation;
+    }
+    
+    Vec3 Transform::getLocalEulerAngle() const {
+        return m_LocalEulerAngle;
     }
     
 }
