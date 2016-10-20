@@ -17,45 +17,36 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cObject_h_
-#define _cObject_h_
+#ifndef _uDebug_h_
+#define _uDebug_h_
 
-#include <set>
-#include <map>
+#include <iostream>
 #include <string>
+#include <ctime>
 
-#include "uTypes.h"
-#include "uHash.h"
-
+#define _DEBUG
 
 namespace Spore3D {
     
-    class CoreObject {
+    char tmp[64];
+    
+    class Debug {
     public:
-        static CoreObject *Create(const std::string &name);
-        static void Destory(CoreObject *cObject);
+        static void log(const std::string &msg) {
+#ifdef _DEBUG
+            time_t t = time(0);
+            strftime(tmp,sizeof(tmp),"[%Y-%m-%d,%H:%M:%S] ",localtime(&t));
+            std::cout<<tmp<<msg<<std::endl;
+#endif
+        }
         
-        CObjectId getInstanceId() const;
-        std::string toString() const;
-        
-        virtual void init();
-        virtual void deinit();
-    
-    protected:
-        CoreObject(const std::string &name);
-        virtual ~CoreObject();
-    
-    private:
-        std::string m_Name;
-        Hash *m_InstanceID = nullptr;
-        
-        static uint32 _InstanceNumber;
-        
+        static void err(const std::string &msg) {
+#ifdef _DEBUG
+            log(std::string("[ERROR] ").append(msg));
+#endif
+        }
     };
-    
-    typedef CoreObject* (*CreationMethod)(const std::string &);
-    typedef void (*DestructionMethod)(CoreObject *);
     
 }
 
-#endif /* _cObject_h_ */
+#endif /* _uDebug_h_ */

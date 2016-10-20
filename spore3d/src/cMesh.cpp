@@ -17,45 +17,32 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cObject_h_
-#define _cObject_h_
-
-#include <set>
-#include <map>
-#include <string>
-
-#include "uTypes.h"
-#include "uHash.h"
-
+#include "cMesh.h"
 
 namespace Spore3D {
     
-    class CoreObject {
-    public:
-        static CoreObject *Create(const std::string &name);
-        static void Destory(CoreObject *cObject);
-        
-        CObjectId getInstanceId() const;
-        std::string toString() const;
-        
-        virtual void init();
-        virtual void deinit();
+    CoreObject *Mesh::Create(const std::string &name) {
+        return new Mesh(name);
+    }
     
-    protected:
-        CoreObject(const std::string &name);
-        virtual ~CoreObject();
+    void Mesh::Destory(CoreObject *cObject) {
+        CoreObject::Destory(cObject);
+    }
     
-    private:
-        std::string m_Name;
-        Hash *m_InstanceID = nullptr;
+    void Mesh::init() {
         
-        static uint32 _InstanceNumber;
-        
-    };
+    }
     
-    typedef CoreObject* (*CreationMethod)(const std::string &);
-    typedef void (*DestructionMethod)(CoreObject *);
+    void Mesh::deinit() {
+        
+    }
+    
+    Mesh::Mesh(const std::string &name) : Spore3D::CoreObject(name) {
+        
+    }
+    
+    Mesh::~Mesh() {
+        
+    }
     
 }
-
-#endif /* _cObject_h_ */

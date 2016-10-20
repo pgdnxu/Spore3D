@@ -60,7 +60,7 @@ namespace Spore3D {
         Component *getComponentByComponentName(const CObjectId, const std::string &componentName);
     
         
-        CoreObject *createObject(const std::string&);
+//        CoreObject *createObject(const std::string&);
         GameObject *createGameObject(const std::string&);
         void destoryObject(CoreObject*);
         

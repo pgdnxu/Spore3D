@@ -20,6 +20,7 @@
 #ifndef _uMath_h_
 #define _uMath_h_
 
+#include <ostream>
 #include <cmath>
 #include "uTypes.h"
 
@@ -75,7 +76,7 @@ namespace Spore3D {
         
         Vec3(const Vec3 &v) : x(v.x), y(v.y), z(v.z) {}
         
-        float &operator[](uint32 index) {
+        float &operator[](const uint32 index) {
             return *(&x + index);
         }
         
@@ -163,6 +164,114 @@ namespace Spore3D {
             return Vec3(x + (v.x - x) * f, y + (v.y - y) * f, z + (v.z - z) * f);
         }
         
+        friend std::ostream &operator << (std::ostream &out, const Vec3 &v) {
+            out<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<")";
+            return out;
+        }
+        
+    };
+    
+    class Vec2 {
+    public:
+        float x, y;
+        
+        Vec2() : x(0.0f), y(0.0f) {}
+        
+        explicit Vec2(math::NoInitHint) {}
+        
+        Vec2(const float x, const float y) : x(x), y(y) {}
+        
+        Vec2(const Vec2 &v) : x(v.x), y(v.y) {}
+        
+        float &operator[](const uint32 index) {
+            return *(&x + index);
+        }
+        
+        bool operator==(const Vec2 &v) const {
+            return (x > v.x - math::Epsilon && x < v.x + math::Epsilon &&
+                    y > v.y - math::Epsilon && y < v.y + math::Epsilon);
+        }
+        
+        bool operator!=(const Vec2 &v) const {
+            return (x < v.x - math::Epsilon || x > v.x + math::Epsilon ||
+                    y < v.y - math::Epsilon || y > v.y + math::Epsilon);
+        }
+        
+        Vec2 operator-() const {
+            return Vec2(-x, -y);
+        }
+        
+        Vec2 operator+(const Vec2 &v) const {
+            return Vec2(x + v.x, y + v.y);
+        }
+        
+        Vec2 &operator+=(const Vec2 &v) {
+            return *this = *this + v;
+        }
+        
+        Vec2 operator-(const Vec2 &v) const {
+            return Vec2(x - v.x, y - v.y);
+        }
+        
+        Vec2 &operator-=(const Vec2 &v) {
+            return *this = *this - v;
+        }
+        
+        Vec2 operator*(const float f) const {
+            return Vec2(x * f, y * f);
+        }
+        
+        Vec2 &operator*=(const float f) {
+            return *this = *this * f;
+        }
+        
+        Vec2 operator/(const float f) const {
+            return Vec2(x / f, y / f);
+        }
+        
+        Vec2 &operator/=(const float f) {
+            return *this = *this / f;
+        }
+        
+        float dot(const Vec2 &v) const {
+            return x * v.x + y * v.y;
+        }
+        
+        Vec3 cross(const Vec2 &v) const {
+            return Vec3(0, 0, x * v.y - y * v.x);
+        }
+        
+        float length() const {
+            return sqrtf(x * x + y * y);
+        }
+        
+        Vec2 normalized() const {
+            float len = length();
+            if (len > 0) {
+                float invLen = 1.0f / length();
+                return Vec2(x * invLen, y * invLen);
+            } else {
+                return Vec2();
+            }
+        }
+        
+        void normalize() {
+            float len = length();
+            if (len > 0) {
+                float invLen = 1.0f / length();
+                x *= invLen;
+                y *= invLen;
+            }
+        }
+        
+        Vec2 lerp(const Vec2 &v, const float f) const {
+            return Vec2(x + (v.x - x) * f, y + (v.y - y) * f);
+        }
+        
+        friend std::ostream &operator << (std::ostream &out, const Vec2 &v) {
+            out<<"Vec2("<<v.x<<", "<<v.y<<")";
+            return out;
+        }
     };
     
     class Vec4 {
@@ -204,6 +313,11 @@ namespace Spore3D {
         
         Vec4 &operator*=(const float f) {
             return *this = *this * f;
+        }
+        
+        friend std::ostream &operator << (std::ostream &out, const Vec4 &v) {
+            out<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<", "<<v.w<<")";
+            return out;
         }
     };
     

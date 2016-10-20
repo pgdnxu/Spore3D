@@ -100,14 +100,14 @@ namespace Spore3D {
         return static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
     }
     
-    CoreObject *ObjectManager::createObject(const std::string &name) {
-        CoreObject *co = CoreObject::Create(name);
-        if (nullptr != co) {
-            co->init();
-            m_DB->mObjectMap[co->getInstanceId()] = co;
-        }
-        return co;
-    }
+//    CoreObject *ObjectManager::createObject(const std::string &name) {
+//        CoreObject *co = CoreObject::Create(name);
+//        if (nullptr != co) {
+//            co->init();
+//            m_DB->mObjectMap[co->getInstanceId()] = co;
+//        }
+//        return co;
+//    }
     
     GameObject *ObjectManager::createGameObject(const std::string &name) {
         GameObject *go = static_cast<GameObject*>(GameObject::Create(name));
