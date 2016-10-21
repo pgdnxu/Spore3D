@@ -32,25 +32,23 @@ namespace Spore3D {
     
     class CoreObject {
     public:
-        static CoreObject *Create(const std::string &name);
-        static void Destory(CoreObject *cObject);
-        
         CObjectId getInstanceId() const;
         std::string toString() const;
         
-        virtual void init();
-        virtual void deinit();
-    
-    protected:
+        
         CoreObject(const std::string &name);
         virtual ~CoreObject();
+        
+        static void Destory(CoreObject*);
     
+    protected:
+        virtual void deinit();
+        
     private:
         std::string m_Name;
         Hash *m_InstanceID = nullptr;
         
         static uint32 _InstanceNumber;
-        
     };
     
     typedef CoreObject* (*CreationMethod)(const std::string &);

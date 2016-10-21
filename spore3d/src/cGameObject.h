@@ -23,11 +23,14 @@
 #include "cObject.h"
 #include "uTypes.h"
 #include "cObjectManager.h"
-#include "cComponent.h"
 
 namespace Spore3D {
     
+    class Component;
+    
     class GameObject : public CoreObject {
+        friend ObjectManager;
+        
     public:
         template<typename T>
         Component *addComponent() {
@@ -55,15 +58,13 @@ namespace Spore3D {
             return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), componentTypeId);
         }
         
-        static CoreObject *Create(const std::string&);
+        GameObject(const std::string&);
         
-        virtual void init();
         virtual void deinit();
         
         Component *transform;
         
     protected:
-        GameObject(const std::string&);
         virtual ~GameObject();
     };
     

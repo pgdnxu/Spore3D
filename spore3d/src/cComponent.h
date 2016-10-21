@@ -26,7 +26,6 @@
 namespace Spore3D {
     
     class GameObject;
-    class ObjectManager;
     
     const std::string COMPONENT_TYPE_NAME = "Component";
     
@@ -38,24 +37,22 @@ namespace Spore3D {
     };
     
     class Component : public CoreObject {
-        friend ObjectManager;
-    
     public:
-        static CoreObject *Create(const std::string&);
-        static void Destory(CoreObject *component);
         
         static void registerComponentTypes();
-        
-        virtual void init();
-        virtual void deinit();
-
         static ComponentTypeId getComponentTypeId(void);
+        
+        virtual void deinit();
     
         GameObject *gameObject;
     
     protected:
         Component(const std::string&);
         virtual ~Component();
+        ComponentTypeId m_ComponentTypeId;
+        
+    private:
+        static CoreObject *_alloc_obj(const std::string&);
     };
     
 }

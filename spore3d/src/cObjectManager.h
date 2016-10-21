@@ -25,7 +25,6 @@
 
 #include "uTypes.h"
 #include "cObject.h"
-//#include "cComponent.h"
 
 
 namespace Spore3D {
@@ -34,7 +33,6 @@ namespace Spore3D {
     struct ComponentTypeInfo;
     class CoreObject;
     class GameObject;
-    
     
     typedef std::map<CObjectId, CoreObject*> ObjectMap;
     typedef std::map<ComponentTypeId, ComponentTypeInfo> ComponentTypeInfoMap;
@@ -56,13 +54,15 @@ namespace Spore3D {
         
         Component *addComponentWithComponentTypeId(const CObjectId, const ComponentTypeId);
         Component *getComponentByComponentTypeId(const CObjectId, const ComponentTypeId);
-        Component *addComponentWithComponentName(const CObjectId, const std::string &componentName);
-        Component *getComponentByComponentName(const CObjectId, const std::string &componentName);
+        Component *addComponentWithComponentName(const CObjectId, const std::string&);
+        Component *getComponentByComponentName(const CObjectId, const std::string&);
     
+        void removeComponentByComponentTypeId(const CObjectId, const ComponentTypeId);
+        void removeComponentByComponentName(const CObjectId, const std::string&);
+        void removeComponentByObjectId(const CObjectId);
         
-//        CoreObject *createObject(const std::string&);
-        GameObject *createGameObject(const std::string&);
-        void destoryObject(CoreObject*);
+        void addGameObject(GameObject*);
+        void removeGameObject(const CObjectId);
         
         void init();
     private:

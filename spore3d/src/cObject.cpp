@@ -18,19 +18,20 @@
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
 #include "cObject.h"
+#include "cDestoryPool.h"
 
 namespace Spore3D {
     
     uint32 CoreObject::_InstanceNumber = 0;
     
-    CoreObject *CoreObject::Create(const std::string &name) {
-        return new CoreObject(name);
+    void CoreObject::deinit() {
+        
     }
     
     void CoreObject::Destory(CoreObject *cObject) {
         if (nullptr != cObject) {
+            DestoryPool::getInstance()->add(cObject);
             cObject->deinit();
-            delete cObject;
         }
     }
     
@@ -42,24 +43,16 @@ namespace Spore3D {
         return m_Name;
     }
     
-    void CoreObject::init() {
-        if (nullptr == m_InstanceID) {
-            std::string tname(m_Name);
-            m_InstanceID = new Hash(tname.append("_").append(std::to_string(_InstanceNumber++)));
-        }
-    }
-    
-    void CoreObject::deinit() {
+    CoreObject::~CoreObject() {
         delete m_InstanceID;
         m_InstanceID = nullptr;
     }
     
-    CoreObject::~CoreObject() {
-        
-    }
-    
     CoreObject::CoreObject(const std::string &name) : m_Name(name) {
-
+        if (nullptr == m_InstanceID) {
+            std::string tname(m_Name);
+            m_InstanceID = new Hash(tname.append("_").append(std::to_string(_InstanceNumber++)));
+        }
     }
     
 }

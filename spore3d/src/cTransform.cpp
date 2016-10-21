@@ -22,24 +22,16 @@
 
 namespace Spore3D {
     
-    CoreObject *Transform::Create(const std::string &name) {
+    CoreObject *Transform::_alloc_obj(const std::string &name) {
         return new Transform(name);
     }
     
-    void Transform::Destory(CoreObject* transform) {
-        Component::Destory(transform);
-    }
-    
     void Transform::registerComponentTypes() {
-        ObjectManager::getInstance()->registerComponentType(Transform::getComponentTypeId(), Transform::Create, Transform::Destory, TRANSFORM_TYPE_NAME);
-    }
-    
-    void Transform::init() {
-        Component::init();
+        ObjectManager::getInstance()->registerComponentType(Transform::getComponentTypeId(), Transform::_alloc_obj, nullptr, TRANSFORM_TYPE_NAME);
     }
     
     void Transform::deinit() {
-
+        Component::deinit();
     }
     
     ComponentTypeId Transform::getComponentTypeId(void) {
@@ -49,6 +41,7 @@ namespace Spore3D {
     
     Transform::Transform(const std::string &name)
     : Component(name), m_Parent(nullptr){
+        m_ComponentTypeId = getComponentTypeId();
     }
     
     Transform::~Transform() {

@@ -19,25 +19,19 @@
 
 #include "cGameObject.h"
 #include "cTransform.h"
+#include "uDebug.h"
 
 namespace Spore3D {
     
-    CoreObject *GameObject::Create(const std::string &name) {
-        return new GameObject(name);
-    }
-    
-    GameObject::GameObject(const std::string &name) : CoreObject(name) {
+    GameObject::GameObject(const std::string &name) : CoreObject(name), transform(nullptr) {
+        ObjectManager::getInstance()->addGameObject(this);
     }
     
     GameObject::~GameObject() {
-        
-    }
-    
-    void GameObject::init() {
-        CoreObject::init();
+        Debug::log("GameObject::~GameObject()");
     }
     
     void GameObject::deinit() {
-        
+        ObjectManager::getInstance()->removeGameObject(getInstanceId());
     }
 }

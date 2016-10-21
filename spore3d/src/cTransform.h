@@ -24,26 +24,17 @@
 #include "uMath.h"
 
 namespace Spore3D {
-
-    class ObjectManager;
     
     const std::string TRANSFORM_TYPE_NAME = "Transform";
     
     class Transform : public Component {
-        friend ObjectManager;
-        
     public:
-        static CoreObject *Create(const std::string&);
-        static void Destory(CoreObject*);
         static void registerComponentTypes();
         static ComponentTypeId getComponentTypeId(void);
         
-        virtual void init();
         virtual void deinit();
         
-        
         void setParent(Transform *);
-        
         void setPosition(const Vec3&);
         void setRotation(const Quaternion&);
         void setLocalPosition(const Vec3&);
@@ -52,16 +43,15 @@ namespace Spore3D {
         Vec3 getPosition() const;
         Quaternion getRotation() const;
         Vec3 getEulerAngle() const;
-        
         Vec3 getLocalPosition() const;
         Quaternion getLocalRotation() const;
         Vec3 getLocalEulerAngle() const;
         
-        
-    private:
+    protected:
         Transform(const std::string&);
         virtual ~Transform();
         
+    private:
         Transform *m_Parent;
         
         Vec3 m_Position;
@@ -72,6 +62,7 @@ namespace Spore3D {
         Quaternion m_LocalRotation;
         Vec3 m_LocalEulerAngle;
         
+        static CoreObject *_alloc_obj(const std::string&);
     };
     
 }

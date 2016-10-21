@@ -19,31 +19,25 @@
 
 #include "cComponent.h"
 #include "cObjectManager.h"
+#include "cGameObject.h"
 
 namespace Spore3D {
     
-    CoreObject *Component::Create(const std::string &name) {
+    CoreObject *Component::_alloc_obj(const std::string& name) {
         return new Component(name);
-    }
-    
-    void Component::Destory(CoreObject *component) {
-        CoreObject::Destory(component);
-    }
-    
-    void Component::init() {
-        CoreObject::init();
     }
 
     void Component::registerComponentTypes() {
-        ObjectManager::getInstance()->registerComponentType(Component::getComponentTypeId(), Component::Create, Component::Destory, COMPONENT_TYPE_NAME);
+        ObjectManager::getInstance()->registerComponentType(Component::getComponentTypeId(), Component::_alloc_obj, nullptr, COMPONENT_TYPE_NAME);
     }
     
     void Component::deinit() {
-        CoreObject::deinit();
+        ObjectManager::getInstance()->removeComponentByComponentTypeId(gameObject->getInstanceId(), getComponentTypeId());
+        gameObject = nullptr;
     }
     
     Component::Component(const std::string &name) : CoreObject(name) {
-
+        m_ComponentTypeId = getComponentTypeId();
     }
     
     Component::~Component() {

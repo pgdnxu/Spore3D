@@ -21,20 +21,8 @@
 
 namespace Spore3D {
     
-    CoreObject *Mesh::Create(const std::string &name) {
-        return new Mesh(name);
-    }
-    
-    void Mesh::Destory(CoreObject *cObject) {
-        CoreObject::Destory(cObject);
-    }
-    
-    void Mesh::init() {
-        
-    }
-    
     void Mesh::deinit() {
-        
+        clear();
     }
     
     Mesh::Mesh(const std::string &name) : Spore3D::CoreObject(name) {
@@ -45,4 +33,14 @@ namespace Spore3D {
         
     }
     
+    void Mesh::clear() {
+        vertices.clear();
+        uv.clear();
+        uv2.clear();
+        normal.clear();
+        
+        vertIndex.clear();
+        textureIndex.clear();
+        normalIndex.clear();
+    }
 }

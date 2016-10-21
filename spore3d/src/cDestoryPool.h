@@ -17,37 +17,31 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cMesh_h_
-#define _cMesh_h_
-
-#include "cObject.h"
-#include "uMath.h"
+#ifndef _cDestoryPool_h_
+#define _cDestoryPool_h_
 
 #include <vector>
 
 namespace Spore3D {
     
-    class Mesh : public CoreObject {
-    public:
-        Mesh(const std::string &name);
-        virtual ~Mesh();
+    class CoreObject;
     
-        void clear();
-        
+    class DestoryPool {
     public:
-        std::vector<Vec3>   vertices;
-        std::vector<Vec2>   uv;
-        std::vector<Vec2>   uv2;
-        std::vector<Vec3>   normal;
+        static DestoryPool *getInstance();
         
-        std::vector<uint32> vertIndex;
-        std::vector<uint32> textureIndex;
-        std::vector<uint32> normalIndex;
+        void add(CoreObject *co);
+        void destoryAll();
         
-    protected:
-        virtual void deinit();
+    private:
+        struct _ObjectCreate {
+            
+            _ObjectCreate();
+            
+        };
+        static _ObjectCreate _objectCreate;
+        std::vector<CoreObject*> m_ObjectDestoryPool;
     };
-    
 }
 
-#endif /* _cMesh_h_ */
+#endif /* _cDestoryPool_h_ */

@@ -37,8 +37,8 @@
 #include "uObjMtl.h"
 #include "uObjMeshLoader.h"
 #include "uStringUtils.h"
-
-
+#include "cDestoryPool.h"
+#include "uDebug.h"
 
 void ObjectManagerTest() {
     using namespace std;
@@ -46,9 +46,9 @@ void ObjectManagerTest() {
     ObjectManager *om = ObjectManager::getInstance();
     om->init();
     
-    GameObject *go = (GameObject*)(om->createGameObject("sprite1"));
-    go->addComponent("Component");
-    if (go != nullptr) {
+    GameObject *go = new GameObject("sprite1");
+    if (nullptr != go) {
+        go->addComponent("Component");
         cout<<go->toString()<<endl;
         Transform *t = (Transform*)(go->getComponent<Transform>());
         if (t != nullptr) {
@@ -58,7 +58,13 @@ void ObjectManagerTest() {
         if (c != nullptr) {
             cout<<c->toString()<<endl;
         }
+        CoreObject::Destory(go);
+        t = (Transform*)(go->getComponent<Transform>());
+        if (nullptr == t) {
+            cout<<"go destory transform"<<endl;
+        }
     }
+    DestoryPool::getInstance()->destoryAll();
 }
 
 void QuaternionTest() {
@@ -96,20 +102,22 @@ void ObjMtlTest() {
 }
 
 void ObjMeshLoaderTest() {
-    Spore3D::Mesh *mesh = static_cast<Spore3D::Mesh*>(Spore3D::Mesh::Create("chr_sword"));
+//    Spore3D::Mesh *mesh = static_cast<Spore3D::Mesh*>(Spore3D::Mesh::Create("chr_sword"));
+    Spore3D::Mesh *mesh = new Spore3D::Mesh("chr_sword");
     Spore3D::ObjMtl om;
     Spore3D::ObjMeshLoader::loadMesh("/Users/shannonxu/Desktop/chr_sword", "chr_sword.obj", *mesh, om);
     Spore3D::Mesh::Destory(mesh);
 }
 
+
 int main(void)
 {
     
-//    ObjectManagerTest();
+    ObjectManagerTest();
 //    QuaternionTest();
 //    PrTest();
 //    ObjMtlTest();
-    ObjMeshLoaderTest();
+//    ObjMeshLoaderTest();
     
     
     Spore3D::PngData *pd = Spore3D::PngReader::read("/Users/shannonxu/Desktop/chr_sword/chr_sword.png");

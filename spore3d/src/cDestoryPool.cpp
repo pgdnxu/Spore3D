@@ -17,37 +17,34 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cMesh_h_
-#define _cMesh_h_
-
+#include "cDestoryPool.h"
 #include "cObject.h"
-#include "uMath.h"
-
-#include <vector>
 
 namespace Spore3D {
     
-    class Mesh : public CoreObject {
-    public:
-        Mesh(const std::string &name);
-        virtual ~Mesh();
+    DestoryPool *DestoryPool::getInstance() {
+        static DestoryPool _instance;
+        return &_instance;
+    }
     
-        void clear();
-        
-    public:
-        std::vector<Vec3>   vertices;
-        std::vector<Vec2>   uv;
-        std::vector<Vec2>   uv2;
-        std::vector<Vec3>   normal;
-        
-        std::vector<uint32> vertIndex;
-        std::vector<uint32> textureIndex;
-        std::vector<uint32> normalIndex;
-        
-    protected:
-        virtual void deinit();
-    };
+    DestoryPool::_ObjectCreate DestoryPool::_objectCreate;
+    
+    DestoryPool::_ObjectCreate::_ObjectCreate() {
+        DestoryPool::getInstance();
+    }
+    
+    void DestoryPool::add(CoreObject *co) {
+        if (nullptr != co) {
+            m_ObjectDestoryPool.push_back(co);
+        }
+    }
+    
+    void DestoryPool::destoryAll() {
+        std::vector<CoreObject*>::iterator it = m_ObjectDestoryPool.begin();
+        for(; it != m_ObjectDestoryPool.end(); it++) {
+            delete (*it);
+        }
+        m_ObjectDestoryPool.clear();
+    }
     
 }
-
-#endif /* _cMesh_h_ */

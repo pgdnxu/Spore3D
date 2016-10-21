@@ -28,12 +28,11 @@
 
 namespace Spore3D {
     
-    char tmp[64];
-    
     class Debug {
     public:
         static void log(const std::string &msg) {
 #ifdef _DEBUG
+            char tmp[64];
             time_t t = time(0);
             strftime(tmp,sizeof(tmp),"[%Y-%m-%d,%H:%M:%S] ",localtime(&t));
             std::cout<<tmp<<msg<<std::endl;

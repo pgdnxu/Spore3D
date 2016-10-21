@@ -58,7 +58,6 @@ namespace Spore3D {
         }
         cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
         if (nullptr == cmp) return nullptr;
-        cmp->init();
         cmp->gameObject = static_cast<GameObject*>(obj);
         m_DB->mComponentTypeToComponentMap[typeId][objectId] = cmp;
         
@@ -79,6 +78,40 @@ namespace Spore3D {
         return getComponentByComponentTypeId(objectId, typeId.get());
     }
 
+    void ObjectManager::removeComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
+        m_DB->mComponentTypeToComponentMap[typeId].erase(objectId);
+    }
+    
+    void ObjectManager::removeComponentByComponentName(const CObjectId objectId, const std::string& componentName) {
+        Hash typeId(componentName);
+        return removeComponentByComponentTypeId(objectId, typeId.get());
+    }
+    
+    void ObjectManager::removeComponentByObjectId(const CObjectId objectId) {
+        ComponentMap::iterator it = m_DB->mComponentTypeToComponentMap.begin();
+        for (; it != m_DB->mComponentTypeToComponentMap.end(); it++) {
+            Component *cmp = (it->second)[objectId];
+            CoreObject::Destory(cmp);
+        }
+    }
+    
+    void ObjectManager::addGameObject(GameObject *gameObject) {
+        if (nullptr != gameObject) {
+            m_DB->mObjectMap[gameObject->getInstanceId()] = gameObject;
+            gameObject->addComponent<Transform>();
+            gameObject->transform = gameObject->getComponent<Transform>();
+        }
+    }
+    
+    void ObjectManager::removeGameObject(const CObjectId objectId) {
+        removeComponentByObjectId(objectId);
+        m_DB->mObjectMap.erase(objectId);
+        ComponentMap::iterator it = m_DB->mComponentTypeToComponentMap.begin();
+        for (; it != m_DB->mComponentTypeToComponentMap.end(); it++) {
+            (it->second).erase(objectId);
+        }
+    }
+    
     void ObjectManager::registerComponentType(const ComponentTypeId typeId, const CreationMethod creationMethod, const DestructionMethod destructionMethod, const std::string &typeName) {
         ComponentTypeInfo &info = m_DB->mComponentTypeInfoMap[typeId];
         info.creationMethod = creationMethod;
@@ -98,33 +131,6 @@ namespace Spore3D {
         if (it == m_DB->mComponentTypeInfoMap.end())
             return nullptr;
         return static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
-    }
-    
-//    CoreObject *ObjectManager::createObject(const std::string &name) {
-//        CoreObject *co = CoreObject::Create(name);
-//        if (nullptr != co) {
-//            co->init();
-//            m_DB->mObjectMap[co->getInstanceId()] = co;
-//        }
-//        return co;
-//    }
-    
-    GameObject *ObjectManager::createGameObject(const std::string &name) {
-        GameObject *go = static_cast<GameObject*>(GameObject::Create(name));
-        if (nullptr != go) {
-            go->init();
-            m_DB->mObjectMap[go->getInstanceId()] = go;
-            go->addComponent<Transform>();
-            go->transform = go->getComponent<Transform>();
-        }
-        return go;
-    }
-    
-    void ObjectManager::destoryObject(CoreObject *co) {
-        if (nullptr != co) {
-            m_DB->mObjectMap.erase(co->getInstanceId());
-            CoreObject::Destory(co);
-        }
     }
     
 }
