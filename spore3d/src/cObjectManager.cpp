@@ -23,6 +23,7 @@
 
 #include "cComponent.h"
 #include "cTransform.h"
+#include "cMeshFilter.h"
 
 namespace Spore3D {
     
@@ -59,6 +60,7 @@ namespace Spore3D {
         cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
         if (nullptr == cmp) return nullptr;
         cmp->gameObject = static_cast<GameObject*>(obj);
+        cmp->transform = cmp->gameObject->transform;
         m_DB->mComponentTypeToComponentMap[typeId][objectId] = cmp;
         
         return cmp;
@@ -99,7 +101,7 @@ namespace Spore3D {
         if (nullptr != gameObject) {
             m_DB->mObjectMap[gameObject->getInstanceId()] = gameObject;
             gameObject->addComponent<Transform>();
-            gameObject->transform = gameObject->getComponent<Transform>();
+            gameObject->transform = static_cast<Transform*>(gameObject->getComponent<Transform>());
         }
     }
     
@@ -124,6 +126,7 @@ namespace Spore3D {
     void ObjectManager::registerAllComponentTypes() {
         Component::registerComponentTypes();
         Transform::registerComponentTypes();
+        MeshFilter::registerComponentTypes();
     }
     
     Component *ObjectManager::createComponent(const ComponentTypeId typeId) {

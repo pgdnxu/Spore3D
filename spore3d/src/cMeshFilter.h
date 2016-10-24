@@ -17,26 +17,40 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#include "cGameObject.h"
-#include "cTransform.h"
-#include "uDebug.h"
+#ifndef _cMeshFilter_h_
+#define _cMeshFilter_h_
+
+#include "cComponent.h"
 
 namespace Spore3D {
     
-    GameObject::GameObject(const std::string &name) : CoreObject(name), transform(nullptr) {
-        ObjectManager::getInstance()->addGameObject(this);
-    }
+    class Mesh;
     
-    GameObject::~GameObject() {
-        Debug::log("GameObject::~GameObject()");
-    }
+    static const std::string MESHFILTER_TYPE_NAME = "MeshFilter";
     
-    void GameObject::deinit() {
-        ObjectManager::getInstance()->removeGameObject(getInstanceId());
-    }
+    class MeshFilter : public Component {
+    public:
+        static void registerComponentTypes();
+        static ComponentTypeId getComponentTypeId(void);
+        
+        virtual void deinit();
     
-    GameObject *GameObject::clone() {
-        //TODO : implementation
-        return nullptr;
-    }
+        Mesh *getMesh() const;
+        void setMesh(Mesh*);
+        std::shared_ptr<Mesh> getSharedMesh();
+        
+    protected:
+        MeshFilter(const std::string&);
+        virtual ~MeshFilter();
+        virtual MeshFilter *clone();
+        
+    private:
+        static CoreObject *_alloc_obj(const std::string&);
+        
+        Mesh *m_Mesh;
+        std::shared_ptr<Mesh> m_SharedMesh;
+    };
+    
 }
+
+#endif /* _cMeshFilter_h_ */

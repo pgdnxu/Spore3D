@@ -36,7 +36,8 @@ namespace Spore3D {
         gameObject = nullptr;
     }
     
-    Component::Component(const std::string &name) : CoreObject(name) {
+    Component::Component(const std::string &name)
+    : CoreObject(name), gameObject(nullptr), transform(nullptr) {
         m_ComponentTypeId = getComponentTypeId();
     }
     
@@ -47,6 +48,11 @@ namespace Spore3D {
     ComponentTypeId	Component::getComponentTypeId(void) {
         static Hash _componentTypeId(COMPONENT_TYPE_NAME);
         return _componentTypeId.get();
+    }
+    
+    Component *Component::clone() {
+        //TODO : implementation
+        return nullptr;
     }
     
 }

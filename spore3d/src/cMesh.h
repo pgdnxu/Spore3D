@@ -46,6 +46,7 @@ namespace Spore3D {
         
     protected:
         virtual void deinit();
+        virtual Mesh *clone();
     };
     
 }

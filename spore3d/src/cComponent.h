@@ -26,8 +26,9 @@
 namespace Spore3D {
     
     class GameObject;
+    class Transform;
     
-    const std::string COMPONENT_TYPE_NAME = "Component";
+    static const std::string COMPONENT_TYPE_NAME = "Component";
     
     struct ComponentTypeInfo{
         CreationMethod      creationMethod;
@@ -45,10 +46,13 @@ namespace Spore3D {
         virtual void deinit();
     
         GameObject *gameObject;
-    
+        Transform *transform;
+        
     protected:
         Component(const std::string&);
         virtual ~Component();
+        virtual Component *clone();
+        
         ComponentTypeId m_ComponentTypeId;
         
     private:

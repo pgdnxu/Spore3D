@@ -33,6 +33,20 @@ namespace Spore3D {
         
     }
     
+    Mesh *Mesh::clone() {
+        Mesh *newMesh = new Mesh(toString());
+        
+        newMesh->vertices = vertices;
+        newMesh->uv = uv;
+        newMesh->uv2 = uv2;
+        newMesh->normal = normal;
+        newMesh->vertIndex = vertIndex;
+        newMesh->textureIndex = textureIndex;
+        newMesh->normalIndex = normalIndex;
+        
+        return newMesh;
+    }
+    
     void Mesh::clear() {
         vertices.clear();
         uv.clear();

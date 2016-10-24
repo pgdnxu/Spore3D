@@ -28,19 +28,17 @@ namespace Spore3D {
         
     }
     
+    CoreObject *CoreObject::Instantiate(CoreObject *cObject) {
+        if (nullptr != cObject)
+            return cObject->clone();
+        return nullptr;
+    }
+    
     void CoreObject::Destory(CoreObject *cObject) {
         if (nullptr != cObject) {
             DestoryPool::getInstance()->add(cObject);
             cObject->deinit();
         }
-    }
-    
-    CObjectId CoreObject::getInstanceId() const {
-        return m_InstanceID->get();
-    }
-    
-    std::string CoreObject::toString() const {
-        return m_Name;
     }
     
     CoreObject::~CoreObject() {

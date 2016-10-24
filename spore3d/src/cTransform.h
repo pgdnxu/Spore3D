@@ -25,7 +25,7 @@
 
 namespace Spore3D {
     
-    const std::string TRANSFORM_TYPE_NAME = "Transform";
+    static const std::string TRANSFORM_TYPE_NAME = "Transform";
     
     class Transform : public Component {
     public:
@@ -50,6 +50,7 @@ namespace Spore3D {
     protected:
         Transform(const std::string&);
         virtual ~Transform();
+        virtual Transform *clone();
         
     private:
         Transform *m_Parent;

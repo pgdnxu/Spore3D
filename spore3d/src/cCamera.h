@@ -17,26 +17,8 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#include "cGameObject.h"
-#include "cTransform.h"
-#include "uDebug.h"
+#ifndef _cCamera_h_
+#define _cCamera_h_
 
-namespace Spore3D {
-    
-    GameObject::GameObject(const std::string &name) : CoreObject(name), transform(nullptr) {
-        ObjectManager::getInstance()->addGameObject(this);
-    }
-    
-    GameObject::~GameObject() {
-        Debug::log("GameObject::~GameObject()");
-    }
-    
-    void GameObject::deinit() {
-        ObjectManager::getInstance()->removeGameObject(getInstanceId());
-    }
-    
-    GameObject *GameObject::clone() {
-        //TODO : implementation
-        return nullptr;
-    }
-}
+
+#endif /* _cCamera_h_ */

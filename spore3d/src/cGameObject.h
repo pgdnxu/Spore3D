@@ -27,6 +27,7 @@
 namespace Spore3D {
     
     class Component;
+    class Transform;
     
     class GameObject : public CoreObject {
         friend ObjectManager;
@@ -62,10 +63,11 @@ namespace Spore3D {
         
         virtual void deinit();
         
-        Component *transform;
+        Transform *transform;
         
     protected:
         virtual ~GameObject();
+        virtual GameObject *clone();
     };
     
 }

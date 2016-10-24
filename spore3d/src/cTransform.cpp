@@ -30,6 +30,11 @@ namespace Spore3D {
         ObjectManager::getInstance()->registerComponentType(Transform::getComponentTypeId(), Transform::_alloc_obj, nullptr, TRANSFORM_TYPE_NAME);
     }
     
+    Transform *Transform::clone() {
+        //TODO :
+        return nullptr;
+    }
+    
     void Transform::deinit() {
         Component::deinit();
     }

@@ -32,17 +32,27 @@ namespace Spore3D {
     
     class CoreObject {
     public:
-        CObjectId getInstanceId() const;
-        std::string toString() const;
+        CObjectId getInstanceId() const { return m_InstanceID->get(); }
+        std::string toString() const { return m_Name; }
         
         
         CoreObject(const std::string &name);
-        virtual ~CoreObject();
+        virtual ~CoreObject() = 0;
         
+//        template<typename T>
+//        T *Instantiate(T *object) {
+//            return static_cast<T*>(CoreObject::Instantiate(static_cast<CoreObject*>(object)));
+//        }
+        
+        template<typename T>
+        T *Instantiate(T *object);
+        
+        static CoreObject *Instantiate(CoreObject*);
         static void Destory(CoreObject*);
     
     protected:
         virtual void deinit();
+        virtual CoreObject *clone() = 0;
         
     private:
         std::string m_Name;
@@ -53,6 +63,11 @@ namespace Spore3D {
     
     typedef CoreObject* (*CreationMethod)(const std::string &);
     typedef void (*DestructionMethod)(CoreObject *);
+    
+    template<typename T>
+    T *CoreObject::Instantiate(T *object) {
+        return static_cast<T*>(CoreObject::Instantiate(static_cast<CoreObject*>(object)));
+    }
     
 }
 
