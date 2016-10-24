@@ -32,27 +32,20 @@ namespace Spore3D {
     
     class CoreObject {
     public:
-        CObjectId getInstanceId() const { return m_InstanceID->get(); }
-        std::string toString() const { return m_Name; }
+        CObjectId getInstanceId(void) const { return m_InstanceID->get(); }
+        std::string toString(void) const { return m_Name; }
         
         
         CoreObject(const std::string &name);
         virtual ~CoreObject() = 0;
         
-//        template<typename T>
-//        T *Instantiate(T *object) {
-//            return static_cast<T*>(CoreObject::Instantiate(static_cast<CoreObject*>(object)));
-//        }
-        
-        template<typename T>
-        T *Instantiate(T *object);
-        
+        template<typename T> static T *Instantiate(T *object);
         static CoreObject *Instantiate(CoreObject*);
         static void Destory(CoreObject*);
     
     protected:
-        virtual void deinit();
-        virtual CoreObject *clone() = 0;
+        virtual void deinit(void);
+        virtual CoreObject *clone(void) = 0;
         
     private:
         std::string m_Name;

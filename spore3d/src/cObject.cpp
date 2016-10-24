@@ -24,7 +24,7 @@ namespace Spore3D {
     
     uint32 CoreObject::_InstanceNumber = 0;
     
-    void CoreObject::deinit() {
+    void CoreObject::deinit(void) {
         
     }
     

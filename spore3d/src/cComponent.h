@@ -38,12 +38,14 @@ namespace Spore3D {
     };
     
     class Component : public CoreObject {
+        friend GameObject;
     public:
         
-        static void registerComponentTypes();
-        static ComponentTypeId getComponentTypeId(void);
+        static void registerComponentTypes(void);
+        static ComponentTypeId TypeId(void);
+        ComponentTypeId getTypeId(void) { return m_ComponentTypeId; }
         
-        virtual void deinit();
+        virtual void deinit(void);
     
         GameObject *gameObject;
         Transform *transform;
@@ -51,7 +53,8 @@ namespace Spore3D {
     protected:
         Component(const std::string&);
         virtual ~Component();
-        virtual Component *clone();
+        virtual Component *clone(void);
+        virtual Component *cloneFromGameObject(void);
         
         ComponentTypeId m_ComponentTypeId;
         

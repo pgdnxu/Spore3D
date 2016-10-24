@@ -38,7 +38,7 @@ namespace Spore3D {
         ObjectManager::getInstance();
     }
     
-    void ObjectManager::init() {
+    void ObjectManager::init(void) {
         if (nullptr != m_DB) {
             delete m_DB;
         }
@@ -47,26 +47,42 @@ namespace Spore3D {
         registerAllComponentTypes();
     }
     
+    bool ObjectManager::addComponentWithComponent(const CObjectId objectId, Component *component) {
+        if (nullptr == component) return false;
+        GameObject *obj = m_DB->mObjectMap[objectId];
+        if (nullptr == obj) return false;
+        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(component->getTypeId());
+        if (it == m_DB->mComponentTypeInfoMap.end()) return false;
+        Component *oldcmp = getComponentByComponentTypeId(objectId, component->getTypeId());
+        if (nullptr != oldcmp) {
+            CoreObject::Destory(oldcmp);
+            oldcmp = nullptr;
+        }
+        component->gameObject = obj;
+        component->transform = component->gameObject->transform;
+        m_DB->mComponentTypeToComponentMap[component->getTypeId()][objectId] = component;
+        return true;
+    }
+    
     Component *ObjectManager::addComponentWithComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
-        CoreObject *obj = m_DB->mObjectMap[objectId];
+        GameObject *obj = m_DB->mObjectMap[objectId];
         if (nullptr == obj) return nullptr;
         ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
-        if (it == m_DB->mComponentTypeInfoMap.end())
-            return nullptr;
+        if (it == m_DB->mComponentTypeInfoMap.end()) return nullptr;
         Component *cmp = getComponentByComponentTypeId(objectId, typeId);
         if (nullptr != cmp) {
-            ((*(it->second.destructionMethod))(cmp));
+            CoreObject::Destory(cmp);
         }
         cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
         if (nullptr == cmp) return nullptr;
-        cmp->gameObject = static_cast<GameObject*>(obj);
+        cmp->gameObject = obj;
         cmp->transform = cmp->gameObject->transform;
         m_DB->mComponentTypeToComponentMap[typeId][objectId] = cmp;
         
         return cmp;
     }
     
-    Component *ObjectManager::getComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
+    Component *ObjectManager::getComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) const {
         return m_DB->mComponentTypeToComponentMap[typeId][objectId];
     }
     
@@ -75,11 +91,29 @@ namespace Spore3D {
         return addComponentWithComponentTypeId(objectId, typeId.get());
     }
     
-    Component *ObjectManager::getComponentByComponentName(const CObjectId objectId, const std::string &componentName) {
+    Component *ObjectManager::getComponentByComponentName(const CObjectId objectId, const std::string &componentName) const {
         Hash typeId(componentName);
         return getComponentByComponentTypeId(objectId, typeId.get());
     }
 
+    std::vector<Component*> ObjectManager::getAllComponents(const CObjectId objectId) const {
+        std::vector<Component*> ret;
+        for (const auto &it : m_DB->mComponentTypeToComponentMap) {
+            if (it.second.find(objectId) != it.second.end()) {
+                ret.push_back(it.second.at(objectId));
+            }
+        }
+        return ret;
+    }
+    
+    std::vector<GameObject*> ObjectManager::getAllObjects(const ComponentTypeId typeId) const {
+        std::vector<GameObject*> ret;
+        for (const auto &it : m_DB->mComponentTypeToComponentMap[typeId]) {
+            ret.push_back(m_DB->mObjectMap[it.first]);
+        }
+        return ret;
+    }
+    
     void ObjectManager::removeComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
         m_DB->mComponentTypeToComponentMap[typeId].erase(objectId);
     }
@@ -100,8 +134,8 @@ namespace Spore3D {
     void ObjectManager::addGameObject(GameObject *gameObject) {
         if (nullptr != gameObject) {
             m_DB->mObjectMap[gameObject->getInstanceId()] = gameObject;
-            gameObject->addComponent<Transform>();
-            gameObject->transform = static_cast<Transform*>(gameObject->getComponent<Transform>());
+//            gameObject->addComponent<Transform>();
+//            gameObject->transform = static_cast<Transform*>(gameObject->getComponent<Transform>());
         }
     }
     
@@ -123,7 +157,7 @@ namespace Spore3D {
         
     }
     
-    void ObjectManager::registerAllComponentTypes() {
+    void ObjectManager::registerAllComponentTypes(void) {
         Component::registerComponentTypes();
         Transform::registerComponentTypes();
         MeshFilter::registerComponentTypes();

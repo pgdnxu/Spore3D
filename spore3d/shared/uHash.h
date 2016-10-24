@@ -56,11 +56,11 @@ namespace Spore3D {
             m_HashValue = hashValue;
         }
         
-        uint32 get() const {
+        uint32 get(void) const {
             return m_HashValue;
         }
         
-        bool isValid() const {
+        bool isValid(void) const {
             return INVALID_HASH != m_HashValue;
         }
         

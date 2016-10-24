@@ -31,16 +31,16 @@ namespace Spore3D {
     
     class GameObject : public CoreObject {
         friend ObjectManager;
-        
+        friend Component;
     public:
         template<typename T>
-        Component *addComponent() {
-            return ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), T::getComponentTypeId());
+        Component *addComponent(void) {
+            return ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), T::TypeId());
         }
         
         template<typename T>
-        Component *getComponent() const {
-            return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), T::getComponentTypeId());
+        Component *getComponent(void) const {
+            return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), T::TypeId());
         }
         
         Component *addComponent(const std::string &componentName) {
@@ -59,15 +59,20 @@ namespace Spore3D {
             return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), componentTypeId);
         }
         
-        GameObject(const std::string&);
+        GameObject(const std::string&, bool isRaw = false);
         
-        virtual void deinit();
+        virtual void deinit(void);
         
         Transform *transform;
         
     protected:
         virtual ~GameObject();
-        virtual GameObject *clone();
+        
+        virtual GameObject *clone(void);
+        virtual GameObject *cloneFromComponent(ComponentTypeId);
+    
+    private:
+        GameObject *_clone(void);
     };
     
 }

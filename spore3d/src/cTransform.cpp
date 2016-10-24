@@ -26,75 +26,48 @@ namespace Spore3D {
         return new Transform(name);
     }
     
-    void Transform::registerComponentTypes() {
-        ObjectManager::getInstance()->registerComponentType(Transform::getComponentTypeId(), Transform::_alloc_obj, nullptr, TRANSFORM_TYPE_NAME);
+    void Transform::registerComponentTypes(void) {
+        ObjectManager::getInstance()->registerComponentType(Transform::TypeId(), Transform::_alloc_obj, nullptr, TRANSFORM_TYPE_NAME);
     }
     
-    Transform *Transform::clone() {
+    Transform *Transform::clone(void) {
         //TODO :
         return nullptr;
     }
     
-    void Transform::deinit() {
+    Transform *Transform::cloneFromGameObject(void) {
+        Transform *newTransform = new Transform(toString());
+        
+        newTransform->m_Parent = nullptr;
+        newTransform->m_Position = m_Position;
+        newTransform->m_Rotation = m_Rotation;
+        newTransform->m_EulerAngle = m_EulerAngle;
+        newTransform->m_LocalPosition = m_LocalPosition;
+        newTransform->m_LocalRotation = m_LocalRotation;
+        newTransform->m_LocalEulerAngle = m_LocalEulerAngle;
+        
+        //TODO: child
+        
+        return newTransform;
+    }
+    
+    void Transform::deinit(void) {
         Component::deinit();
     }
     
-    ComponentTypeId Transform::getComponentTypeId(void) {
+    ComponentTypeId Transform::TypeId(void) {
         static Hash _componentTypeId(TRANSFORM_TYPE_NAME);
         return _componentTypeId.get();
     }
     
     Transform::Transform(const std::string &name)
     : Component(name), m_Parent(nullptr){
-        m_ComponentTypeId = getComponentTypeId();
+        m_ComponentTypeId = TypeId();
     }
     
     Transform::~Transform() {
         
     }
     
-    void Transform::setParent(Transform *) {
-        
-    }
-    
-    void Transform::setPosition(const Vec3 &position) {
-        
-    }
-    
-    void Transform::setRotation(const Quaternion &rotation) {
-        
-    }
-    
-    void Transform::setLocalPosition(const Vec3 &localPosition) {
-        
-    }
-    
-    void Transform::setLocalRotation(const Quaternion &localRotation) {
-        
-    }
-    
-    Vec3 Transform::getPosition() const {
-        return m_Position;
-    }
-    
-    Quaternion Transform::getRotation() const {
-        return m_Rotation;
-    }
-    
-    Vec3 Transform::getEulerAngle() const {
-        return m_EulerAngle;
-    }
-    
-    Vec3 Transform::getLocalPosition() const {
-        return m_LocalPosition;
-    }
-    
-    Quaternion Transform::getLocalRotation() const {
-        return m_LocalRotation;
-    }
-    
-    Vec3 Transform::getLocalEulerAngle() const {
-        return m_LocalEulerAngle;
-    }
     
 }

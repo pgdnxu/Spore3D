@@ -31,7 +31,7 @@ namespace Spore3D {
         static DestoryPool *getInstance();
         
         void add(CoreObject *co);
-        void destoryAll();
+        void destoryAll(void);
         
     private:
         struct _ObjectCreate {

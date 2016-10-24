@@ -72,7 +72,7 @@ namespace Spore3D {
             StringUtils::trim(m_MtlFileName);
         }
         
-        bool load() {
+        bool load(void) {
             objMtlInfoMap.clear();
             
             std::string content = FileUtils::readTextFile(m_MtlFilePath+m_MtlFileName);

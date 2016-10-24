@@ -23,20 +23,42 @@
 
 namespace Spore3D {
     
-    GameObject::GameObject(const std::string &name) : CoreObject(name), transform(nullptr) {
+    GameObject::GameObject(const std::string &name, bool isRaw) : CoreObject(name), transform(nullptr) {
         ObjectManager::getInstance()->addGameObject(this);
+        if (!isRaw)
+            this->transform = static_cast<Transform*>(this->addComponent<Transform>());
+        
     }
     
     GameObject::~GameObject() {
         Debug::log("GameObject::~GameObject()");
     }
     
-    void GameObject::deinit() {
+    void GameObject::deinit(void) {
         ObjectManager::getInstance()->removeGameObject(getInstanceId());
     }
     
-    GameObject *GameObject::clone() {
-        //TODO : implementation
+    GameObject *GameObject::clone(void) {
+        GameObject *newObject = _clone();
+        if (nullptr == newObject) return nullptr;
+        std::vector<Component*> cmpList = ObjectManager::getInstance()->getAllComponents(getInstanceId());
+        for (const auto &it : cmpList) {
+            Component *newCmp = it->cloneFromGameObject();
+            if(!ObjectManager::getInstance()->addComponentWithComponent(newObject->getInstanceId(), newCmp)) {
+                std::string errStr = "clone GameObject:";
+                errStr.append(newObject->toString()).append("<").append(std::to_string(newObject->getInstanceId())).append("> failed. [clone Component failed.]");
+                Debug::err(errStr);
+            }
+        }
         return nullptr;
+    }
+    
+    GameObject *GameObject::cloneFromComponent(ComponentTypeId typeId) {
+        return nullptr;
+    }
+    
+    GameObject *GameObject::_clone(void) {
+        GameObject *rawGameObject = new GameObject(toString(), true);
+        return rawGameObject;
     }
 }

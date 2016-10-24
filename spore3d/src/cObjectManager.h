@@ -34,7 +34,7 @@ namespace Spore3D {
     class CoreObject;
     class GameObject;
     
-    typedef std::map<CObjectId, CoreObject*> ObjectMap;
+    typedef std::map<CObjectId, GameObject*> ObjectMap;
     typedef std::map<ComponentTypeId, ComponentTypeInfo> ComponentTypeInfoMap;
     typedef std::map<CObjectId, Component*> ObjectComponentMap;
     typedef std::map<ComponentTypeId, ObjectComponentMap> ComponentMap;
@@ -48,15 +48,18 @@ namespace Spore3D {
     class ObjectManager {
         
     public:
-        static ObjectManager *getInstance();
+        static ObjectManager *getInstance(void);
         
         void registerComponentType(const ComponentTypeId, const CreationMethod, const DestructionMethod, const std::string&);
         
-        Component *addComponentWithComponentTypeId(const CObjectId, const ComponentTypeId);
-        Component *getComponentByComponentTypeId(const CObjectId, const ComponentTypeId);
-        Component *addComponentWithComponentName(const CObjectId, const std::string&);
-        Component *getComponentByComponentName(const CObjectId, const std::string&);
-    
+        bool        addComponentWithComponent(const CObjectId, Component*);
+        Component   *addComponentWithComponentTypeId(const CObjectId, const ComponentTypeId);
+        Component   *addComponentWithComponentName(const CObjectId, const std::string&);
+        Component   *getComponentByComponentTypeId(const CObjectId, const ComponentTypeId) const;
+        Component   *getComponentByComponentName(const CObjectId, const std::string&) const;
+        std::vector<Component*> getAllComponents(const CObjectId) const;
+        std::vector<GameObject*> getAllObjects(const ComponentTypeId) const;
+        
         void removeComponentByComponentTypeId(const CObjectId, const ComponentTypeId);
         void removeComponentByComponentName(const CObjectId, const std::string&);
         void removeComponentByObjectId(const CObjectId);
@@ -64,7 +67,7 @@ namespace Spore3D {
         void addGameObject(GameObject*);
         void removeGameObject(const CObjectId);
         
-        void init();
+        void init(void);
     private:
         struct _ObjectCreate {
             
@@ -78,7 +81,7 @@ namespace Spore3D {
         
         Component *createComponent(const ComponentTypeId);
         
-        static void registerAllComponentTypes();
+        static void registerAllComponentTypes(void);
         
     };
     

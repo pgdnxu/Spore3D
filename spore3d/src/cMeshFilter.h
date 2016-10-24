@@ -30,19 +30,20 @@ namespace Spore3D {
     
     class MeshFilter : public Component {
     public:
-        static void registerComponentTypes();
-        static ComponentTypeId getComponentTypeId(void);
+        static void registerComponentTypes(void);
+        static ComponentTypeId TypeId(void);
         
-        virtual void deinit();
+        virtual void deinit(void);
     
-        Mesh *getMesh() const;
+        Mesh *getMesh(void) const;
         void setMesh(Mesh*);
         std::shared_ptr<Mesh> getSharedMesh();
         
     protected:
         MeshFilter(const std::string&);
         virtual ~MeshFilter();
-        virtual MeshFilter *clone();
+        virtual MeshFilter *clone(void);
+        virtual MeshFilter *cloneFromGameObject(void);
         
     private:
         static CoreObject *_alloc_obj(const std::string&);

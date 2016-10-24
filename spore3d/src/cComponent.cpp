@@ -27,31 +27,33 @@ namespace Spore3D {
         return new Component(name);
     }
 
-    void Component::registerComponentTypes() {
-        ObjectManager::getInstance()->registerComponentType(Component::getComponentTypeId(), Component::_alloc_obj, nullptr, COMPONENT_TYPE_NAME);
+    void Component::registerComponentTypes(void) {
+        ObjectManager::getInstance()->registerComponentType(Component::TypeId(), Component::_alloc_obj, nullptr, COMPONENT_TYPE_NAME);
     }
     
-    void Component::deinit() {
-        ObjectManager::getInstance()->removeComponentByComponentTypeId(gameObject->getInstanceId(), getComponentTypeId());
+    void Component::deinit(void) {
         gameObject = nullptr;
     }
     
     Component::Component(const std::string &name)
     : CoreObject(name), gameObject(nullptr), transform(nullptr) {
-        m_ComponentTypeId = getComponentTypeId();
+        m_ComponentTypeId = TypeId();
     }
     
     Component::~Component() {
         
     }
     
-    ComponentTypeId	Component::getComponentTypeId(void) {
+    ComponentTypeId	Component::TypeId(void) {
         static Hash _componentTypeId(COMPONENT_TYPE_NAME);
         return _componentTypeId.get();
     }
     
-    Component *Component::clone() {
-        //TODO : implementation
+    Component *Component::clone(void) {
+        return nullptr;
+    }
+    
+    Component *Component::cloneFromGameObject(void) {
         return nullptr;
     }
     

@@ -21,7 +21,7 @@
 
 namespace Spore3D {
     
-    void Mesh::deinit() {
+    void Mesh::deinit(void) {
         clear();
     }
     
@@ -33,7 +33,7 @@ namespace Spore3D {
         
     }
     
-    Mesh *Mesh::clone() {
+    Mesh *Mesh::clone(void) {
         Mesh *newMesh = new Mesh(toString());
         
         newMesh->vertices = vertices;
@@ -47,7 +47,7 @@ namespace Spore3D {
         return newMesh;
     }
     
-    void Mesh::clear() {
+    void Mesh::clear(void) {
         vertices.clear();
         uv.clear();
         uv2.clear();

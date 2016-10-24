@@ -26,27 +26,32 @@
 
 namespace Spore3D {
     
-    void MeshFilter::registerComponentTypes() {
-        ObjectManager::getInstance()->registerComponentType(MeshFilter::getComponentTypeId(), MeshFilter::_alloc_obj, nullptr, MESHFILTER_TYPE_NAME);
+    void MeshFilter::registerComponentTypes(void) {
+        ObjectManager::getInstance()->registerComponentType(MeshFilter::TypeId(), MeshFilter::_alloc_obj, nullptr, MESHFILTER_TYPE_NAME);
     }
     
-    ComponentTypeId MeshFilter::getComponentTypeId(void) {
+    ComponentTypeId MeshFilter::TypeId(void) {
         static Hash _componentTypeId(MESHFILTER_TYPE_NAME);
         return _componentTypeId.get();
     }
     
-    MeshFilter *MeshFilter::clone() {
+    MeshFilter *MeshFilter::clone(void) {
         //TODO :
         return nullptr;
     }
     
-    void MeshFilter::deinit() {
+    MeshFilter *MeshFilter::cloneFromGameObject(void) {
+        
+        return nullptr;
+    }
+    
+    void MeshFilter::deinit(void) {
         Component::deinit();
     }
     
     MeshFilter::MeshFilter(const std::string &name)
     : Component(name), m_Mesh(nullptr) {
-        m_ComponentTypeId = getComponentTypeId();
+        m_ComponentTypeId = TypeId();
     }
     
     MeshFilter::~MeshFilter() {
@@ -57,7 +62,7 @@ namespace Spore3D {
         return new MeshFilter(name);
     }
     
-    Mesh *MeshFilter::getMesh() const {
+    Mesh *MeshFilter::getMesh(void) const {
         return m_Mesh;
     }
     

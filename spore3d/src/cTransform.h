@@ -29,28 +29,29 @@ namespace Spore3D {
     
     class Transform : public Component {
     public:
-        static void registerComponentTypes();
-        static ComponentTypeId getComponentTypeId(void);
+        static void registerComponentTypes(void);
+        static ComponentTypeId TypeId(void);
         
-        virtual void deinit();
+        virtual void deinit(void);
         
-        void setParent(Transform *);
-        void setPosition(const Vec3&);
-        void setRotation(const Quaternion&);
-        void setLocalPosition(const Vec3&);
-        void setLocalRotation(const Quaternion&);
+        void setParent(Transform *parent) { m_Parent = parent; }
+        void setPosition(const Vec3 &position) { m_Position = position; }
+        void setRotation(const Quaternion &rotation) { m_Rotation = rotation; /*TODO: eulerAngle*/ }
+        void setLocalPosition(const Vec3 &localPosition) { m_LocalPosition = localPosition; }
+        void setLocalRotation(const Quaternion &localRotation) { m_LocalRotation = localRotation; /*TODO: localEulerAngle*/ }
         
-        Vec3 getPosition() const;
-        Quaternion getRotation() const;
-        Vec3 getEulerAngle() const;
-        Vec3 getLocalPosition() const;
-        Quaternion getLocalRotation() const;
-        Vec3 getLocalEulerAngle() const;
+        Vec3 getPosition(void) const { return m_Position; }
+        Quaternion getRotation(void) const { return m_Rotation; }
+        Vec3 getEulerAngle(void) const { return m_EulerAngle; }
+        Vec3 getLocalPosition(void) const { return m_LocalPosition; }
+        Quaternion getLocalRotation(void) const { return m_LocalRotation; }
+        Vec3 getLocalEulerAngle(void) const { return m_LocalEulerAngle; }
         
     protected:
         Transform(const std::string&);
         virtual ~Transform();
-        virtual Transform *clone();
+        virtual Transform *clone(void);
+        virtual Transform *cloneFromGameObject(void);
         
     private:
         Transform *m_Parent;
