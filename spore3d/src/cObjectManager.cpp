@@ -1,13 +1,14 @@
 // *********************************************************************
-//     ____                       _____ ____
-//    / ___| _ __   ___  _ __ ___|___ /|  _ \  ___ ___  _ __ ___
-//    \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |/ __/ _ \| '_ ` _ \
-//     ___) | |_) | (_) | | |  __/___) | |_| | (_| (_) | | | | | |
-//    |____/| .__/ \___/|_|  \___|____/|____(_)___\___/|_| |_| |_|
-//          |_|
+//             ____                       _____ ____
+//            / ___| _ __   ___  _ __ ___|___ /|  _ \
+//            \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |
+//             ___) | |_) | (_) | | |  __/___) | |_| |
+//            |____/| .__/ \___/|_|  \___|____/|____/
+//                  |_|
 //
 //  Spore3D
 //      -- High performance , Lightweight 3D Game Engine
+//      -- github.com/pgdnxu/Spore3D
 //  --------------------------------------------------------------------
 //
 //  Copyright (C) 2016 Shannon Xu
@@ -134,8 +135,6 @@ namespace Spore3D {
     void ObjectManager::addGameObject(GameObject *gameObject) {
         if (nullptr != gameObject) {
             m_DB->mObjectMap[gameObject->getInstanceId()] = gameObject;
-//            gameObject->addComponent<Transform>();
-//            gameObject->transform = static_cast<Transform*>(gameObject->getComponent<Transform>());
         }
     }
     

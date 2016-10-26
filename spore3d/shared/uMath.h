@@ -1,13 +1,14 @@
 // *********************************************************************
-//     ____                       _____ ____
-//    / ___| _ __   ___  _ __ ___|___ /|  _ \  ___ ___  _ __ ___
-//    \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |/ __/ _ \| '_ ` _ \
-//     ___) | |_) | (_) | | |  __/___) | |_| | (_| (_) | | | | | |
-//    |____/| .__/ \___/|_|  \___|____/|____(_)___\___/|_| |_| |_|
-//          |_|
+//             ____                       _____ ____
+//            / ___| _ __   ___  _ __ ___|___ /|  _ \
+//            \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |
+//             ___) | |_) | (_) | | |  __/___) | |_| |
+//            |____/| .__/ \___/|_|  \___|____/|____/
+//                  |_|
 //
 //  Spore3D
 //      -- High performance , Lightweight 3D Game Engine
+//      -- github.com/pgdnxu/Spore3D
 //  --------------------------------------------------------------------
 //
 //  Copyright (C) 2016 Shannon Xu
@@ -20,8 +21,10 @@
 #ifndef _uMath_h_
 #define _uMath_h_
 
+#include <iomanip>
 #include <ostream>
 #include <cmath>
+
 #include "uTypes.h"
 
 namespace Spore3D {
@@ -325,7 +328,7 @@ namespace Spore3D {
     public:
         float x, y, z, w;
         
-        Quaternion() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+        Quaternion() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
         
         explicit Quaternion(math::NoInitHint) {}
         
@@ -399,7 +402,7 @@ namespace Spore3D {
                               z * k0 + tq.z * k1, w * k0 + tq.w * k1);
         }
         
-        Quaternion nlerp( const Quaternion &q, const float t ) const {
+        Quaternion nlerp(const Quaternion &q, const float t) const {
             Quaternion tq;
             float cosOmega = x * q.x + y * q.y + z * q.z + w * q.w;
             
@@ -417,6 +420,22 @@ namespace Spore3D {
             } else {
                 return Quaternion();
             }
+        }
+        
+        Quaternion conjugate() const {
+            Quaternion re;
+            
+            re.w = w;
+            re.x = -x;
+            re.y = -y;
+            re.z = -z;
+            
+            return re;
+        }
+        
+        friend std::ostream &operator << (std::ostream &out, const Quaternion &q) {
+            out<<"Quaternion("<<q.x<<", "<<q.y<<", "<<q.z<<", "<<q.w<<")";
+            return out;
         }
     };
     
@@ -569,6 +588,10 @@ namespace Spore3D {
             return rm;
         }
         
+        static Mat4 TransMat(const Vec3 &v) {
+            return TransMat(v.x, v.y, v.z);
+        }
+        
         static Mat4 ScaleMat(const float x, const float y, const float z) {
             Mat4 rm;
             
@@ -687,6 +710,15 @@ namespace Spore3D {
         
         Vec4 getRow(const uint32 row) const {
             return Vec4(e[0][row], e[1][row], e[2][row], e[3][row]);
+        }
+        
+        friend std::ostream &operator << (std::ostream &out, const Mat4 &mat) {
+            for (int i = 0; i < 4; i++) {
+                out<<"| ";
+                out<<std::setprecision(4)<<std::setiosflags(std::ios::fixed)<<mat.e[0][i]<<" "<<mat.e[1][i]<<" "<<mat.e[2][i]<<" "<<mat.e[3][i];
+                out<<" |"<<std::endl;
+            }
+            return out;
         }
         
     };

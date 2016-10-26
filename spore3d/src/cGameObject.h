@@ -1,13 +1,14 @@
 // *********************************************************************
-//     ____                       _____ ____
-//    / ___| _ __   ___  _ __ ___|___ /|  _ \  ___ ___  _ __ ___
-//    \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |/ __/ _ \| '_ ` _ \
-//     ___) | |_) | (_) | | |  __/___) | |_| | (_| (_) | | | | | |
-//    |____/| .__/ \___/|_|  \___|____/|____(_)___\___/|_| |_| |_|
-//          |_|
+//             ____                       _____ ____
+//            / ___| _ __   ___  _ __ ___|___ /|  _ \
+//            \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |
+//             ___) | |_) | (_) | | |  __/___) | |_| |
+//            |____/| .__/ \___/|_|  \___|____/|____/
+//                  |_|
 //
 //  Spore3D
 //      -- High performance , Lightweight 3D Game Engine
+//      -- github.com/pgdnxu/Spore3D
 //  --------------------------------------------------------------------
 //
 //  Copyright (C) 2016 Shannon Xu
@@ -28,19 +29,22 @@ namespace Spore3D {
     
     class Component;
     class Transform;
+    class MeshFilter;
     
     class GameObject : public CoreObject {
         friend ObjectManager;
         friend Component;
+        friend Transform;
+        friend MeshFilter;
     public:
         template<typename T>
-        Component *addComponent(void) {
-            return ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), T::TypeId());
+        T *addComponent(void) {
+            return static_cast<T*>(ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), T::TypeId()));
         }
         
         template<typename T>
-        Component *getComponent(void) const {
-            return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), T::TypeId());
+        T *getComponent(void) const {
+            return static_cast<T*>(ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), T::TypeId()));
         }
         
         Component *addComponent(const std::string &componentName) {
@@ -67,10 +71,9 @@ namespace Spore3D {
         
     protected:
         virtual ~GameObject();
-        
         virtual GameObject *clone(void);
         virtual GameObject *cloneFromComponent(ComponentTypeId);
-    
+        
     private:
         GameObject *_clone(void);
     };

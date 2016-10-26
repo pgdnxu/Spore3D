@@ -1,13 +1,14 @@
 // *********************************************************************
-//     ____                       _____ ____
-//    / ___| _ __   ___  _ __ ___|___ /|  _ \  ___ ___  _ __ ___
-//    \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |/ __/ _ \| '_ ` _ \
-//     ___) | |_) | (_) | | |  __/___) | |_| | (_| (_) | | | | | |
-//    |____/| .__/ \___/|_|  \___|____/|____(_)___\___/|_| |_| |_|
-//          |_|
+//             ____                       _____ ____
+//            / ___| _ __   ___  _ __ ___|___ /|  _ \
+//            \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |
+//             ___) | |_) | (_) | | |  __/___) | |_| |
+//            |____/| .__/ \___/|_|  \___|____/|____/
+//                  |_|
 //
 //  Spore3D
 //      -- High performance , Lightweight 3D Game Engine
+//      -- github.com/pgdnxu/Spore3D
 //  --------------------------------------------------------------------
 //
 //  Copyright (C) 2016 Shannon Xu
@@ -39,6 +40,107 @@
 #include "uStringUtils.h"
 #include "cDestoryPool.h"
 #include "uDebug.h"
+#include "cMeshFilter.h"
+
+void transformTest() {
+    using namespace std;
+    using namespace Spore3D;
+    ObjectManager::getInstance()->init();
+    GameObject *go1 = new GameObject("go1");
+    GameObject *go2 = new GameObject("go2");
+    
+    //--------------------------------------------
+    
+    Transform *t1 = go1->getComponent<Transform>();
+    if (nullptr == t1) {
+        Debug::err("go1 has no transform.");
+        return;
+    }
+    
+    Transform *t2 = go2->getComponent<Transform>();
+    if (nullptr == t2) {
+        Debug::err("go2 has no transform.");
+        return;
+    }
+    
+    t1->setPosition(Vec3(10, 10, 0));
+    t1->setLocalPosition(Vec3(10, 10, 0));
+    
+    t2->setPosition(Vec3(20, 20, 0));
+    t2->setLocalPosition(Vec3(20, 20, 0));
+    
+    t2->setRotation(Quaternion::eulerAngle(0, 0, degToRad(90)));
+    t1->setRotation(Quaternion::eulerAngle(0, 0, 0));
+    cout<<t1->getRotation()<<endl;
+    
+    cout<<t2->getWorldToLocalMatrix()<<endl;
+    
+    t1->setParent(t2, true);
+    
+    cout<<t1->getPosition()<<endl;
+    cout<<t1->getLocalPosition()<<endl;
+    cout<<t2->getRotation()<<endl;
+    cout<<t1->getLocalRotation()<<endl;
+    cout<<t1->getRotation()<<endl;
+    
+    
+    //--------------------------------------------
+    CoreObject::Destory(go1);
+    CoreObject::Destory(go2);
+    DestoryPool::getInstance()->destoryAll();
+}
+
+void cloneTest() {
+
+    using namespace std;
+    using namespace Spore3D;
+    
+    ObjectManager::getInstance()->init();
+    
+    Spore3D::Mesh *mesh = new Spore3D::Mesh("chr_sword");
+    Spore3D::ObjMtl om;
+    Spore3D::ObjMeshLoader::loadMesh("/Users/shannonxu/Desktop/chr_sword", "chr_sword.obj", *mesh, om);
+    
+    GameObject *go = new GameObject("sprite1");
+    if (nullptr != go) {
+        go->addComponent<MeshFilter>();
+        cout<<go->toString()<<endl;
+        Transform *t = go->getComponent<Transform>();
+        if (t != nullptr) {
+            cout<<t->toString()<<endl;
+        }
+        MeshFilter *c = go->getComponent<MeshFilter>();
+        if (c != nullptr) {
+            cout<<c->toString()<<endl;
+        }
+        c->getMesh();
+        c->setMesh(mesh);
+        c->getSharedMesh();
+        
+        GameObject *go2 = CoreObject::Instantiate<GameObject>(go);
+        c = (MeshFilter*)(go2->getComponent<MeshFilter>());
+        if (c != nullptr) {
+            cout<<c->toString()<<endl;
+        }
+        
+        cout<<go->getInstanceId()<<endl;
+        cout<<go2->getInstanceId()<<endl;
+        
+        MeshFilter *nmf = CoreObject::Instantiate<MeshFilter>(go2->getComponent<MeshFilter>());
+        
+        t->setRotation(Quaternion(degToRad(90), 0, 0));
+        cout<<t->getRight()<<endl;
+        cout<<t->getUp()<<endl;
+        cout<<t->getForward()<<endl;
+        
+        CoreObject::Destory(go);
+        CoreObject::Destory(go2);
+        CoreObject::Destory(nmf->gameObject);
+    }
+    
+    
+    DestoryPool::getInstance()->destoryAll();
+}
 
 void ObjectManagerTest() {
     using namespace std;
@@ -109,11 +211,12 @@ void ObjMeshLoaderTest() {
     Spore3D::Mesh::Destory(mesh);
 }
 
-
 int main(void)
 {
     
-    ObjectManagerTest();
+    transformTest();
+//    cloneTest();
+//    ObjectManagerTest();
 //    QuaternionTest();
 //    PrTest();
 //    ObjMtlTest();

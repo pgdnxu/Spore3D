@@ -1,13 +1,14 @@
 // *********************************************************************
-//     ____                       _____ ____
-//    / ___| _ __   ___  _ __ ___|___ /|  _ \  ___ ___  _ __ ___
-//    \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |/ __/ _ \| '_ ` _ \
-//     ___) | |_) | (_) | | |  __/___) | |_| | (_| (_) | | | | | |
-//    |____/| .__/ \___/|_|  \___|____/|____(_)___\___/|_| |_| |_|
-//          |_|
+//             ____                       _____ ____
+//            / ___| _ __   ___  _ __ ___|___ /|  _ \
+//            \___ \| '_ \ / _ \| '__/ _ \ |_ \| | | |
+//             ___) | |_) | (_) | | |  __/___) | |_| |
+//            |____/| .__/ \___/|_|  \___|____/|____/
+//                  |_|
 //
 //  Spore3D
 //      -- High performance , Lightweight 3D Game Engine
+//      -- github.com/pgdnxu/Spore3D
 //  --------------------------------------------------------------------
 //
 //  Copyright (C) 2016 Shannon Xu
@@ -17,12 +18,12 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-
-//#include "cObject.h"
 #include <memory>
 #include "cMeshFilter.h"
 #include "cObjectManager.h"
 #include "cMesh.h"
+#include "cGameObject.h"
+#include "uDebug.h"
 
 namespace Spore3D {
     
@@ -36,13 +37,27 @@ namespace Spore3D {
     }
     
     MeshFilter *MeshFilter::clone(void) {
-        //TODO :
-        return nullptr;
+        MeshFilter *newMeshFilter = cloneFromGameObject();
+        GameObject *relGameObject = nullptr;
+        if (nullptr != gameObject) {
+            relGameObject = gameObject->cloneFromComponent(getTypeId());
+            ObjectManager::getInstance()->addComponentWithComponent(relGameObject->getInstanceId(), newMeshFilter);
+        }
+        
+        return newMeshFilter;
     }
     
     MeshFilter *MeshFilter::cloneFromGameObject(void) {
+        Debug::log("MeshFilter *MeshFilter::cloneFromGameObject(void)");
         
-        return nullptr;
+        MeshFilter *newMeshFilter = new MeshFilter(toString());
+        
+        newMeshFilter->m_Mesh = Instantiate<Mesh>(m_Mesh);
+        newMeshFilter->m_SharedMesh = m_SharedMesh;
+        
+        Debug::log(std::to_string(m_SharedMesh.use_count()));
+        
+        return newMeshFilter;
     }
     
     void MeshFilter::deinit(void) {
