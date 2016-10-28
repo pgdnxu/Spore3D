@@ -46,8 +46,8 @@ namespace Spore3D {
         std::vector<uint32> normalIndex;
         
     protected:
-        virtual void deinit(void);
-        virtual Mesh *clone(void);
+        virtual void deinit(void) override;
+        virtual Mesh *clone(void) override;
     };
     
 }

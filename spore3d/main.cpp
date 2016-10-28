@@ -214,15 +214,14 @@ void ObjMeshLoaderTest() {
 int main(void)
 {
     
-    transformTest();
-//    cloneTest();
+//    transformTest();
+    cloneTest();
 //    ObjectManagerTest();
 //    QuaternionTest();
 //    PrTest();
 //    ObjMtlTest();
 //    ObjMeshLoaderTest();
-    
-    
+        
     Spore3D::PngData *pd = Spore3D::PngReader::read("/Users/shannonxu/Desktop/chr_sword/chr_sword.png");
     if (nullptr == pd) {
         return -1;

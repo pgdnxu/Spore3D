@@ -46,7 +46,8 @@ namespace Spore3D {
     GameObject *GameObject::cloneFromComponent(ComponentTypeId typeId) {
         GameObject *newObject = _clone();
         if (nullptr == newObject) return nullptr;
-        std::vector<Component*> cmpList = ObjectManager::getInstance()->getAllComponents(getInstanceId());
+        std::vector<Component*> cmpList;
+        ObjectManager::getInstance()->getComponents(getInstanceId(), cmpList);
         for (const auto &it : cmpList) {
             if (it->getTypeId() != typeId) {
                 Component *newCmp = it->cloneFromGameObject();
@@ -63,5 +64,47 @@ namespace Spore3D {
     GameObject *GameObject::_clone(void) {
         GameObject *rawGameObject = new GameObject(toString(), true);
         return rawGameObject;
+    }
+    
+    Component *GameObject::getComponentInChildren(const ComponentTypeId typeId) const {
+        return nullptr == transform ? nullptr : transform->getComponentInChildren(typeId);
+    }
+    
+    Component *GameObject::getComponentInChildren(const std::string &typeName) const {
+        return nullptr == transform ? nullptr : transform->getComponentInChildren(typeName);
+    }
+    
+    void GameObject::getComponentsInChildren(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        if (nullptr != transform) {
+            transform->getComponentsInChildren(typeId, componentList);
+        }
+        
+    }
+    
+    void GameObject::getComponentsInChildren(const std::string &typeName, std::vector<Component*> &componentList) const {
+        if (nullptr != transform) {
+            transform->getComponentsInChildren(typeName, componentList);
+        }
+    }
+    
+    Component *GameObject::getComponentInParent(const ComponentTypeId typeId) const {
+        return nullptr == transform ? nullptr : transform->getComponentInParent(typeId);
+    }
+    
+    Component *GameObject::getComponentInParent(const std::string &typeName) const {
+        return nullptr == transform ? nullptr : transform->getComponentInParent(typeName);
+    }
+    
+    
+    void GameObject::getComponentsInParent(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        if (nullptr != transform) {
+            transform->getComponentsInParent(typeId, componentList);
+        }
+    }
+    
+    void GameObject::getComponentsInParent(const std::string &typeName, std::vector<Component*> &componentList) const {
+        if (nullptr != transform) {
+            transform->getComponentsInParent(typeName, componentList);
+        }
     }
 }

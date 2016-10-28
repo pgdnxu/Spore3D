@@ -44,9 +44,14 @@ namespace Spore3D {
         
     }
     
-    ComponentTypeId	Component::TypeId(void) {
-        static Hash _componentTypeId(COMPONENT_TYPE_NAME);
+    ComponentTypeId Component::genTypeId(const std::string &typeName) {
+        Hash _componentTypeId(typeName);
         return _componentTypeId.get();
+    }
+    
+    ComponentTypeId	Component::TypeId(void) {
+        static ComponentTypeId _cmpTypeId = genTypeId(COMPONENT_TYPE_NAME);
+        return _cmpTypeId;
     }
     
     Component *Component::clone(void) {
@@ -55,6 +60,46 @@ namespace Spore3D {
     
     Component *Component::cloneFromGameObject(void) {
         return nullptr;
+    }
+    
+    Component *Component::getComponentInChildren(const ComponentTypeId typeId) const {
+        return nullptr == gameObject ? nullptr : gameObject->getComponentInChildren(typeId);
+    }
+    
+    Component *Component::getComponentInChildren(const std::string &typeName) const {
+        return nullptr == gameObject ? nullptr : gameObject->getComponentInChildren(typeName);
+    }
+    
+    void Component::getComponentsInChildren(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        if (nullptr != gameObject) {
+            gameObject->getComponentsInChildren(typeId, componentList);
+        }
+    }
+    
+    void Component::getComponentsInChildren(const std::string &typeName, std::vector<Component*> &componentList) const {
+        if (nullptr != gameObject) {
+            gameObject->getComponentsInChildren(typeName, componentList);
+        }
+    }
+    
+    Component *Component::getComponentInParent(const ComponentTypeId typeId) const {
+        return nullptr == gameObject ? nullptr : gameObject->getComponentInParent(typeId);
+    }
+    
+    Component *Component::getComponentInParent(const std::string &typeName) const {
+        return nullptr == gameObject ? nullptr : gameObject->getComponentInParent(typeName);
+    }
+    
+    void Component::getComponentsInParent(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        if (nullptr != gameObject) {
+            gameObject->getComponentsInParent(typeId, componentList);
+        }
+    }
+    
+    void Component::getComponentsInParent(const std::string &typeName, std::vector<Component*> &compoentList) const {
+        if (nullptr != gameObject) {
+            gameObject->getComponentsInParent(typeName, compoentList);
+        }
     }
     
 }

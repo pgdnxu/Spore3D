@@ -21,13 +21,16 @@
 #ifndef _cComponent_h_
 #define _cComponent_h_
 
+#include <vector>
+
 #include "uTypes.h"
 #include "cObject.h"
+#include "cGameObject.h"
 
 namespace Spore3D {
     
-    class GameObject;
     class Transform;
+    class ObjectManager;
     
     static const std::string COMPONENT_TYPE_NAME = "Component";
     
@@ -40,25 +43,67 @@ namespace Spore3D {
     
     class Component : public CoreObject {
         friend GameObject;
+        friend ObjectManager;
     public:
         
         static void registerComponentTypes(void);
         static ComponentTypeId TypeId(void);
         ComponentTypeId getTypeId(void) { return m_ComponentTypeId; }
         
-        virtual void deinit(void);
-    
-        GameObject *gameObject;
-        Transform *transform;
-        
+        virtual void deinit(void) override;
         virtual Component *cloneFromGameObject(void);
         
+        template<typename T>
+        T *getComponent(void) const {
+            return nullptr == gameObject ? nullptr : gameObject->getComponent<T>();
+        }
+        Component *getComponent(const std::string &typeName) const {
+            return nullptr == gameObject ? nullptr : gameObject->getComponent(typeName);
+        }
+        Component *getComponent(const ComponentTypeId typeId) const {
+            return nullptr == gameObject ? nullptr : gameObject->getComponent(typeId);
+        }
+        template<typename T>
+        void getComponents(std::vector<Component*> &componentList) const {
+            if (nullptr != gameObject) {
+                gameObject->getComponents<T>(componentList);
+            }
+        }
+        
+        void getComponents(const std::string &typeName, std::vector<Component*> &componentList) const {
+            if (nullptr != gameObject) {
+                gameObject->getComponents(typeName, componentList);
+            }
+        }
+        
+        void getComponents(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+            if (nullptr != gameObject) {
+                gameObject->getComponents(typeId, componentList);
+            }
+        }
+        
+        virtual Component *getComponentInChildren(const ComponentTypeId) const;
+        virtual Component *getComponentInChildren(const std::string&) const;
+        
+        virtual void getComponentsInChildren(const ComponentTypeId, std::vector<Component*>&) const;
+        virtual void getComponentsInChildren(const std::string&, std::vector<Component*>&) const;
+        
+        virtual Component *getComponentInParent(const ComponentTypeId) const;
+        virtual Component *getComponentInParent(const std::string&) const;
+        
+        virtual void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const;
+        virtual void getComponentsInParent(const std::string&, std::vector<Component*>&) const;
+        
+        
+        GameObject *gameObject;
+        Transform *transform;
     protected:
         Component(const std::string&);
         virtual ~Component();
-        virtual Component *clone(void);
+        virtual Component *clone(void) override;
         
         ComponentTypeId m_ComponentTypeId;
+        static ComponentTypeId genTypeId(const std::string&);
         
     private:
         static CoreObject *_alloc_obj(const std::string&);

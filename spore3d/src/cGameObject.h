@@ -39,40 +39,72 @@ namespace Spore3D {
     public:
         template<typename T>
         T *addComponent(void) {
-            return static_cast<T*>(ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), T::TypeId()));
+            return static_cast<T*>(ObjectManager::getInstance()->addComponentWithComponentTypeId(getInstanceId(), T::TypeId()));
+        }
+        
+        Component *addComponent(const std::string &typeName) {
+            return ObjectManager::getInstance()->addComponentWithComponentTypeName(getInstanceId(), typeName);
+        }
+        
+        Component *addComponent(const ComponentTypeId typeId) {
+            return ObjectManager::getInstance()->addComponentWithComponentTypeId(getInstanceId(), typeId);
+        }
+        
+        template<typename T>
+        void getComponents(std::vector<Component*> &componentList) const {
+            ObjectManager::getInstance()->getComponentByComponentTypeId(getInstanceId(), T::TypeId(), componentList);
+        }
+        
+        void getComponents(const std::string &typeName, std::vector<Component*> &componentList) const {
+            ObjectManager::getInstance()->getComponentByComponentTypeName(getInstanceId(), typeName, componentList);
+        }
+        
+        void getComponents(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+            ObjectManager::getInstance()->getComponentByComponentTypeId(getInstanceId(), typeId, componentList);
         }
         
         template<typename T>
         T *getComponent(void) const {
-            return static_cast<T*>(ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), T::TypeId()));
+            std::vector<Component*> componentList;
+            getComponents<T>(componentList);
+            return componentList.empty() ? nullptr : static_cast<T*>(componentList.front());
         }
         
-        Component *addComponent(const std::string &componentName) {
-            return ObjectManager::getInstance()->addComponentWithComponentName(this->getInstanceId(), componentName);
+        Component *getComponent(const std::string &typeName) const {
+            std::vector<Component*> componentList;
+            getComponents(typeName, componentList);
+            return componentList.empty() ? nullptr : componentList.front();
         }
         
-        Component *getComponent(const std::string &componentName) const {
-            return ObjectManager::getInstance()->getComponentByComponentName(this->getInstanceId(), componentName);
+        Component *getComponent(const ComponentTypeId typeId) const {
+            std::vector<Component*> componentList;
+            getComponents(typeId, componentList);
+            return componentList.empty() ? nullptr : componentList.front();
         }
         
-        Component *addComponent(const ComponentTypeId componentTypeId) {
-            return ObjectManager::getInstance()->addComponentWithComponentTypeId(this->getInstanceId(), componentTypeId);
-        }
         
-        Component *getComponent(const ComponentTypeId componentTypeId) const {
-            return ObjectManager::getInstance()->getComponentByComponentTypeId(this->getInstanceId(), componentTypeId);
-        }
+        Component *getComponentInChildren(const ComponentTypeId) const;
+        Component *getComponentInChildren(const std::string&) const;
+        
+        void getComponentsInChildren(const ComponentTypeId, std::vector<Component*>&) const;
+        void getComponentsInChildren(const std::string&, std::vector<Component*>&) const;
+        
+        Component *getComponentInParent(const ComponentTypeId) const;
+        Component *getComponentInParent(const std::string&) const;
+        
+        void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const;
+        void getComponentsInParent(const std::string&, std::vector<Component*>&) const;
         
         GameObject(const std::string&, bool isRaw = false);
         
-        virtual void deinit(void);
+        virtual void deinit(void) override;
         
         Transform *transform;
         
     protected:
         virtual ~GameObject();
-        virtual GameObject *clone(void);
-        virtual GameObject *cloneFromComponent(ComponentTypeId);
+        virtual GameObject *clone(void) override;
+        virtual GameObject *cloneFromComponent(const ComponentTypeId);
         
     private:
         GameObject *_clone(void);

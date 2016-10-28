@@ -18,8 +18,6 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#include <iostream>
-
 #include "cTransform.h"
 #include "cObjectManager.h"
 #include "cGameObject.h"
@@ -57,7 +55,7 @@ namespace Spore3D {
         newTransform->m_LocalRotation = m_LocalRotation;
         newTransform->m_LocalEulerAngle = m_LocalEulerAngle;
         
-        for (const auto &it : m_ChilderList) {
+        for (const auto &it : m_ChildernList) {
             Transform *newChild = Instantiate<Transform>(it);
             newTransform->addChild(newChild);
         }
@@ -106,18 +104,18 @@ namespace Spore3D {
         GameObject *go = child->gameObject;
         if (nullptr == go)
             return false;
-        if (m_ChildreIndexMap.find(go->toString()) != m_ChildreIndexMap.end())
+        if (m_ChildrenIndexMap.find(go->toString()) != m_ChildrenIndexMap.end())
             return false;
-        m_ChilderList.push_back(child);
-        m_ChildreIndexMap[go->toString()] = (uint32)(m_ChilderList.size()-1);
+        m_ChildernList.push_back(child);
+        m_ChildrenIndexMap[go->toString()] = (uint32)(m_ChildernList.size()-1);
         return true;
     }
     
     void Transform::removeChild(const std::string &childName) {
-        if (m_ChildreIndexMap.find(childName) != m_ChildreIndexMap.end()) {
-            uint32 index = m_ChildreIndexMap[childName];
-            m_ChildreIndexMap.erase(childName);
-            m_ChilderList[index] = nullptr;
+        if (m_ChildrenIndexMap.find(childName) != m_ChildrenIndexMap.end()) {
+            uint32 index = m_ChildrenIndexMap[childName];
+            m_ChildrenIndexMap.erase(childName);
+            m_ChildernList[index] = nullptr;
         }
     }
     
@@ -138,23 +136,32 @@ namespace Spore3D {
     }
     
     void Transform::detachChildren(void) {
-        for (const auto &it : m_ChilderList) {
+        for (const auto &it : m_ChildernList) {
             it->detachChildren();
         }
-        m_ChilderList.clear();
-        m_ChildreIndexMap.clear();
+        m_ChildernList.clear();
+        m_ChildrenIndexMap.clear();
     }
     
     Transform *Transform::find(const std::string &childName) {
-        if (m_ChildreIndexMap.find(childName) != m_ChildreIndexMap.end()) {
-            return getChild(m_ChildreIndexMap[childName]);
+        if (childName.length() <= 0) return nullptr;
+        size_t index = childName.find('/');
+        if (std::string::npos == index) {
+            if (m_ChildrenIndexMap.find(childName) != m_ChildrenIndexMap.end()) {
+                return getChild(m_ChildrenIndexMap[childName]);
+            }
+        } else {
+            std::string currName = childName.substr(0, index);
+            if (currName.length() > 0 && m_ChildrenIndexMap.find(currName) != m_ChildrenIndexMap.end()) {
+                return getChild(m_ChildrenIndexMap[currName])->find(childName.substr(index + 1, childName.length()));
+            }
         }
         return nullptr;
     }
     
     Transform *Transform::getChild(const uint32 index) {
         if (index >= getChildCount()) return nullptr;
-        return m_ChilderList[index];
+        return m_ChildernList[index];
     }
     
     Mat4 Transform::getLocalToWorldMatrix(void) const {
@@ -179,6 +186,56 @@ namespace Spore3D {
     
     Vec3 Transform::inverseTransformDirection(const Vec3 &dir) const {
         return Mat4::RotMat(m_Rotation) * dir;
+    }
+    
+    Component *Transform::getComponentInChildren(const ComponentTypeId typeId) const {
+        Component *ret = getComponent(typeId);
+        if (nullptr != ret) return ret;
+        for (const auto &it : m_ChildernList) {
+            if ((ret = it->getComponentInChildren(typeId)) != nullptr) break;
+        }
+        return ret;
+    }
+    
+    Component *Transform::getComponentInChildren(const std::string &typeName) const {
+        return getComponentInChildren(genTypeId(typeName));
+    }
+    
+    void Transform::getComponentsInChildren(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        Component *rslt = getComponent(typeId);
+        if (nullptr != rslt) componentList.push_back(rslt);
+        for (const auto &it : m_ChildernList) {
+            it->getComponentsInParent(typeId, componentList);
+        }
+    }
+    
+    void Transform::getComponentsInChildren(const std::string &typeName, std::vector<Component*> &componentList) const {
+        getComponentsInChildren(genTypeId(typeName), componentList);
+    }
+    
+    Component *Transform::getComponentInParent(const ComponentTypeId typeId) const {
+        Component *ret = getComponent(typeId);
+        if (nullptr != ret) return ret;
+        if (nullptr != m_Parent) {
+            return m_Parent->getComponentInParent(typeId);
+        }
+        return nullptr;
+    }
+    
+    Component *Transform::getComponentInParent(const std::string &typeName) const  {
+        return getComponentInParent(genTypeId(typeName));
+    }
+    
+    void Transform::getComponentsInParent(const ComponentTypeId typeId, std::vector<Component*> &componentList) const {
+        Component *rslt = getComponent(typeId);
+        if (nullptr != rslt) componentList.push_back(rslt);
+        if (nullptr != m_Parent) {
+            m_Parent->getComponentsInParent(typeId, componentList);
+        }
+    }
+    
+    void Transform::getComponentsInParent(const std::string &typeName, std::vector<Component*> &componentList) const {
+        return getComponentsInParent(genTypeId(typeName), componentList);
     }
     
 }

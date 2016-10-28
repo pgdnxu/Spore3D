@@ -50,85 +50,74 @@ namespace Spore3D {
     
     bool ObjectManager::addComponentWithComponent(const CObjectId objectId, Component *component) {
         if (nullptr == component) return false;
-        GameObject *obj = m_DB->mObjectMap[objectId];
-        if (nullptr == obj) return false;
-        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(component->getTypeId());
-        if (it == m_DB->mComponentTypeInfoMap.end()) return false;
-        Component *oldcmp = getComponentByComponentTypeId(objectId, component->getTypeId());
-        if (nullptr != oldcmp) {
-            CoreObject::Destory(oldcmp);
-            oldcmp = nullptr;
-        }
-        component->gameObject = obj;
+        if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return nullptr;
+        if (m_DB->mComponentTypeInfoMap.find(component->getTypeId()) == m_DB->mComponentTypeInfoMap.end()) return false;
+        component->gameObject = m_DB->mObjectMap[objectId];
         component->transform = component->gameObject->transform;
-        m_DB->mComponentTypeToComponentMap[component->getTypeId()][objectId] = component;
+        m_DB->mComponentTypeToComponentMap[component->getTypeId()][objectId].push_back(component);
         return true;
     }
     
     Component *ObjectManager::addComponentWithComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
-        GameObject *obj = m_DB->mObjectMap[objectId];
-        if (nullptr == obj) return nullptr;
+        if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return nullptr;
         ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
         if (it == m_DB->mComponentTypeInfoMap.end()) return nullptr;
-        Component *cmp = getComponentByComponentTypeId(objectId, typeId);
-        if (nullptr != cmp) {
-            CoreObject::Destory(cmp);
-        }
-        cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
+        Component *cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
         if (nullptr == cmp) return nullptr;
-        cmp->gameObject = obj;
+        cmp->gameObject = m_DB->mObjectMap[objectId];
         cmp->transform = cmp->gameObject->transform;
-        m_DB->mComponentTypeToComponentMap[typeId][objectId] = cmp;
-        
+        m_DB->mComponentTypeToComponentMap[typeId][objectId].push_back(cmp);
         return cmp;
     }
     
-    Component *ObjectManager::getComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) const {
-        return m_DB->mComponentTypeToComponentMap[typeId][objectId];
-    }
-    
-    Component *ObjectManager::addComponentWithComponentName(const CObjectId objectId, const std::string &componentName) {
-        Hash typeId(componentName);
+    Component *ObjectManager::addComponentWithComponentTypeName(const CObjectId objectId, const std::string &typeName) {
+        Hash typeId(typeName);
         return addComponentWithComponentTypeId(objectId, typeId.get());
     }
     
-    Component *ObjectManager::getComponentByComponentName(const CObjectId objectId, const std::string &componentName) const {
-        Hash typeId(componentName);
-        return getComponentByComponentTypeId(objectId, typeId.get());
-    }
-
-    std::vector<Component*> ObjectManager::getAllComponents(const CObjectId objectId) const {
-        std::vector<Component*> ret;
-        for (const auto &it : m_DB->mComponentTypeToComponentMap) {
-            if (it.second.find(objectId) != it.second.end()) {
-                ret.push_back(it.second.at(objectId));
-            }
-        }
-        return ret;
+    void ObjectManager::getComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId, std::vector<Component *> &componentList) const {
+        if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return;
+        if (m_DB->mComponentTypeToComponentMap.find(typeId) == m_DB->mComponentTypeToComponentMap.end()) return;
+        componentList = m_DB->mComponentTypeToComponentMap[typeId][objectId];
     }
     
-    std::vector<GameObject*> ObjectManager::getAllObjects(const ComponentTypeId typeId) const {
-        std::vector<GameObject*> ret;
-        for (const auto &it : m_DB->mComponentTypeToComponentMap[typeId]) {
-            ret.push_back(m_DB->mObjectMap[it.first]);
+    void ObjectManager::getComponentByComponentTypeName(const CObjectId objectId, const std::string &typeName, std::vector<Component *> &componentList) const {
+        return getComponentByComponentTypeId(objectId, Component::genTypeId(typeName), componentList);
+    }
+    
+    void ObjectManager::getComponents(const CObjectId objectId, std::vector<Component*> &componentList) const {
+        if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return;
+        for (const auto &it : m_DB->mComponentTypeToComponentMap) {
+            if (it.second.find(objectId) != it.second.end()) {
+                componentList.insert(componentList.end(), it.second.at(objectId).begin(), it.second.at(objectId).end());
+            }
         }
-        return ret;
+    }
+    void ObjectManager::getGameObjects(const ComponentTypeId typeId, std::vector<GameObject*> &gameObjectList) const {
+        if (m_DB->mComponentTypeToComponentMap.find(typeId) == m_DB->mComponentTypeToComponentMap.end()) return;
+        for (const auto &it : m_DB->mComponentTypeToComponentMap.at(typeId)) {
+            gameObjectList.push_back(m_DB->mObjectMap.at(it.first));
+        }
     }
     
     void ObjectManager::removeComponentByComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
         m_DB->mComponentTypeToComponentMap[typeId].erase(objectId);
     }
     
-    void ObjectManager::removeComponentByComponentName(const CObjectId objectId, const std::string& componentName) {
-        Hash typeId(componentName);
+    void ObjectManager::removeComponentByComponentTypeName(const CObjectId objectId, const std::string& typeName) {
+        Hash typeId(typeName);
         return removeComponentByComponentTypeId(objectId, typeId.get());
     }
     
     void ObjectManager::removeComponentByObjectId(const CObjectId objectId) {
-        ComponentMap::iterator it = m_DB->mComponentTypeToComponentMap.begin();
-        for (; it != m_DB->mComponentTypeToComponentMap.end(); it++) {
-            Component *cmp = (it->second)[objectId];
-            CoreObject::Destory(cmp);
+        if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return;
+        for (auto &it : m_DB->mComponentTypeToComponentMap) {
+            if (it.second.find(objectId) != it.second.end()) {
+                for (const auto &c : it.second.at(objectId)) {
+                    CoreObject::Destory(c);
+                }
+                it.second.erase(objectId);
+            }
         }
     }
     
@@ -141,10 +130,6 @@ namespace Spore3D {
     void ObjectManager::removeGameObject(const CObjectId objectId) {
         removeComponentByObjectId(objectId);
         m_DB->mObjectMap.erase(objectId);
-        ComponentMap::iterator it = m_DB->mComponentTypeToComponentMap.begin();
-        for (; it != m_DB->mComponentTypeToComponentMap.end(); it++) {
-            (it->second).erase(objectId);
-        }
     }
     
     void ObjectManager::registerComponentType(const ComponentTypeId typeId, const CreationMethod creationMethod, const DestructionMethod destructionMethod, const std::string &typeName) {

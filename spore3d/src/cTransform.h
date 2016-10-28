@@ -37,7 +37,19 @@ namespace Spore3D {
         static void registerComponentTypes(void);
         static ComponentTypeId TypeId(void);
         
-        virtual void deinit(void);
+        virtual void deinit(void) override;
+        
+        virtual Component *getComponentInChildren(const ComponentTypeId) const override;
+        virtual Component *getComponentInChildren(const std::string&) const override;
+        
+        virtual void getComponentsInChildren(const ComponentTypeId, std::vector<Component*>&) const override;
+        virtual void getComponentsInChildren(const std::string&, std::vector<Component*>&) const override;
+        
+        virtual Component *getComponentInParent(const ComponentTypeId) const override;
+        virtual Component *getComponentInParent(const std::string&) const override;
+        
+        virtual void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const override;
+        virtual void getComponentsInParent(const std::string&, std::vector<Component*>&) const override;
         
         void setParent(Transform *parent) { setParent(parent, false); }
         void setParent(Transform *parent, bool worldPositionStays);
@@ -69,7 +81,7 @@ namespace Spore3D {
         void removeChild(const std::string&);
         void removeChild(Transform*);
         void removeFromParent(void);
-        uint32 getChildCount(void) const { return (uint32)m_ChilderList.size(); };
+        uint32 getChildCount(void) const { return (uint32)m_ChildernList.size(); };
         void detachChildren(void);
         Transform *find(const std::string&);
         Transform *getChild(const uint32);
@@ -78,8 +90,8 @@ namespace Spore3D {
     protected:
         Transform(const std::string&);
         virtual ~Transform();
-        virtual Transform *clone(void);
-        virtual Transform *cloneFromGameObject(void);
+        virtual Transform *clone(void) override;
+        virtual Transform *cloneFromGameObject(void) override;
         
     private:
         Transform *m_Parent;
@@ -94,8 +106,8 @@ namespace Spore3D {
         
         static CoreObject *_alloc_obj(const std::string&);
         
-        std::map<std::string, uint32> m_ChildreIndexMap;
-        std::vector<Transform*> m_ChilderList;
+        std::map<std::string, uint32> m_ChildrenIndexMap;
+        std::vector<Transform*> m_ChildernList;
     };
     
 }

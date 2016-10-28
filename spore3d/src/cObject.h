@@ -44,6 +44,22 @@ namespace Spore3D {
         static CoreObject *Instantiate(CoreObject*);
         static void Destory(CoreObject*);
     
+        bool operator==(const CoreObject *object) const {
+            if (nullptr == object) return false;
+            return this->getInstanceId() == object->getInstanceId();
+        }
+        bool operator==(const CoreObject &object) const {
+            return (*this == &object);
+        }
+        
+        bool operator!=(const CoreObject *object) const {
+            return !(*this == object);
+        }
+        
+        bool operator!=(const CoreObject &object) const {
+            return (*this != &object);
+        }
+        
     protected:
         virtual void deinit(void);
         virtual CoreObject *clone(void) = 0;

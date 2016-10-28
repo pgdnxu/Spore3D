@@ -37,7 +37,7 @@ namespace Spore3D {
     
     typedef std::map<CObjectId, GameObject*> ObjectMap;
     typedef std::map<ComponentTypeId, ComponentTypeInfo> ComponentTypeInfoMap;
-    typedef std::map<CObjectId, Component*> ObjectComponentMap;
+    typedef std::map<CObjectId, std::vector<Component*>> ObjectComponentMap;
     typedef std::map<ComponentTypeId, ObjectComponentMap> ComponentMap;
     
     struct ObjectManagerDB {
@@ -55,14 +55,15 @@ namespace Spore3D {
         
         bool        addComponentWithComponent(const CObjectId, Component*);
         Component   *addComponentWithComponentTypeId(const CObjectId, const ComponentTypeId);
-        Component   *addComponentWithComponentName(const CObjectId, const std::string&);
-        Component   *getComponentByComponentTypeId(const CObjectId, const ComponentTypeId) const;
-        Component   *getComponentByComponentName(const CObjectId, const std::string&) const;
-        std::vector<Component*> getAllComponents(const CObjectId) const;
-        std::vector<GameObject*> getAllObjects(const ComponentTypeId) const;
+        Component   *addComponentWithComponentTypeName(const CObjectId, const std::string&);
+        void        getComponentByComponentTypeId(const CObjectId, const ComponentTypeId, std::vector<Component*>&) const;
+        void        getComponentByComponentTypeName(const CObjectId, const std::string&, std::vector<Component*>&) const;
+        
+        void getComponents(const CObjectId, std::vector<Component*>&) const;
+        void getGameObjects(const ComponentTypeId, std::vector<GameObject*>&) const;
         
         void removeComponentByComponentTypeId(const CObjectId, const ComponentTypeId);
-        void removeComponentByComponentName(const CObjectId, const std::string&);
+        void removeComponentByComponentTypeName(const CObjectId, const std::string&);
         void removeComponentByObjectId(const CObjectId);
         
         void addGameObject(GameObject*);

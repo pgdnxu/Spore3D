@@ -34,7 +34,7 @@ namespace Spore3D {
         static void registerComponentTypes(void);
         static ComponentTypeId TypeId(void);
         
-        virtual void deinit(void);
+        virtual void deinit(void) override;
     
         Mesh *getMesh(void) const;
         void setMesh(Mesh*);
@@ -43,8 +43,8 @@ namespace Spore3D {
     protected:
         MeshFilter(const std::string&);
         virtual ~MeshFilter();
-        virtual MeshFilter *clone(void);
-        virtual MeshFilter *cloneFromGameObject(void);
+        virtual MeshFilter *clone(void) override;
+        virtual MeshFilter *cloneFromGameObject(void) override;
         
     private:
         static CoreObject *_alloc_obj(const std::string&);
