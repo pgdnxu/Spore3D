@@ -18,17 +18,11 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cCamera_h_
-#define _cCamera_h_
-
-#include "cBehaviour.h"
+#ifndef _cSceneManager_h_
+#define _cSceneManager_h_
 
 namespace Spore3D {
     
-    class Camera : public Behaviour {
-        
-    };
-    
 }
 
-#endif /* _cCamera_h_ */
+#endif /* _cSceneManager_h_ */

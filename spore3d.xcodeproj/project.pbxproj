@@ -20,6 +20,7 @@
 		575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FDC1DB623FE00E085EB /* cMesh.cpp */; };
 		575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FEF1DB9EE8B00E085EB /* cDestoryPool.cpp */; };
 		575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FF51DBA993200E085EB /* cMeshFilter.cpp */; };
+		576936A01DC375CC008C0DEE /* cScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5769369F1DC375CC008C0DEE /* cScene.cpp */; };
 		5783A5B31DB22908009F1BBC /* cGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5783A5B21DB22908009F1BBC /* cGameObject.cpp */; };
 		57A8C2481DAF79F100366F1E /* cObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C2471DAF79F100366F1E /* cObject.cpp */; };
 		57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C24D1DB0DB3A00366F1E /* cObjectManager.cpp */; };
@@ -71,6 +72,10 @@
 		575B6FF41DBA6B8D00E085EB /* cMeshFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cMeshFilter.h; sourceTree = "<group>"; };
 		575B6FF51DBA993200E085EB /* cMeshFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cMeshFilter.cpp; sourceTree = "<group>"; };
 		575B6FF71DBD1B1600E085EB /* cCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cCamera.h; sourceTree = "<group>"; };
+		5769369C1DC35F8E008C0DEE /* cBehaviour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cBehaviour.h; sourceTree = "<group>"; };
+		5769369D1DC37370008C0DEE /* cScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cScene.h; sourceTree = "<group>"; };
+		5769369E1DC37381008C0DEE /* cSceneManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cSceneManager.h; sourceTree = "<group>"; };
+		5769369F1DC375CC008C0DEE /* cScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cScene.cpp; sourceTree = "<group>"; };
 		5783A5B21DB22908009F1BBC /* cGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cGameObject.cpp; sourceTree = "<group>"; };
 		57A8C2411DAB88C500366F1E /* uMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uMath.h; sourceTree = "<group>"; };
 		57A8C2431DAF6FFD00366F1E /* cObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cObject.h; sourceTree = "<group>"; };
@@ -183,6 +188,10 @@
 				575B6FF41DBA6B8D00E085EB /* cMeshFilter.h */,
 				575B6FF51DBA993200E085EB /* cMeshFilter.cpp */,
 				575B6FF71DBD1B1600E085EB /* cCamera.h */,
+				5769369C1DC35F8E008C0DEE /* cBehaviour.h */,
+				5769369D1DC37370008C0DEE /* cScene.h */,
+				5769369E1DC37381008C0DEE /* cSceneManager.h */,
+				5769369F1DC375CC008C0DEE /* cScene.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -269,6 +278,7 @@
 				57106F631DA8F13B00365220 /* README.md in Sources */,
 				5783A5B31DB22908009F1BBC /* cGameObject.cpp in Sources */,
 				575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */,
+				576936A01DC375CC008C0DEE /* cScene.cpp in Sources */,
 				57106F4E1DA8DEE800365220 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

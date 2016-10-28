@@ -17,18 +17,25 @@
 //  A copy of the license may be obtained at: https://opensource.org/licenses/MIT
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
+#ifndef _cScene_h_
+#define _cScene_h_
 
-#ifndef _cCamera_h_
-#define _cCamera_h_
-
-#include "cBehaviour.h"
+#include "cObject.h"
 
 namespace Spore3D {
     
-    class Camera : public Behaviour {
-        
+    class SceneManager;
+    
+    class Scene : public CoreObject {
+        friend SceneManager;
+    public:
+        Scene(const std::string&);
+        virtual ~Scene() = 0;
+    protected:
+        virtual void deinit(void) override;
+        virtual Scene *clone(void) override;
     };
     
 }
 
-#endif /* _cCamera_h_ */
+#endif /* _cScene_h_ */

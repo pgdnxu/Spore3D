@@ -41,6 +41,8 @@
 #include "cDestoryPool.h"
 #include "uDebug.h"
 #include "cMeshFilter.h"
+#include "cCamera.h"
+#include "cScene.h"
 
 void transformTest() {
     using namespace std;

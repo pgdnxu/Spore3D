@@ -18,17 +18,24 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cCamera_h_
-#define _cCamera_h_
-
-#include "cBehaviour.h"
+#include "cScene.h"
 
 namespace Spore3D {
     
-    class Camera : public Behaviour {
+    Scene::Scene(const std::string &name) : CoreObject(name) {
         
-    };
+    }
+    
+    Scene::~Scene() {
+        
+    }
+    
+    void Scene::deinit(void) {
+        
+    }
+    
+    Scene *Scene::clone(void) {
+        return nullptr;
+    }
     
 }
-
-#endif /* _cCamera_h_ */

@@ -37,7 +37,7 @@ namespace Spore3D {
         std::string toString(void) const { return m_Name; }
         
         
-        CoreObject(const std::string &name);
+        CoreObject(const std::string&);
         virtual ~CoreObject() = 0;
         
         template<typename T> static T *Instantiate(T *object);

@@ -18,17 +18,24 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cCamera_h_
-#define _cCamera_h_
+#ifndef _cBehaviour_h_
+#define _cBehaviour_h_
 
-#include "cBehaviour.h"
+#include "cComponent.h"
 
 namespace Spore3D {
     
-    class Camera : public Behaviour {
-        
+    class Behaviour : public Component {
+    public:
+        void setEnable(const bool enable) { m_Enable = enable; }
+    protected:
+    protected:
+        Behaviour(const std::string &name) : Component(name) {}
+    private:
+        bool m_Enable;
     };
     
 }
 
-#endif /* _cCamera_h_ */
+
+#endif /* _cBehaviour_h_ */
