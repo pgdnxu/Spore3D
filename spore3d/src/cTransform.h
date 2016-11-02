@@ -30,7 +30,12 @@
 
 namespace Spore3D {
     
-    static const std::string TRANSFORM_TYPE_NAME = "Transform";
+    const std::string TRANSFORM_TYPE_NAME = "Transform";
+    
+    enum Space{
+        Self,
+        World
+    };
     
     class Transform : public Component {
     public:
@@ -55,20 +60,21 @@ namespace Spore3D {
         void setParent(Transform *parent, bool worldPositionStays);
         Transform *getParent() const { return m_Parent; }
         
-        void setPosition(const Vec3 &position) { m_Position = position; hasChanged = true; }
-        void setRotation(const Quaternion &rotation) { m_Rotation = rotation; m_EulerAngle = m_Rotation.eulerAngle(); hasChanged = true; }
-        void setLocalPosition(const Vec3 &localPosition) { m_LocalPosition = localPosition; hasChanged = true; }
-        void setLocalRotation(const Quaternion &localRotation) { m_LocalRotation = localRotation; m_LocalEulerAngle = m_LocalRotation.eulerAngle(); hasChanged = true; }
+        void setPosition(const Vec3&);
+        void setRotation(const Quaternion&);
+        void setLocalPosition(const Vec3&);
+        void setLocalRotation(const Quaternion&);
         
-        Vec3 getPosition(void) const { return m_Position; }
-        Quaternion getRotation(void) const { return m_Rotation; }
+        Vec3 getPosition(void) const;
+        Quaternion getRotation(void) const;
+        
         Vec3 getEulerAngle(void) const { return m_EulerAngle; }
         Vec3 getLocalPosition(void) const { return m_LocalPosition; }
         Quaternion getLocalRotation(void) const { return m_LocalRotation; }
         Vec3 getLocalEulerAngle(void) const { return m_LocalEulerAngle; }
-        Vec3 getForward(void) const { return Mat4(m_Rotation) * Vec3(0, 0, 1); }
-        Vec3 getUp(void) const { return Mat4(m_Rotation) * Vec3(0, 1, 0); }
-        Vec3 getRight(void) const { return Mat4(m_Rotation) * Vec3(1, 0, 0); }
+        Vec3 getForward(void) const { return Mat4(m_Rotation) * Vec3::forward; }
+        Vec3 getUp(void) const { return Mat4(m_Rotation) * Vec3::up; }
+        Vec3 getRight(void) const { return Mat4(m_Rotation) * Vec3::right; }
         
         Mat4 getLocalToWorldMatrix(void) const;
         Mat4 getWorldToLocalMatrix(void) const;
@@ -86,7 +92,21 @@ namespace Spore3D {
         Transform *find(const std::string&);
         Transform *getChild(const uint32);
         
-        bool hasChanged;
+        bool hasChanged() { return m_PositionHasChanged && m_RotationHasChanged; }
+        
+        void translate(const Vec3 &translation, Space relativeTo = Space::Self);
+        void translate(const float x, const float y, const float z, Space relativeTo = Space::Self);
+        void translate(const Vec3 &translation, Transform *relativeTo);
+        void translate(const float x, const float y, const float z, Transform *relativeTo);
+        
+        void rotate(const Vec3 &eulerAngles, Space relativeTo = Space::Self);
+        void rotate(const float xAngle, const float yAngle, const float zAngle, Space relativeTo = Space::Self);
+        void rotate(const Vec3 &axis, const float angle, Space relativeTo = Space::Self);
+        
+        void rotateAround(const Vec3 &point, const Vec3 &axis, const float angle);
+        void lookAt(const Transform *target, const Vec3 &worldUp = Vec3::up);
+        void lookAt(const Vec3 &worldPosition, const Vec3 &worldUp = Vec3::up);
+        
     protected:
         Transform(const std::string&);
         virtual ~Transform();
@@ -94,10 +114,13 @@ namespace Spore3D {
         virtual Transform *cloneFromGameObject(void) override;
         
     private:
+        mutable bool m_PositionHasChanged;
+        mutable bool m_RotationHasChanged;
+        
         Transform *m_Parent;
         
-        Vec3 m_Position;
-        Quaternion m_Rotation;
+        mutable Vec3 m_Position;
+        mutable Quaternion m_Rotation;
         Vec3 m_EulerAngle;
         
         Vec3 m_LocalPosition;
@@ -108,6 +131,7 @@ namespace Spore3D {
         
         std::map<std::string, uint32> m_ChildrenIndexMap;
         std::vector<Transform*> m_ChildernList;
+        
     };
     
 }

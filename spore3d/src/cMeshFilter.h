@@ -27,7 +27,7 @@ namespace Spore3D {
     
     class Mesh;
     
-    static const std::string MESHFILTER_TYPE_NAME = "MeshFilter";
+    const std::string MESHFILTER_TYPE_NAME = "MeshFilter";
     
     class MeshFilter : public Component {
     public:

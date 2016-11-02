@@ -17,6 +17,7 @@
 		57106F5E1DA8EADF00365220 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F5D1DA8EADF00365220 /* GLUT.framework */; };
 		57106F601DA8EB0900365220 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F5F1DA8EB0900365220 /* libglfw3.a */; };
 		57106F631DA8F13B00365220 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 57106F621DA8F13A00365220 /* README.md */; };
+		571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571504AD1DC8652A005C8BEF /* uMath.cpp */; };
 		575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FDC1DB623FE00E085EB /* cMesh.cpp */; };
 		575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FEF1DB9EE8B00E085EB /* cDestoryPool.cpp */; };
 		575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FF51DBA993200E085EB /* cMeshFilter.cpp */; };
@@ -54,6 +55,7 @@
 		57106F611DA8F07700365220 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		57106F621DA8F13A00365220 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		57106F641DA8F3FE00365220 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		571504AD1DC8652A005C8BEF /* uMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uMath.cpp; sourceTree = "<group>"; };
 		575B6FD71DB60C6600E085EB /* uPng.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uPng.h; sourceTree = "<group>"; };
 		575B6FDB1DB623EB00E085EB /* cMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cMesh.h; sourceTree = "<group>"; };
 		575B6FDC1DB623FE00E085EB /* cMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cMesh.cpp; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				575B6FE91DB755B700E085EB /* uStringUtils.h */,
 				575B6FEA1DB7CE2B00E085EB /* uObjMeshLoader.h */,
 				575B6FEB1DB872EB00E085EB /* uDebug.h */,
+				571504AD1DC8652A005C8BEF /* uMath.cpp */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */,
+				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
 				575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */,
 				575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */,

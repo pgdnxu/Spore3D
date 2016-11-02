@@ -76,7 +76,7 @@ namespace Spore3D {
     }
     
     Transform::Transform(const std::string &name)
-    : Component(name), m_Parent(nullptr), hasChanged(false) {
+    : Component(name), m_Parent(nullptr), m_PositionHasChanged(false), m_RotationHasChanged(false) {
         m_ComponentTypeId = TypeId();
     }
     
@@ -93,8 +93,8 @@ namespace Spore3D {
             setLocalPosition(parent->transformPoint(getLocalPosition()));
             setLocalRotation((parent->getRotation()).conjugate() * getLocalRotation());
         } else {
-            setPosition(Mat4::TransMat(parent->getPosition())*Mat4::RotMat(parent->getRotation())*m_Position);
-            setRotation(getRotation() * parent->getRotation());
+            m_RotationHasChanged = true;
+            m_PositionHasChanged = true;
         }
     }
     
@@ -165,11 +165,11 @@ namespace Spore3D {
     }
     
     Mat4 Transform::getLocalToWorldMatrix(void) const {
-        return Mat4::RotMat(m_Rotation) * Mat4::TransMat(m_Position);
+        return Mat4::TransMat(getPosition()) * Mat4::RotMat(getRotation());
     }
     
     Mat4 Transform::getWorldToLocalMatrix(void) const {
-        return Mat4::RotMat(m_Rotation.conjugate()) * Mat4::TransMat(-m_Position);
+        return Mat4::RotMat(getRotation().conjugate()) * Mat4::TransMat(-getPosition()) ;
     }
     
     Vec3 Transform::transformPoint(const Vec3 &point) const {
@@ -181,11 +181,11 @@ namespace Spore3D {
     }
     
     Vec3 Transform::transformDirection(const Vec3 &dir) const {
-        return Mat4::RotMat(m_Rotation.conjugate()) * dir;
+        return Mat4::RotMat(getRotation().conjugate()) * dir;
     }
     
     Vec3 Transform::inverseTransformDirection(const Vec3 &dir) const {
-        return Mat4::RotMat(m_Rotation) * dir;
+        return Mat4::RotMat(getRotation()) * dir;
     }
     
     Component *Transform::getComponentInChildren(const ComponentTypeId typeId) const {
@@ -238,4 +238,127 @@ namespace Spore3D {
         return getComponentsInParent(genTypeId(typeName), componentList);
     }
     
+    void Transform::setPosition(const Vec3 &position) {
+        setLocalPosition(m_LocalPosition + m_Parent->transformDirection(position - getPosition()));
+    }
+    
+    void Transform::setRotation(const Quaternion &rotation) {
+        if (nullptr != m_Parent) {
+            setLocalRotation(m_Parent->getRotation().inversed() * (rotation * getRotation()));
+        } else {
+            setLocalRotation(rotation * getLocalRotation());
+        }
+    }
+    
+    void Transform::setLocalPosition(const Vec3 &localPosition) {
+        m_PositionHasChanged = true;
+        m_LocalPosition = localPosition;
+    }
+    
+    void Transform::setLocalRotation(const Quaternion &localRotation) {
+        m_RotationHasChanged = true;
+        m_LocalRotation = localRotation;
+    }
+    
+    Vec3 Transform::getPosition(void) const {
+        if (m_PositionHasChanged) {
+            if (nullptr == m_Parent) {
+                m_Position = m_LocalPosition;
+            } else {
+                m_Position = m_Parent->inverseTransformPoint(m_LocalPosition);
+            }
+            m_PositionHasChanged = false;
+        }
+        return m_Position;
+    }
+    
+    Quaternion Transform::getRotation(void) const {
+        if (m_RotationHasChanged) {
+            if (nullptr == m_Parent) {
+                m_Rotation = m_LocalRotation;
+            } else {
+                m_Rotation = m_Parent->getRotation() * m_LocalRotation;
+            }
+            m_RotationHasChanged = false;
+        }
+        return m_Rotation;
+    }
+    
+    void Transform::translate(const Vec3 &translation, Space relativeTo) {
+        if (Space::Self == relativeTo) {
+            setLocalPosition(getLocalPosition() + translation);
+        } else if (Space::World == relativeTo) {
+            if (nullptr != m_Parent) {
+                setLocalPosition(getLocalPosition() + m_Parent->transformDirection(translation));
+            } else {
+                setLocalPosition(getLocalPosition() + translation);
+            }
+        }
+    }
+    
+    void Transform::translate(const float x, const float y, const float z, Space relativeTo) {
+        translate(Vec3(x, y, z), relativeTo);
+    }
+    
+    void Transform::translate(const Vec3 &translation, Transform *relativeTo) {
+        if (nullptr == relativeTo) {
+            // world space
+            translate(translation, Space::World);
+        } else {
+            if (nullptr != m_Parent) {
+                setLocalPosition(getLocalPosition() + m_Parent->transformDirection(relativeTo->inverseTransformDirection(translation)));
+            } else {
+                setLocalPosition(getLocalPosition() + relativeTo->inverseTransformDirection(translation));
+            }
+            
+        }
+    }
+    
+    void Transform::translate(const float x, const float y, const float z, Transform *relativeTo) {
+        translate(Vec3(x, y, z), relativeTo);
+    }
+    
+    void Transform::rotate(const Vec3 &eulerAngles, Space relativeTo) {
+        if (Space::Self == relativeTo) {
+            setLocalRotation(Quaternion(eulerAngles.x, eulerAngles.y, eulerAngles.z) * getLocalRotation());
+        } else if (Space::World == relativeTo) {
+            if (nullptr != m_Parent) {
+                setLocalRotation(m_Parent->getRotation().inversed() * (Quaternion(eulerAngles.x, eulerAngles.y, eulerAngles.z) * getRotation()));
+            } else {
+                setLocalRotation(Quaternion(eulerAngles.x, eulerAngles.y, eulerAngles.z) * getLocalRotation());
+            }
+        }
+    }
+    
+    void Transform::rotate(const float xAngle, const float yAngle, const float zAngle, Space relativeTo) {
+        rotate(Vec3(xAngle, yAngle, zAngle), relativeTo);
+    }
+    
+    void Transform::rotate(const Vec3 &axis, const float angle, Space relativeTo) {
+        Vec3 naxis(axis);
+        naxis.normalize();
+        if (Space::Self == relativeTo) {
+            setLocalRotation((Mat4(getLocalRotation()) * Mat4::RotMat(naxis, angle)).getQuaternion());
+        } else if (Space::World == relativeTo) {
+            if (nullptr != m_Parent) {
+                setLocalRotation((Mat4::RotMat(m_Parent->transformDirection(naxis), angle) * Mat4(getLocalRotation())).getQuaternion());
+            } else {
+                setLocalRotation((Mat4(getLocalRotation()) * Mat4::RotMat(naxis, angle)).getQuaternion());
+            }
+        }
+    }
+    
+    void Transform::rotateAround(const Vec3 &point, const Vec3 &axis, float angle) {
+        
+    }
+    
+    void Transform::lookAt(const Vec3 &worldPosition, const Vec3 &worldUp) {
+        
+    }
+    
+    void Transform::lookAt(const Transform *target, const Vec3 &worldUp) {
+        if (nullptr != target) {
+            lookAt(target->getPosition(), worldUp);
+        }
+    }
 }

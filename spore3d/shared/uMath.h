@@ -69,6 +69,11 @@ namespace Spore3D {
     
     class Vec3 {
     public:
+        
+        static const Vec3 up;
+        static const Vec3 right;
+        static const Vec3 forward;
+        
         float x, y, z;
         
         Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
@@ -174,6 +179,8 @@ namespace Spore3D {
         
     };
     
+    
+    
     class Vec2 {
     public:
         float x, y;
@@ -241,7 +248,7 @@ namespace Spore3D {
         }
         
         Vec3 cross(const Vec2 &v) const {
-            return Vec3(0, 0, x * v.y - y * v.x);
+            return Vec3(0.0f, 0.0f, x * v.y - y * v.x);
         }
         
         float length() const {
@@ -319,13 +326,16 @@ namespace Spore3D {
         }
         
         friend std::ostream &operator << (std::ostream &out, const Vec4 &v) {
-            out<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<", "<<v.w<<")";
+            out<<std::setprecision(4)<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<", "<<v.w<<")";
             return out;
         }
     };
     
     class Quaternion {
     public:
+        
+        static const Quaternion identity;
+        
         float x, y, z, w;
         
         Quaternion() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
@@ -335,20 +345,26 @@ namespace Spore3D {
         explicit Quaternion(const float x, const float y, const float z, const float w) :
         x(x), y(y), z(z), w(w) {}
         
+        Quaternion(const Quaternion &q) : x(q.x), y(q.y), z(q.z), w(q.w) {}
+        
         Quaternion(const float eulerX, const float eulerY, const float eulerZ) {
-            Quaternion roll(sinf(eulerX * 0.5f), 0, 0, cosf(eulerX * 0.5f));
-            Quaternion pitch(0, sinf(eulerY * 0.5f), 0, cosf(eulerY * 0.5f));
-            Quaternion yaw(0, 0, sinf(eulerZ * 0.5f), cosf(eulerZ * 0.5f));
+            float exr = degToRad(eulerX);
+            float eyr = degToRad(eulerY);
+            float ezr = degToRad(eulerZ);
+            Quaternion roll(sinf(exr * 0.5f), 0.0f, 0.0f, cosf(exr * 0.5f));
+            Quaternion pitch(0.0f, sinf(eyr * 0.5f), 0.0f, cosf(eyr * 0.5f));
+            Quaternion yaw(0.0f, 0.0f, sinf(ezr * 0.5f), cosf(ezr * 0.5f));
             
-            // Order: y * x * z
+            // Order: y * x * z means z->x->y
             *this = pitch * roll * yaw;
-            
-//            x = sinf(y/2)*sinf(z/2)*cosf(x/2)+cosf(y/2)*cosf(z/2)*sinf(x/2);
-//            y = sinf(y/2)*cosf(z/2)*cosf(x/2)+cosf(y/2)*sinf(z/2)*sinf(x/2);
-//            z = cosf(y/2)*sinf(z/2)*cosf(x/2)-sinf(y/2)*cosf(z/2)*sinf(x/2);
-//            w = cosf(y/2)*cosf(z/2)*cosf(x/2)-sinf(y/2)*sinf(z/2)*sinf(x/2);
-//            *this = Quaternion(x,y,z,w);
-
+        }
+        
+        Quaternion &operator=(const Quaternion &q) {
+            x = q.x;
+            y = q.y;
+            z = q.z;
+            w = q.w;
+            return *this;
         }
         
         Quaternion operator*(const Quaternion &q) const {
@@ -369,9 +385,9 @@ namespace Spore3D {
         Vec3 eulerAngle() const {
             Vec3 re(math::NO_INIT);
             
-            re.y = atan2f(x*z + w*y, 0.5 - (x*x + y*y));
-            re.x = asinf(-2 * (y*z - w*x));
-            re.z = atan2f(x*y + w*z, 0.5 - (x*x + z*z));
+            re.y = radToDeg(atan2f(x*z + w*y, 0.5f - (x*x + y*y)));
+            re.x = radToDeg(asinf(-2.0f * (y*z - w*x)));
+            re.z = radToDeg(atan2f(x*y + w*z, 0.5f - (x*x + z*z)));
             
             return re;
         }
@@ -390,7 +406,7 @@ namespace Spore3D {
             }
             
             float k0 = 1.0f - t, k1 = t;
-            if (1.0f - cosOmega > 0.001) {
+            if (1.0f - cosOmega > 0.001f) {
                 float sinOmega = sqrtf(1.0f - cosOmega * cosOmega);
                 float omega = atan2f(sinOmega, cosOmega);
                 float invSinOmega =  1.0f / sinOmega;
@@ -406,7 +422,7 @@ namespace Spore3D {
             Quaternion tq;
             float cosOmega = x * q.x + y * q.y + z * q.z + w * q.w;
             
-            if( cosOmega < 0 )
+            if( cosOmega < 0.0f )
                 tq = Quaternion(x + (-q.x - x) * t, y + (-q.y - y) * t,
                                 z + (-q.z - z) * t, w + (-q.w - w) * t);
             else
@@ -414,7 +430,7 @@ namespace Spore3D {
                                 z + (q.z - z) * t, w + (q.w - w) * t);
             
             float len = sqrtf(tq.x * tq.x + tq.y * tq.y + tq.z * tq.z + tq.w * tq.w);
-            if (len > 0) {
+            if (len > 0.0f) {
                 float invLen = 1.0f / len;
                 return Quaternion(tq.x * invLen, tq.y * invLen, tq.z * invLen, tq.w * invLen);
             } else {
@@ -422,15 +438,35 @@ namespace Spore3D {
             }
         }
         
+        float module() const {
+            return sqrtf(w*w + x*x + y*y + z*z);
+        }
+        
+        Quaternion &conjugated() {
+            x = -x;
+            y = -y;
+            z = -z;
+            return *this;
+        }
+        
         Quaternion conjugate() const {
-            Quaternion re;
-            
-            re.w = w;
-            re.x = -x;
-            re.y = -y;
-            re.z = -z;
-            
-            return re;
+            Quaternion re(*this);
+            return re.conjugated();
+        }
+        
+        Quaternion &inversed() {
+            float im = 1.0f/module();
+            conjugated();
+            x *= im;
+            y *= im;
+            z *= im;
+            w *= im;
+            return *this;
+        }
+        
+        Quaternion inverse() const {
+            Quaternion re(*this);
+            return re.inversed();
         }
         
         friend std::ostream &operator << (std::ostream &out, const Quaternion &q) {
@@ -450,10 +486,10 @@ namespace Spore3D {
         };
         
         Mat4() {
-            e[0][0] = 1; e[1][0] = 0; e[2][0] = 0; e[3][0] = 0;
-            e[0][1] = 0; e[1][1] = 1; e[2][1] = 0; e[3][1] = 0;
-            e[0][2] = 0; e[1][2] = 0; e[2][2] = 1; e[3][2] = 0;
-            e[0][3] = 0; e[1][3] = 0; e[2][3] = 0; e[3][3] = 1;
+            e[0][0] = 1.0f; e[1][0] = 0.0f; e[2][0] = 0.0f; e[3][0] = 0.0f;
+            e[0][1] = 0.0f; e[1][1] = 1.0f; e[2][1] = 0.0f; e[3][1] = 0.0f;
+            e[0][2] = 0.0f; e[1][2] = 0.0f; e[2][2] = 1.0f; e[3][2] = 0.0f;
+            e[0][3] = 0.0f; e[1][3] = 0.0f; e[2][3] = 0.0f; e[3][3] = 1.0f;
         }
         
         explicit Mat4(math::NoInitHint) {}
@@ -472,14 +508,14 @@ namespace Spore3D {
             float yy = q.y * y2,  yz = q.y * z2,  zz = q.z * z2;
             float wx = q.w * x2,  wy = q.w * y2,  wz = q.w * z2;
             
-            e[0][0] = 1 - (yy + zz);  e[1][0] = xy - wz;
-            e[2][0] = xz + wy;        e[3][0] = 0;
-            e[0][1] = xy + wz;        e[1][1] = 1 - (xx + zz);
-            e[2][1] = yz - wx;        e[3][1] = 0;
+            e[0][0] = 1.0f - (yy + zz);  e[1][0] = xy - wz;
+            e[2][0] = xz + wy;        e[3][0] = 0.0f;
+            e[0][1] = xy + wz;        e[1][1] = 1.0f - (xx + zz);
+            e[2][1] = yz - wx;        e[3][1] = 0.0f;
             e[0][2] = xz - wy;        e[1][2] = yz + wx;
-            e[2][2] = 1 - (xx + yy);  e[3][2] = 0;
-            e[0][3] = 0;              e[1][3] = 0;
-            e[2][3] = 0;              e[3][3] = 1;
+            e[2][2] = 1.0f - (xx + yy);  e[3][2] = 0.0f;
+            e[0][3] = 0.0f;              e[1][3] = 0.0f;
+            e[2][3] = 0.0f;              e[3][3] = 1.0f;
         }
         
         Mat4 operator+(const Mat4 &m) const {
@@ -611,21 +647,22 @@ namespace Spore3D {
         }
         
         static Mat4 RotMat(Vec3 axis, const float angle) {
-            axis *= sinf(angle * 0.5);
-            return Mat4(Quaternion(axis.x, axis.y, axis.z, cosf(angle * 0.5f)));
+            float rad = degToRad(angle);
+            axis *= sinf(rad * 0.5f);
+            return Mat4(Quaternion(axis.x, axis.y, axis.z, cosf(rad * 0.5f)));
         }
         
         static Mat4 PerspectiveMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
             Mat4 rm;
             
-            rm.s[0] = -2 * near / (right - left);
-            rm.s[5] = -2 * near / (top - bottom);
+            rm.s[0] = -2.0f * near / (right - left);
+            rm.s[5] = -2.0f * near / (top - bottom);
             rm.s[8] = (right + left) / (right - left);
             rm.s[9] = (top + bottom) / (top - bottom);
             rm.s[10] = (far + near) / (far - near);
-            rm.s[11] = -1;
-            rm.s[14] = -2 * far * near / (far - near);
-            rm.s[15] = 0;
+            rm.s[11] = -1.0f;
+            rm.s[14] = -2.0f * far * near / (far - near);
+            rm.s[15] = 0.0f;
             
             return rm;
         }
@@ -633,9 +670,9 @@ namespace Spore3D {
         static Mat4 OrthoMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
             Mat4 rm;
             
-            rm.s[0] = 2 / (right - left);
-            rm.s[5] = 2 / (top - bottom);
-            rm.s[10] = -2 / (far - near);
+            rm.s[0] = 2.0f / (right - left);
+            rm.s[5] = 2.0f / (top - bottom);
+            rm.s[10] = -2.0f / (far - near);
             rm.s[12] = -(right + left) / (right - left);
             rm.s[13] = -(top + bottom) / (top - bottom);
             rm.s[14] = -(far + near) / (far - near);
@@ -719,6 +756,61 @@ namespace Spore3D {
                 out<<" |"<<std::endl;
             }
             return out;
+        }
+        
+        Quaternion getQuaternion() {
+            Quaternion ret(math::NO_INIT);
+            
+            float fourWSquaredMinus1 = e[0][0] + e[1][1] + e[2][2];
+            float fourXSquaredMinus1 = e[0][0] - e[1][1] - e[2][2];
+            float fourYSquaredMinus1 = e[1][1] - e[0][0] - e[2][2];
+            float fourZSquaredMinus1 = e[2][2] - e[0][0] - e[1][1];
+            uint32 biggestIndex = 0;
+            float fourBiggestSquaredMinus1 = fourWSquaredMinus1;
+            if (fourXSquaredMinus1 > fourBiggestSquaredMinus1) {
+                fourBiggestSquaredMinus1 = fourXSquaredMinus1;
+                biggestIndex = 1;
+            }
+            if (fourYSquaredMinus1 > fourBiggestSquaredMinus1) {
+                fourBiggestSquaredMinus1 = fourYSquaredMinus1;
+                biggestIndex = 2;
+            }
+            if (fourZSquaredMinus1 > fourBiggestSquaredMinus1) {
+                fourBiggestSquaredMinus1 = fourZSquaredMinus1;
+                biggestIndex = 3;
+            }
+            
+            float biggestVal = sqrtf(fourBiggestSquaredMinus1 + 1.0f) * 0.5f;
+            float mult = 0.25f / biggestVal;
+            
+            switch (biggestIndex) {
+                case 0:
+                    ret.w = biggestVal;
+                    ret.x = (e[1][2] - e[2][1]) * mult;
+                    ret.y = (e[2][0] - e[0][2]) * mult;
+                    ret.z = (e[0][1] - e[1][0]) * mult;
+                    break;
+                case 1:
+                    ret.x = biggestVal;
+                    ret.w = (e[1][2] - e[2][1]) * mult;
+                    ret.y = (e[0][1] + e[1][0]) * mult;
+                    ret.z = (e[2][0] + e[0][2]) * mult;
+                    break;
+                case 2:
+                    ret.y = biggestVal;
+                    ret.w = (e[2][0] - e[0][2]) * mult;
+                    ret.x = (e[0][1] + e[1][0]) * mult;
+                    ret.z = (e[1][2] + e[2][1]) * mult;
+                    break;
+                case 3:
+                    ret.z = biggestVal;
+                    ret.w = (e[0][1] - e[1][0]) * mult;
+                    ret.x = (e[2][0] + e[0][2]) * mult;
+                    ret.y = (e[1][2] + e[2][1]) * mult;
+                    break;
+            }
+            
+            return ret;
         }
         
     };

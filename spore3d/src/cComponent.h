@@ -32,7 +32,7 @@ namespace Spore3D {
     class Transform;
     class ObjectManager;
     
-    static const std::string COMPONENT_TYPE_NAME = "Component";
+    const std::string COMPONENT_TYPE_NAME = "Component";
     
     struct ComponentTypeInfo{
         CreationMethod      creationMethod;
@@ -107,6 +107,7 @@ namespace Spore3D {
         
     private:
         static CoreObject *_alloc_obj(const std::string&);
+
     };
     
 }

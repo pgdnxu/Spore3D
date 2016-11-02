@@ -99,6 +99,8 @@ namespace Spore3D {
         
         virtual void deinit(void) override;
         
+        static GameObject *Find(const std::string&);
+        
         Transform *transform;
         
     protected:

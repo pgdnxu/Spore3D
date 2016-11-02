@@ -69,6 +69,9 @@ namespace Spore3D {
         Hash *m_InstanceID = nullptr;
         
         static uint32 _InstanceNumber;
+        
+        CoreObject(const CoreObject&);
+        CoreObject &operator=(const CoreObject&);
     };
     
     typedef CoreObject* (*CreationMethod)(const std::string &);

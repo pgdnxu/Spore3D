@@ -107,4 +107,8 @@ namespace Spore3D {
             transform->getComponentsInParent(typeName, componentList);
         }
     }
+    
+    GameObject *GameObject::Find(const std::string&) {
+        return nullptr;
+    }
 }

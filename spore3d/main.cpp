@@ -50,6 +50,7 @@ void transformTest() {
     ObjectManager::getInstance()->init();
     GameObject *go1 = new GameObject("go1");
     GameObject *go2 = new GameObject("go2");
+    GameObject *go3 = new GameObject("go3");
     
     //--------------------------------------------
     
@@ -65,28 +66,57 @@ void transformTest() {
         return;
     }
     
-    t1->setPosition(Vec3(10, 10, 0));
+    Transform *t3 = go3->getComponent<Transform>();
+    if (nullptr == t3) {
+        Debug::err("go3 has no transform.");
+        return;
+    }
+    
+//    t1->setPosition(Vec3(10, 10, 0));
     t1->setLocalPosition(Vec3(10, 10, 0));
     
-    t2->setPosition(Vec3(20, 20, 0));
+//    t2->setPosition(Vec3(20, 20, 0));
     t2->setLocalPosition(Vec3(20, 20, 0));
     
-    t2->setRotation(Quaternion::eulerAngle(0, 0, degToRad(90)));
-    t1->setRotation(Quaternion::eulerAngle(0, 0, 0));
-    cout<<t1->getRotation()<<endl;
+    t2->setLocalRotation(Quaternion(0, 0, 90));
+//    t1->setRotation(Quaternion::eulerAngle(0, 0, 0));
     
-    cout<<t2->getWorldToLocalMatrix()<<endl;
+//    cout<<Quaternion::eulerAngle(degToRad(33), degToRad(44), degToRad(55))<<endl;
     
-    t1->setParent(t2, true);
+//    cout<<t1->getRotation()<<endl;
     
-    cout<<t1->getPosition()<<endl;
-    cout<<t1->getLocalPosition()<<endl;
-    cout<<t2->getRotation()<<endl;
-    cout<<t1->getLocalRotation()<<endl;
-    cout<<t1->getRotation()<<endl;
+//    cout<<t2->getWorldToLocalMatrix()<<endl;
+//    cout<<t2->getLocalToWorldMatrix()<<endl;
     
+//    t1->setParent(t2, true);
+    t1->setLocalRotation(Quaternion(10, 20, 30));
+    t1->setParent(t2);
+    
+    t3->setLocalPosition(Vec3(15.234, 13, 11));
+    t3->setLocalRotation(Quaternion(10, 20, 30));
+    t3->setParent(t1, false);
+    
+//    cout<<t3->getLocalRotation()<<endl;
+    t3->rotate(Vec3(10, 10, 10), Space::World);
+    t3->translate(Vec3(12.3,34.5,-20), Space::World);
+    t3->rotate(Vec3(1,2,3), 25, Space::World);
+//    cout<<t3->getLocalPosition()<<endl;
+//    t3->translate(Vec3(1,1,1), Space::World);
+    
+//    cout<<t1->getPosition()<<endl;
+//    cout<<t1->getLocalPosition()<<endl;
+//    cout<<t2->getRotation()<<endl;
+//    cout<<t1->getLocalRotation()<<endl;
+//    cout<<t1->getRotation()<<endl;
+    
+    cout<<t3->getPosition()<<endl;
+    cout<<t3->getLocalPosition()<<endl;
+//    cout<<t1->getRotation()<<endl;
+    cout<<t3->getRotation()<<endl;
+    cout<<t3->getLocalRotation()<<endl;
     
     //--------------------------------------------
+    
     CoreObject::Destory(go1);
     CoreObject::Destory(go2);
     DestoryPool::getInstance()->destoryAll();
@@ -130,7 +160,7 @@ void cloneTest() {
         
         MeshFilter *nmf = CoreObject::Instantiate<MeshFilter>(go2->getComponent<MeshFilter>());
         
-        t->setRotation(Quaternion(degToRad(90), 0, 0));
+//        t->setRotation(Quaternion(degToRad(90), 0, 0));
         cout<<t->getRight()<<endl;
         cout<<t->getUp()<<endl;
         cout<<t->getForward()<<endl;
@@ -216,8 +246,8 @@ void ObjMeshLoaderTest() {
 int main(void)
 {
     
-//    transformTest();
-    cloneTest();
+    transformTest();
+//    cloneTest();
 //    ObjectManagerTest();
 //    QuaternionTest();
 //    PrTest();

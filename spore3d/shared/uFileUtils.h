@@ -31,7 +31,7 @@ namespace Spore3D {
     
     struct _ReadFileInfo {
         char *buffer;
-        uint32 fileLen;
+        std::size_t fileLen;
         
         _ReadFileInfo():buffer(nullptr), fileLen(0) {}
         
@@ -111,24 +111,21 @@ namespace Spore3D {
             
             FILE *fd = fopen(filePath, mode);
             if (nullptr == fd) {
-                //TODO: log error
                 Debug::err(std::string("open file: ").append(filePath).append(" failed."));
                 return NullRFI;
             }
             
-            unsigned int flen = _getFileLength(fd);
+            std::size_t flen = _getFileLength(fd);
             
 //            assert(flen < 10 * 1024 * 1024);
             
             char *buffer = new char[flen];
             if (nullptr == buffer) {
-                //TODO: log error
                 Debug::err(std::string("file: ").append(filePath).append(" size to large. out of memory."));
                 return NullRFI;
             }
             
             if (flen != fread(buffer, 1, flen, fd)) {
-                //TODO: log error
                 Debug::err(std::string("read file: ").append(filePath).append(" failed."));
                 delete [] buffer;
                 return NullRFI;
