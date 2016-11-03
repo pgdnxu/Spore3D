@@ -42,22 +42,28 @@ namespace Spore3D {
         
     }
     
-    static inline float degToRad(float f) {
+    static inline float degToRad(const float f) {
         // f * PI / 180
         return f * 0.017453293f;
     }
     
-    static inline float radToDeg(float f) {
+    static inline float radToDeg(const float f) {
         // f * 180 / PI
         return f * 57.29577951f;
     }
     
-    static inline float clamp(float f, float min, float max) {
+    static inline float clamp(const float f, const float min, const float max) {
         return f < min ? min : (f > max ? max : f);
     }
     
-    static inline float fmin(float a, float b) {
+    static inline float fmin(const float a, const float b) {
         return a > b ? b : a;
+    }
+    
+    static inline float degMap(float f) {
+        int32 tf = int32(f);
+        f -= tf - (tf % 360);
+        return f > 180.f ? -(360.f - f) : f;
     }
     
     static inline float fmax(float a, float b) {
@@ -173,7 +179,7 @@ namespace Spore3D {
         }
         
         friend std::ostream &operator << (std::ostream &out, const Vec3 &v) {
-            out<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<")";
+            out<<std::setprecision(5)<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<")";
             return out;
         }
         
@@ -279,7 +285,7 @@ namespace Spore3D {
         }
         
         friend std::ostream &operator << (std::ostream &out, const Vec2 &v) {
-            out<<"Vec2("<<v.x<<", "<<v.y<<")";
+            out<<std::setprecision(5)<<"Vec2("<<v.x<<", "<<v.y<<")";
             return out;
         }
     };
@@ -326,7 +332,7 @@ namespace Spore3D {
         }
         
         friend std::ostream &operator << (std::ostream &out, const Vec4 &v) {
-            out<<std::setprecision(4)<<"Vec3("<<v.x<<", "<<v.y<<", "<<v.z<<", "<<v.w<<")";
+            out<<std::setprecision(5)<<"Vec4("<<v.x<<", "<<v.y<<", "<<v.z<<", "<<v.w<<")";
             return out;
         }
     };
@@ -470,7 +476,7 @@ namespace Spore3D {
         }
         
         friend std::ostream &operator << (std::ostream &out, const Quaternion &q) {
-            out<<"Quaternion("<<q.x<<", "<<q.y<<", "<<q.z<<", "<<q.w<<")";
+            out<<std::setprecision(5)<<"Quaternion("<<q.x<<", "<<q.y<<", "<<q.z<<", "<<q.w<<")";
             return out;
         }
     };
@@ -500,6 +506,13 @@ namespace Spore3D {
                     e[i][j] = fa[i * 4 + j];
                 }
             }
+        }
+        
+        Mat4(const Vec3 &col1, const Vec3 &col2, const Vec3 &col3) {
+            e[0][0] = col1.x; e[1][0] = col2.x; e[2][0] = col3.x; e[3][0] = 0.0f;
+            e[0][1] = col1.y; e[1][1] = col2.y; e[2][1] = col3.y; e[3][1] = 0.0f;
+            e[0][2] = col1.z; e[1][2] = col2.z; e[2][2] = col3.z; e[3][2] = 0.0f;
+            e[0][3] = 0.0f;   e[1][3] = 0.0f;   e[2][3] = 0.0f;   e[3][3] = 1.0f;
         }
         
         Mat4(const Quaternion &q) {
@@ -752,7 +765,7 @@ namespace Spore3D {
         friend std::ostream &operator << (std::ostream &out, const Mat4 &mat) {
             for (int i = 0; i < 4; i++) {
                 out<<"| ";
-                out<<std::setprecision(4)<<std::setiosflags(std::ios::fixed)<<mat.e[0][i]<<" "<<mat.e[1][i]<<" "<<mat.e[2][i]<<" "<<mat.e[3][i];
+                out<<std::setprecision(5)<<std::setiosflags(std::ios::fixed)<<mat.e[0][i]<<" "<<mat.e[1][i]<<" "<<mat.e[2][i]<<" "<<mat.e[3][i];
                 out<<" |"<<std::endl;
             }
             return out;

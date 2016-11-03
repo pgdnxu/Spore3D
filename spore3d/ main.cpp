@@ -44,6 +44,87 @@
 #include "cCamera.h"
 #include "cScene.h"
 
+void transformTest2() {
+    using namespace std;
+    using namespace Spore3D;
+    ObjectManager::getInstance()->init();
+    GameObject *go1 = new GameObject("go1");
+    GameObject *go2 = new GameObject("go2");
+    GameObject *go3 = new GameObject("go3");
+    Transform *t1 = go1->getComponent<Transform>();
+    if (nullptr == t1) {
+        Debug::err("go1 has no transform.");
+        return;
+    }
+    
+    Transform *t2 = go2->getComponent<Transform>();
+    if (nullptr == t2) {
+        Debug::err("go2 has no transform.");
+        return;
+    }
+    
+    Transform *t3 = go3->getComponent<Transform>();
+    if (nullptr == t3) {
+        Debug::err("go3 has no transform.");
+        return;
+    }
+    
+    //=======================================================
+    
+    t1->setLocalPosition(Vec3(1,1,1));
+    t2->setLocalPosition(Vec3(1,2,1));
+    t3->setLocalPosition(Vec3(1,1,3));
+    
+    t2->setParent(t1, false);
+    t3->setParent(t2, false);
+    
+    t3->setLocalPosition(Vec3(2,3,4));
+    t3->setLocalRotation(Quaternion(11, 22, 33));
+    t1->setRotation(Quaternion(10, 20, 30));
+    t3->setRotation(Quaternion(30, 20, 10));
+    t2->setLocalRotation(Quaternion(10, 20, 30));
+    t1->translate(Vec3(1,2,3), t3);
+    
+    cout<<t3->getRotation()<<endl;
+    cout<<t3->getLocalRotation()<<endl;
+    t1->rotate(Vec3(3,4,5), 43, Space::World);
+    t3->rotate(Vec3(3,4,5), 43, Space::Self);
+    
+    cout<<t3->getRotation()<<endl;
+    cout<<t3->getLocalRotation()<<endl;
+    
+    t2->rotate(Vec3(23,1,-0.32), 879.34f, Space::World);
+    cout<<t2->getRotation()<<endl;
+    cout<<t3->getRotation()<<endl;
+    cout<<t3->getLocalRotation()<<endl;
+    
+    t2->setPosition(Vec3(1,2,3));
+    cout<<t2->getLocalPosition()<<endl;
+    
+    cout<<t2->transformDirection(Vec3(1,2,3))<<endl;
+    
+    t3->rotateAround(Vec3(12,32,45), Vec3(23,4,1), 123);
+    
+    t3->lookAt(Vec3(24, 5, 23), Vec3(0, 1, 0));
+    
+    cout<<t3->getLocalToWorldMatrix()<<endl;
+    cout<<t3->getWorldToLocalMatrix()<<endl;
+    cout<<t3->getPosition()<<endl;
+    cout<<t3->getLocalPosition()<<endl;
+    cout<<t3->getRotation()<<endl;
+    cout<<t3->getLocalRotation()<<endl;
+//    
+//    cout<<t3->getUp()<<endl;
+//    cout<<t3->getRight()<<endl;
+//    cout<<t3->getForward()<<endl;
+    
+    //=======================================================
+    CoreObject::Destory(go1);
+    CoreObject::Destory(go2);
+    CoreObject::Destory(go3);
+    DestoryPool::getInstance()->destoryAll();
+}
+
 void transformTest() {
     using namespace std;
     using namespace Spore3D;
@@ -99,7 +180,10 @@ void transformTest() {
 //    cout<<t3->getLocalRotation()<<endl;
     t3->rotate(Vec3(10, 10, 10), Space::World);
     t3->translate(Vec3(12.3,34.5,-20), Space::World);
-    t3->rotate(Vec3(1,2,3), 25, Space::World);
+    t3->rotate(Vec3(1,2,3), -785, Space::World);
+    t3->rotate(Vec3(1,2,3), -785, Space::World);
+    
+    t3->rotateAround(Vec3(23, -12.3, 2), Vec3(2, 3, 0), 10);
 //    cout<<t3->getLocalPosition()<<endl;
 //    t3->translate(Vec3(1,1,1), Space::World);
     
@@ -119,6 +203,7 @@ void transformTest() {
     
     CoreObject::Destory(go1);
     CoreObject::Destory(go2);
+    CoreObject::Destory(go3);
     DestoryPool::getInstance()->destoryAll();
 }
 
@@ -246,7 +331,8 @@ void ObjMeshLoaderTest() {
 int main(void)
 {
     
-    transformTest();
+    transformTest2();
+//    transformTest();
 //    cloneTest();
 //    ObjectManagerTest();
 //    QuaternionTest();

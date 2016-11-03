@@ -56,7 +56,7 @@ namespace Spore3D {
         virtual void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const override;
         virtual void getComponentsInParent(const std::string&, std::vector<Component*>&) const override;
         
-        void setParent(Transform *parent) { setParent(parent, false); }
+        void setParent(Transform *parent) { setParent(parent, true); }
         void setParent(Transform *parent, bool worldPositionStays);
         Transform *getParent() const { return m_Parent; }
         
@@ -92,7 +92,7 @@ namespace Spore3D {
         Transform *find(const std::string&);
         Transform *getChild(const uint32);
         
-        bool hasChanged() { return m_PositionHasChanged && m_RotationHasChanged; }
+        bool hasChanged() const { return m_PositionHasChanged || m_RotationHasChanged; }
         
         void translate(const Vec3 &translation, Space relativeTo = Space::Self);
         void translate(const float x, const float y, const float z, Space relativeTo = Space::Self);
@@ -104,7 +104,10 @@ namespace Spore3D {
         void rotate(const Vec3 &axis, const float angle, Space relativeTo = Space::Self);
         
         void rotateAround(const Vec3 &point, const Vec3 &axis, const float angle);
+        
+        void lookAt(const Transform *target);
         void lookAt(const Transform *target, const Vec3 &worldUp = Vec3::up);
+        void lookAt(const Vec3 &worldPosition);
         void lookAt(const Vec3 &worldPosition, const Vec3 &worldUp = Vec3::up);
         
     protected:
@@ -126,6 +129,9 @@ namespace Spore3D {
         Vec3 m_LocalPosition;
         Quaternion m_LocalRotation;
         Vec3 m_LocalEulerAngle;
+        
+        void positionChanged(void);
+        void rotationChanged(void);
         
         static CoreObject *_alloc_obj(const std::string&);
         
