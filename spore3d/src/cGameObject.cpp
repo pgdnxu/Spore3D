@@ -23,8 +23,16 @@
 #include "uDebug.h"
 
 namespace Spore3D {
+
+    GameObject::GameObject(const std::string &name, std::vector<Component*> &componentList)
+    : CoreObject(name), transform(nullptr), m_CurrScene(nullptr) {
+        for (const auto &component : componentList) {
+            addComponent(component);
+        }
+    }
     
-    GameObject::GameObject(const std::string &name, bool isRaw) : CoreObject(name), transform(nullptr) {
+    GameObject::GameObject(const std::string &name, bool isRaw)
+    : CoreObject(name), transform(nullptr), m_CurrScene(nullptr) {
         ObjectManager::getInstance()->addGameObject(this);
         if (!isRaw)
             this->transform = static_cast<Transform*>(this->addComponent<Transform>());
@@ -110,5 +118,14 @@ namespace Spore3D {
     
     GameObject *GameObject::Find(const std::string&) {
         return nullptr;
+    }
+    
+    bool GameObject::isActiveInHierarchy(void) const {
+        if (nullptr == transform) return false;
+        Transform *parent = transform->getParent();
+        if (nullptr != parent && nullptr != parent->gameObject) {
+            return m_ActiveSelf && parent->gameObject->isActiveInHierarchy();
+        }
+        return m_ActiveSelf;
     }
 }

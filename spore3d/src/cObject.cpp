@@ -23,6 +23,8 @@
 
 namespace Spore3D {
     
+    const std::string CoreObject::NO_NAME = "no_name";
+    
     uint32 CoreObject::_InstanceNumber = 0;
     
     void CoreObject::deinit(void) {
@@ -42,12 +44,19 @@ namespace Spore3D {
         }
     }
     
+    void CoreObject::DontDestroyOnLoad(CoreObject *cObject) {
+        if (nullptr != cObject) {
+            cObject->m_DontDestroyOnLoad = true;
+        }
+    }
+    
     CoreObject::~CoreObject() {
         delete m_InstanceID;
         m_InstanceID = nullptr;
     }
     
-    CoreObject::CoreObject(const std::string &name) : m_Name(name) {
+    CoreObject::CoreObject(const std::string &name)
+    : m_Name(name), m_DontDestroyOnLoad(false) {
         if (nullptr == m_InstanceID) {
             std::string tname(m_Name);
             m_InstanceID = new Hash(tname.append("_").append(std::to_string(_InstanceNumber++)));

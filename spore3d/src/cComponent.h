@@ -48,6 +48,7 @@ namespace Spore3D {
         
         static void registerComponentTypes(void);
         static ComponentTypeId TypeId(void);
+        
         ComponentTypeId getTypeId(void) { return m_ComponentTypeId; }
         
         virtual void deinit(void) override;

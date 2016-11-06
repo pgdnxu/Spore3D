@@ -40,35 +40,37 @@ namespace Spore3D {
             NO_INIT
         };
         
+        static inline float degToRad(const float f) {
+            // f * PI / 180
+            return f * 0.017453293f;
+        }
+        
+        static inline float radToDeg(const float f) {
+            // f * 180 / PI
+            return f * 57.29577951f;
+        }
+        
+        static inline float clamp(const float f, const float min, const float max) {
+            return f < min ? min : (f > max ? max : f);
+        }
+        
+        static inline float fmin(const float a, const float b) {
+            return a > b ? b : a;
+        }
+        
+        static inline float fmax(const float a, const float b) {
+            return a > b ? a : b;
+        }
+        
+        static inline float degMap(float f) {
+            int32 tf = int32(f);
+            f -= tf - (tf % 360);
+            return f > 180.f ? -(360.f - f) : f;
+        }
+        
     }
     
-    static inline float degToRad(const float f) {
-        // f * PI / 180
-        return f * 0.017453293f;
-    }
     
-    static inline float radToDeg(const float f) {
-        // f * 180 / PI
-        return f * 57.29577951f;
-    }
-    
-    static inline float clamp(const float f, const float min, const float max) {
-        return f < min ? min : (f > max ? max : f);
-    }
-    
-    static inline float fmin(const float a, const float b) {
-        return a > b ? b : a;
-    }
-    
-    static inline float degMap(float f) {
-        int32 tf = int32(f);
-        f -= tf - (tf % 360);
-        return f > 180.f ? -(360.f - f) : f;
-    }
-    
-    static inline float fmax(float a, float b) {
-        return a > b ? a : b;
-    }
     
     
     //Vector
@@ -354,9 +356,9 @@ namespace Spore3D {
         Quaternion(const Quaternion &q) : x(q.x), y(q.y), z(q.z), w(q.w) {}
         
         Quaternion(const float eulerX, const float eulerY, const float eulerZ) {
-            float exr = degToRad(eulerX);
-            float eyr = degToRad(eulerY);
-            float ezr = degToRad(eulerZ);
+            float exr = math::degToRad(eulerX);
+            float eyr = math::degToRad(eulerY);
+            float ezr = math::degToRad(eulerZ);
             Quaternion roll(sinf(exr * 0.5f), 0.0f, 0.0f, cosf(exr * 0.5f));
             Quaternion pitch(0.0f, sinf(eyr * 0.5f), 0.0f, cosf(eyr * 0.5f));
             Quaternion yaw(0.0f, 0.0f, sinf(ezr * 0.5f), cosf(ezr * 0.5f));
@@ -391,9 +393,9 @@ namespace Spore3D {
         Vec3 eulerAngle() const {
             Vec3 re(math::NO_INIT);
             
-            re.y = radToDeg(atan2f(x*z + w*y, 0.5f - (x*x + y*y)));
-            re.x = radToDeg(asinf(-2.0f * (y*z - w*x)));
-            re.z = radToDeg(atan2f(x*y + w*z, 0.5f - (x*x + z*z)));
+            re.y = math::radToDeg(atan2f(x*z + w*y, 0.5f - (x*x + y*y)));
+            re.x = math::radToDeg(asinf(-2.0f * (y*z - w*x)));
+            re.z = math::radToDeg(atan2f(x*y + w*z, 0.5f - (x*x + z*z)));
             
             return re;
         }
@@ -660,7 +662,7 @@ namespace Spore3D {
         }
         
         static Mat4 RotMat(Vec3 axis, const float angle) {
-            float rad = degToRad(angle);
+            float rad = math::degToRad(angle);
             axis *= sinf(rad * 0.5f);
             return Mat4(Quaternion(axis.x, axis.y, axis.z, cosf(rad * 0.5f)));
         }

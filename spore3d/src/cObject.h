@@ -33,6 +33,9 @@ namespace Spore3D {
     
     class CoreObject {
     public:
+        
+        static const std::string NO_NAME;
+        
         CObjectId getInstanceId(void) const { return m_InstanceID->get(); }
         std::string toString(void) const { return m_Name; }
         
@@ -43,7 +46,8 @@ namespace Spore3D {
         template<typename T> static T *Instantiate(T *object);
         static CoreObject *Instantiate(CoreObject*);
         static void Destory(CoreObject*);
-    
+        static void DontDestroyOnLoad(CoreObject*);
+        
         bool operator==(const CoreObject *object) const {
             if (nullptr == object) return false;
             return this->getInstanceId() == object->getInstanceId();
@@ -60,6 +64,8 @@ namespace Spore3D {
             return (*this != &object);
         }
         
+        bool isDontDestroyOnLoad(void) const { return m_DontDestroyOnLoad; }
+        
     protected:
         virtual void deinit(void);
         virtual CoreObject *clone(void) = 0;
@@ -72,6 +78,8 @@ namespace Spore3D {
         
         CoreObject(const CoreObject&);
         CoreObject &operator=(const CoreObject&);
+        
+        bool m_DontDestroyOnLoad;
     };
     
     typedef CoreObject* (*CreationMethod)(const std::string &);

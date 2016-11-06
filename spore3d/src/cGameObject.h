@@ -30,12 +30,14 @@ namespace Spore3D {
     class Component;
     class Transform;
     class MeshFilter;
+    class Scene;
     
     class GameObject : public CoreObject {
         friend ObjectManager;
         friend Component;
         friend Transform;
         friend MeshFilter;
+        friend Scene;
     public:
         template<typename T>
         T *addComponent(void) {
@@ -48,6 +50,10 @@ namespace Spore3D {
         
         Component *addComponent(const ComponentTypeId typeId) {
             return ObjectManager::getInstance()->addComponentWithComponentTypeId(getInstanceId(), typeId);
+        }
+        
+        bool addComponent(Component *component) {
+            return ObjectManager::getInstance()->addComponentWithComponent(getInstanceId(), component);
         }
         
         template<typename T>
@@ -95,7 +101,16 @@ namespace Spore3D {
         void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const;
         void getComponentsInParent(const std::string&, std::vector<Component*>&) const;
         
+        Scene *getScene(void) const { return m_CurrScene; };
+        
+        bool isActiveInHierarchy(void) const;
+        void setActiveSelf(bool active) { m_ActiveSelf = active; }
+        bool getActiveSelf(void) const { return m_ActiveSelf; }
+        
         GameObject(const std::string&, bool isRaw = false);
+        GameObject(const std::string&, std::vector<Component*>&);
+        
+        
         
         virtual void deinit(void) override;
         
@@ -110,6 +125,10 @@ namespace Spore3D {
         
     private:
         GameObject *_clone(void);
+        void setScene(Scene *scene) { m_CurrScene = scene; };
+        
+        Scene *m_CurrScene;
+        bool m_ActiveSelf;
     };
     
 }

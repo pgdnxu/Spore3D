@@ -86,7 +86,8 @@ namespace Spore3D {
             
             ObjMtlInfo *currOMI = nullptr;
             
-            std::vector<std::string>::iterator itline = lines.begin();
+//            std::vector<std::string>::iterator itline = lines.begin();
+            auto itline = lines.begin();
             for (;itline != lines.end(); itline++) {
                 std::string tLine = StringUtils::trimmed(*itline);
                 if (tLine[0] != '#') {

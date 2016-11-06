@@ -34,9 +34,9 @@ namespace Spore3D {
     struct ComponentTypeInfo;
     class CoreObject;
     class GameObject;
-    
+        
     typedef std::map<CObjectId, GameObject*> ObjectMap;
-    typedef std::map<ComponentTypeId, ComponentTypeInfo> ComponentTypeInfoMap;
+    typedef std::map<ComponentTypeId, ComponentTypeInfo*> ComponentTypeInfoMap;
     typedef std::map<CObjectId, std::vector<Component*>> ObjectComponentMap;
     typedef std::map<ComponentTypeId, ObjectComponentMap> ComponentMap;
     
@@ -69,7 +69,10 @@ namespace Spore3D {
         void addGameObject(GameObject*);
         void removeGameObject(const CObjectId);
         
+        Component *createComponent(const ComponentTypeId);
+        
         void init(void);
+        ~ObjectManager() { /* TODO : deinit! */ delete m_DB; }
     private:
         struct _ObjectCreate {
             
@@ -80,8 +83,6 @@ namespace Spore3D {
         
         ObjectManagerDB *m_DB;
         ObjectManager() : m_DB(nullptr) {};
-        
-        Component *createComponent(const ComponentTypeId);
         
         static void registerAllComponentTypes(void);
         

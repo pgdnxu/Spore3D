@@ -344,9 +344,9 @@ namespace Spore3D {
     }
     
     void Transform::rotate(const Vec3 &eulerAngles, Space relativeTo) {
-        float eax = degMap(eulerAngles.x);
-        float eay = degMap(eulerAngles.y);
-        float eaz = degMap(eulerAngles.z);
+        float eax = math::degMap(eulerAngles.x);
+        float eay = math::degMap(eulerAngles.y);
+        float eaz = math::degMap(eulerAngles.z);
         if (Space::Self == relativeTo) {
             setLocalRotation(Quaternion(eax, eay, eaz) * getLocalRotation());
         } else if (Space::World == relativeTo) {
@@ -365,7 +365,7 @@ namespace Spore3D {
     void Transform::rotate(const Vec3 &axis, const float angle, Space relativeTo) {
         Vec3 naxis(axis);
         naxis.normalize();
-        float ta = degMap(angle);
+        float ta = math::degMap(angle);
         if (Space::Self == relativeTo) {
             setLocalRotation((Mat4(getLocalRotation()) * Mat4::RotMat(naxis, ta)).getQuaternion());
         } else if (Space::World == relativeTo) {
@@ -379,7 +379,7 @@ namespace Spore3D {
     
     void Transform::rotateAround(const Vec3 &point, const Vec3 &axis, float angle) {
         Vec3 dir = getPosition() - point;
-        Vec3 newDir = Mat4::RotMat(axis.normalized(), degMap(angle)) * dir;
+        Vec3 newDir = Mat4::RotMat(axis.normalized(), math::degMap(angle)) * dir;
         rotate(axis, angle, Space::World);
         translate(newDir - dir, Space::World);
     }

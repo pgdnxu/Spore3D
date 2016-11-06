@@ -42,7 +42,10 @@
 #include "uDebug.h"
 #include "cMeshFilter.h"
 #include "cCamera.h"
+#include "cSceneManager.h"
 #include "cScene.h"
+#include "cColor.h"
+
 
 void transformTest2() {
     using namespace std;
@@ -290,10 +293,10 @@ void QuaternionTest() {
     using namespace std;
     using namespace Spore3D;
     
-    Quaternion a = Quaternion::eulerAngle(degToRad(10), degToRad(20), degToRad(30));
-    cout<<degToRad(10)<<", "<<degToRad(20)<<", "<<degToRad(30)<<endl;
-    Vec3 aa = a.eulerAngle();
-    cout<<aa.x<<", "<<aa.y<<", "<<aa.z<<endl;
+//    Quaternion a = Quaternion::eulerAngle(degToRad(10), degToRad(20), degToRad(30));
+//    cout<<degToRad(10)<<", "<<degToRad(20)<<", "<<degToRad(30)<<endl;
+//    Vec3 aa = a.eulerAngle();
+//    cout<<aa.x<<", "<<aa.y<<", "<<aa.z<<endl;
 }
 
 void PrTest() {
@@ -328,10 +331,22 @@ void ObjMeshLoaderTest() {
     Spore3D::Mesh::Destory(mesh);
 }
 
+void ColorTest() {
+    using namespace Spore3D;
+    using namespace std;
+    Color a(0.65,0.11,0.23);
+//    Color g = Color::HSVtoRGB(123, 0.3, 0.5);
+    Color g;
+    Color::RGBToHSV(a, g.r, g.g, g.b);
+    cout<<g.r<<"  "<<g.g<<"  "<<g.b<<endl;
+//    cout<<a.grayscale()<<endl;
+    
+}
+
 int main(void)
 {
-    
-    transformTest2();
+    ColorTest();
+//    transformTest2();
 //    transformTest();
 //    cloneTest();
 //    ObjectManagerTest();
@@ -339,7 +354,7 @@ int main(void)
 //    PrTest();
 //    ObjMtlTest();
 //    ObjMeshLoaderTest();
-        
+    
     Spore3D::PngData *pd = Spore3D::PngReader::read("/Users/shannonxu/Desktop/chr_sword/chr_sword.png");
     if (nullptr == pd) {
         return -1;

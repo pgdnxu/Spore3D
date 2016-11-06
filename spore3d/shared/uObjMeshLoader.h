@@ -51,13 +51,14 @@ namespace Spore3D {
             
             std::vector<std::string> lines;
             StringUtils::split(meshContent, '\n', lines);
-            std::vector<std::string>::iterator itline = lines.begin();
+//            std::vector<std::string>::iterator itline = lines.begin();
+            auto itline = lines.begin();
             
             uint32 vindex = 0;
             ObjMtlInfo *currObjMtlInfo = nullptr;
             
             for (; itline != lines.end(); itline++) {
-                Debug::log(*itline);
+//                Debug::log(*itline);
                 
                 std::string tLine = StringUtils::trimmed(*itline);
                 

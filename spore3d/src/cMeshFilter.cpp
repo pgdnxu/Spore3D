@@ -27,6 +27,10 @@
 
 namespace Spore3D {
     
+    CoreObject *MeshFilter::_alloc_obj(const std::string &name) {
+        return new MeshFilter(name);
+    }
+    
     void MeshFilter::registerComponentTypes(void) {
         ObjectManager::getInstance()->registerComponentType(MeshFilter::TypeId(), MeshFilter::_alloc_obj, nullptr, MESHFILTER_TYPE_NAME);
     }
@@ -71,10 +75,6 @@ namespace Spore3D {
     
     MeshFilter::~MeshFilter() {
         delete m_Mesh;
-    }
-    
-    CoreObject *MeshFilter::_alloc_obj(const std::string &name) {
-        return new MeshFilter(name);
     }
     
     Mesh *MeshFilter::getMesh(void) const {

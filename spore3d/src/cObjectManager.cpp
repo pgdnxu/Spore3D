@@ -25,6 +25,7 @@
 #include "cComponent.h"
 #include "cTransform.h"
 #include "cMeshFilter.h"
+#include "cCamera.h"
 
 namespace Spore3D {
     
@@ -60,9 +61,10 @@ namespace Spore3D {
     
     Component *ObjectManager::addComponentWithComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
         if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return nullptr;
-        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
+//        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
+        auto it = m_DB->mComponentTypeInfoMap.find(typeId);
         if (it == m_DB->mComponentTypeInfoMap.end()) return nullptr;
-        Component *cmp = static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
+        Component *cmp = static_cast<Component*>((*(it->second->creationMethod))(it->second->typeName));
         if (nullptr == cmp) return nullptr;
         cmp->gameObject = m_DB->mObjectMap[objectId];
         cmp->transform = cmp->gameObject->transform;
@@ -133,11 +135,18 @@ namespace Spore3D {
     }
     
     void ObjectManager::registerComponentType(const ComponentTypeId typeId, const CreationMethod creationMethod, const DestructionMethod destructionMethod, const std::string &typeName) {
-        ComponentTypeInfo &info = m_DB->mComponentTypeInfoMap[typeId];
-        info.creationMethod = creationMethod;
-        info.destructionMethod = destructionMethod;
-        info.typeId = typeId;
-        info.typeName = typeName;
+//        ComponentTypeInfo &info = m_DB->mComponentTypeInfoMap[typeId];
+//        info.creationMethod = creationMethod;
+//        info.destructionMethod = destructionMethod;
+//        info.typeId = typeId;
+//        info.typeName = typeName;
+        
+        ComponentTypeInfo *newComponentTypeInfo =new ComponentTypeInfo();
+        newComponentTypeInfo->creationMethod = creationMethod;
+        newComponentTypeInfo->destructionMethod = destructionMethod;
+        newComponentTypeInfo->typeId = typeId;
+        newComponentTypeInfo->typeName = typeName;
+        m_DB->mComponentTypeInfoMap[typeId] = newComponentTypeInfo;
         
     }
     
@@ -145,13 +154,15 @@ namespace Spore3D {
         Component::registerComponentTypes();
         Transform::registerComponentTypes();
         MeshFilter::registerComponentTypes();
+//        Camera::registerComponentTypes();
     }
     
     Component *ObjectManager::createComponent(const ComponentTypeId typeId) {
-        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
+//        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
+        auto it = m_DB->mComponentTypeInfoMap.find(typeId);
         if (it == m_DB->mComponentTypeInfoMap.end())
             return nullptr;
-        return static_cast<Component*>((*(it->second.creationMethod))(it->second.typeName));
+        return static_cast<Component*>((*(it->second->creationMethod))(it->second->typeName));
     }
     
 }

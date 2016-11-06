@@ -21,12 +21,33 @@
 #ifndef _cCamera_h_
 #define _cCamera_h_
 
+#include <vector>
+
 #include "cBehaviour.h"
+#include "uTypes.h"
 
 namespace Spore3D {
     
+    const std::string CAMERA_TYPE_NAME = "Camera";
+    
     class Camera : public Behaviour {
+    public:
+        static void registerComponentTypes(void);
+        static ComponentTypeId TypeId(void);
         
+        static std::vector<Camera*> allCameras(void);
+        static uint32 allCamerasCount(void);
+        //TODO : static Camera *current(void);
+        //TODO : static Gamera *main(void);
+        
+    protected:
+        Camera(const std::string&);
+        virtual ~Camera();
+        virtual Camera *clone(void) override;
+        virtual Camera *cloneFromGameObject(void) override;
+        
+    private:
+        static CoreObject *_alloc_obj(const std::string&);
     };
     
 }

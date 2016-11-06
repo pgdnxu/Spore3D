@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		57051DC11DB517EC0053A081 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57051DC01DB517EC0053A081 /* libpng16.a */; };
 		57051DC31DB51B090053A081 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 57051DC21DB51B090053A081 /* libz.1.dylib */; };
-		57106F4E1DA8DEE800365220 /*  main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57106F4D1DA8DEE800365220 /*  main.cpp */; };
 		57106F561DA8EABC00365220 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F551DA8EABC00365220 /* CoreVideo.framework */; };
 		57106F581DA8EAC800365220 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F571DA8EAC800365220 /* IOKit.framework */; };
 		57106F5A1DA8EAD100365220 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F591DA8EAD100365220 /* Cocoa.framework */; };
@@ -18,6 +17,10 @@
 		57106F601DA8EB0900365220 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57106F5F1DA8EB0900365220 /* libglfw3.a */; };
 		57106F631DA8F13B00365220 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 57106F621DA8F13A00365220 /* README.md */; };
 		571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571504AD1DC8652A005C8BEF /* uMath.cpp */; };
+		5725B6DC1DCF440D002B051A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57106F4D1DA8DEE800365220 /* main.cpp */; };
+		57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C371DCCB4E200491879 /* cSceneManager.cpp */; };
+		57585C3A1DCE3C5400491879 /* cCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C391DCE3C5400491879 /* cCamera.cpp */; };
+		57585C3D1DCEE83A00491879 /* cColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C3C1DCEE83A00491879 /* cColor.cpp */; };
 		575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FDC1DB623FE00E085EB /* cMesh.cpp */; };
 		575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FEF1DB9EE8B00E085EB /* cDestoryPool.cpp */; };
 		575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FF51DBA993200E085EB /* cMeshFilter.cpp */; };
@@ -45,7 +48,7 @@
 		57051DC01DB517EC0053A081 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../../../../usr/local/lib/libpng16.a; sourceTree = "<group>"; };
 		57051DC21DB51B090053A081 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		57106F4A1DA8DEE800365220 /* spore3d */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = spore3d; sourceTree = BUILT_PRODUCTS_DIR; };
-		57106F4D1DA8DEE800365220 /*  main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = " main.cpp"; sourceTree = "<group>"; };
+		57106F4D1DA8DEE800365220 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		57106F551DA8EABC00365220 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		57106F571DA8EAC800365220 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		57106F591DA8EAD100365220 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -56,6 +59,10 @@
 		57106F621DA8F13A00365220 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		57106F641DA8F3FE00365220 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		571504AD1DC8652A005C8BEF /* uMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uMath.cpp; sourceTree = "<group>"; };
+		57585C371DCCB4E200491879 /* cSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cSceneManager.cpp; sourceTree = "<group>"; };
+		57585C391DCE3C5400491879 /* cCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cCamera.cpp; sourceTree = "<group>"; };
+		57585C3B1DCEE81100491879 /* cColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cColor.h; sourceTree = "<group>"; };
+		57585C3C1DCEE83A00491879 /* cColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cColor.cpp; sourceTree = "<group>"; };
 		575B6FD71DB60C6600E085EB /* uPng.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uPng.h; sourceTree = "<group>"; };
 		575B6FDB1DB623EB00E085EB /* cMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cMesh.h; sourceTree = "<group>"; };
 		575B6FDC1DB623FE00E085EB /* cMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cMesh.cpp; sourceTree = "<group>"; };
@@ -138,7 +145,7 @@
 				575B6FF11DBA369200E085EB /* platform */,
 				57A8C23F1DAB3EA400366F1E /* shared */,
 				57A8C23E1DAB36D000366F1E /* src */,
-				57106F4D1DA8DEE800365220 /*  main.cpp */,
+				57106F4D1DA8DEE800365220 /* main.cpp */,
 			);
 			path = spore3d;
 			sourceTree = "<group>";
@@ -171,12 +178,12 @@
 			isa = PBXGroup;
 			children = (
 				57A8C2431DAF6FFD00366F1E /* cObject.h */,
-				57A8C2451DAF737300366F1E /* cComponent.h */,
 				57A8C2471DAF79F100366F1E /* cObject.cpp */,
-				57A8C24B1DB0A89400366F1E /* cGameObject.h */,
 				57A8C24C1DB0DA7F00366F1E /* cObjectManager.h */,
 				57A8C24D1DB0DB3A00366F1E /* cObjectManager.cpp */,
+				57A8C2451DAF737300366F1E /* cComponent.h */,
 				57A8C24F1DB0E44C00366F1E /* cComponent.cpp */,
+				57A8C24B1DB0A89400366F1E /* cGameObject.h */,
 				5783A5B21DB22908009F1BBC /* cGameObject.cpp */,
 				57D8D9B41DB26D5400E66ECE /* cTransform.h */,
 				57D8D9B51DB2742100E66ECE /* cTransform.cpp */,
@@ -189,11 +196,15 @@
 				575B6FEF1DB9EE8B00E085EB /* cDestoryPool.cpp */,
 				575B6FF41DBA6B8D00E085EB /* cMeshFilter.h */,
 				575B6FF51DBA993200E085EB /* cMeshFilter.cpp */,
-				575B6FF71DBD1B1600E085EB /* cCamera.h */,
 				5769369C1DC35F8E008C0DEE /* cBehaviour.h */,
 				5769369D1DC37370008C0DEE /* cScene.h */,
-				5769369E1DC37381008C0DEE /* cSceneManager.h */,
 				5769369F1DC375CC008C0DEE /* cScene.cpp */,
+				5769369E1DC37381008C0DEE /* cSceneManager.h */,
+				57585C371DCCB4E200491879 /* cSceneManager.cpp */,
+				575B6FF71DBD1B1600E085EB /* cCamera.h */,
+				57585C391DCE3C5400491879 /* cCamera.cpp */,
+				57585C3B1DCEE81100491879 /* cColor.h */,
+				57585C3C1DCEE83A00491879 /* cColor.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -275,15 +286,18 @@
 				57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */,
 				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
+				57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */,
 				575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */,
 				575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */,
 				57A8C2481DAF79F100366F1E /* cObject.cpp in Sources */,
 				57A8C2501DB0E44C00366F1E /* cComponent.cpp in Sources */,
+				5725B6DC1DCF440D002B051A /* main.cpp in Sources */,
 				57106F631DA8F13B00365220 /* README.md in Sources */,
+				57585C3D1DCEE83A00491879 /* cColor.cpp in Sources */,
 				5783A5B31DB22908009F1BBC /* cGameObject.cpp in Sources */,
+				57585C3A1DCE3C5400491879 /* cCamera.cpp in Sources */,
 				575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */,
 				576936A01DC375CC008C0DEE /* cScene.cpp in Sources */,
-				57106F4E1DA8DEE800365220 /*  main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

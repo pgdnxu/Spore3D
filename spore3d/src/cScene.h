@@ -20,20 +20,40 @@
 #ifndef _cScene_h_
 #define _cScene_h_
 
-#include "cObject.h"
+#include <vector>
+#include <string>
+#include <map>
+
+#include "cGameObject.h"
+#include "uTypes.h"
 
 namespace Spore3D {
     
     class SceneManager;
     
-    class Scene : public CoreObject {
+    class Scene {
         friend SceneManager;
     public:
-        Scene(const std::string&);
-        virtual ~Scene() = 0;
-    protected:
-        virtual void deinit(void) override;
-        virtual Scene *clone(void) override;
+        Scene(const std::string &name) : m_Name(name) {}
+        
+        std::vector<GameObject*> getRootGameObjects() const;
+        void getRootGameObjects(std::vector<GameObject*>&) const;
+        size_t getRootCount(void) const;
+        
+        bool isLoaded(void) const { return m_IsLoaded; }
+        void unload(void);
+        
+        void addRootGameObject(GameObject*);
+        void removeRootGameObject(GameObject*);
+        
+        const std::string &getName(void) const { return m_Name; }
+        
+    private:
+        bool m_IsLoaded;
+
+        std::map<CObjectId, GameObject*> m_RootGameObjectMap;
+        std::string m_Name;
+        ~Scene();
     };
     
 }

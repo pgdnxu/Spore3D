@@ -41,7 +41,8 @@ namespace Spore3D {
     }
     
     void DestoryPool::destoryAll(void) {
-        std::vector<CoreObject*>::iterator it = m_ObjectDestoryPool.begin();
+//        std::vector<CoreObject*>::iterator it = m_ObjectDestoryPool.begin();
+        auto it = m_ObjectDestoryPool.begin();
         for(; it != m_ObjectDestoryPool.end(); it++) {
             delete (*it);
         }
