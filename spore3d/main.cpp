@@ -45,7 +45,7 @@
 #include "cSceneManager.h"
 #include "cScene.h"
 #include "cColor.h"
-
+#include "cBounds.h"
 
 void transformTest2() {
     using namespace std;

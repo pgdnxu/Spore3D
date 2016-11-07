@@ -153,7 +153,11 @@ namespace Spore3D {
         }
         
         float length() const {
-            return sqrtf(x * x + y * y + z * z);
+            return sqrtf(sqrLength());
+        }
+        
+        float sqrLength() const {
+            return x * x + y * y + z * z;
         }
         
         Vec3 normalized() const {

@@ -76,13 +76,17 @@ namespace Spore3D {
         Color(const Color32 &color)
         : r(color.r/255.0f), g(color.g/255.0f), b(color.b/255.0f), a(color.a/255.0f) {}
         
+        Color operator-(const Color &color) const {
+            return Color(r-color.r, g-color.g, b-color.b, a);
+        }
+        
         Color gamma(void) const;
         float grayscale(void) const;
         float maxColorComponent(void) {return math::fmax(math::fmax(r, g), b);}
         
         static Color HSVtoRGB(const float H, const float S, const float V);
         static void RGBToHSV(const Color &color, float &H, float &S, float &V);
-        
+        static Color lerp(const Color &lcolor, const Color &rcolor, const float t);
     private:
         struct _GammaTableInit {
             _GammaTableInit();

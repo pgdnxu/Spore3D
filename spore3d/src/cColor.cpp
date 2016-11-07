@@ -98,4 +98,9 @@ namespace Spore3D {
         S = diff/max;
     }
     
+    Color Color::lerp(const Color &lcolor, const Color &rcolor, const float t) {
+        Color diff = rcolor - lcolor;
+        return Color(lcolor.r+diff.r/t, lcolor.g+diff.r/t, lcolor.b+diff.b/t, lcolor.a);
+    }
+    
 }

@@ -18,6 +18,8 @@
 		57106F631DA8F13B00365220 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 57106F621DA8F13A00365220 /* README.md */; };
 		571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 571504AD1DC8652A005C8BEF /* uMath.cpp */; };
 		5725B6DC1DCF440D002B051A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57106F4D1DA8DEE800365220 /* main.cpp */; };
+		5725B6E01DD06476002B051A /* cRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6DF1DD06476002B051A /* cRay.cpp */; };
+		5725B6E21DD06776002B051A /* cBounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6E11DD06776002B051A /* cBounds.cpp */; };
 		57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C371DCCB4E200491879 /* cSceneManager.cpp */; };
 		57585C3A1DCE3C5400491879 /* cCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C391DCE3C5400491879 /* cCamera.cpp */; };
 		57585C3D1DCEE83A00491879 /* cColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C3C1DCEE83A00491879 /* cColor.cpp */; };
@@ -59,6 +61,10 @@
 		57106F621DA8F13A00365220 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		57106F641DA8F3FE00365220 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		571504AD1DC8652A005C8BEF /* uMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uMath.cpp; sourceTree = "<group>"; };
+		5725B6DD1DD04F00002B051A /* cBounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cBounds.h; sourceTree = "<group>"; };
+		5725B6DE1DD05E1D002B051A /* cRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cRay.h; sourceTree = "<group>"; };
+		5725B6DF1DD06476002B051A /* cRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cRay.cpp; sourceTree = "<group>"; };
+		5725B6E11DD06776002B051A /* cBounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cBounds.cpp; sourceTree = "<group>"; };
 		57585C371DCCB4E200491879 /* cSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cSceneManager.cpp; sourceTree = "<group>"; };
 		57585C391DCE3C5400491879 /* cCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cCamera.cpp; sourceTree = "<group>"; };
 		57585C3B1DCEE81100491879 /* cColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cColor.h; sourceTree = "<group>"; };
@@ -205,6 +211,10 @@
 				57585C391DCE3C5400491879 /* cCamera.cpp */,
 				57585C3B1DCEE81100491879 /* cColor.h */,
 				57585C3C1DCEE83A00491879 /* cColor.cpp */,
+				5725B6DE1DD05E1D002B051A /* cRay.h */,
+				5725B6DF1DD06476002B051A /* cRay.cpp */,
+				5725B6DD1DD04F00002B051A /* cBounds.h */,
+				5725B6E11DD06776002B051A /* cBounds.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -284,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */,
+				5725B6E21DD06776002B051A /* cBounds.cpp in Sources */,
 				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
 				57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */,
@@ -291,6 +302,7 @@
 				575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */,
 				57A8C2481DAF79F100366F1E /* cObject.cpp in Sources */,
 				57A8C2501DB0E44C00366F1E /* cComponent.cpp in Sources */,
+				5725B6E01DD06476002B051A /* cRay.cpp in Sources */,
 				5725B6DC1DCF440D002B051A /* main.cpp in Sources */,
 				57106F631DA8F13B00365220 /* README.md in Sources */,
 				57585C3D1DCEE83A00491879 /* cColor.cpp in Sources */,

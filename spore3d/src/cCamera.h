@@ -25,10 +25,20 @@
 
 #include "cBehaviour.h"
 #include "uTypes.h"
+#include "cColor.h"
+#include "uMath.h"
+
 
 namespace Spore3D {
     
     const std::string CAMERA_TYPE_NAME = "Camera";
+    
+    enum CameraClearFlags {
+        Skybox,
+        SolidColor,
+        Depth,
+        Nothing
+    };
     
     class Camera : public Behaviour {
     public:
@@ -40,6 +50,17 @@ namespace Spore3D {
         //TODO : static Camera *current(void);
         //TODO : static Gamera *main(void);
         
+        CameraClearFlags clearFlags;
+        
+        void setBackgroundColor(const Color &color) {
+            m_BackgroundColor = color;
+        }
+        Color getBackgroundColor(void) const {
+            return m_BackgroundColor;
+        }
+        
+        Mat4 getCameraToWorldMatrix(void) const;
+        
     protected:
         Camera(const std::string&);
         virtual ~Camera();
@@ -48,6 +69,8 @@ namespace Spore3D {
         
     private:
         static CoreObject *_alloc_obj(const std::string&);
+        
+        Color m_BackgroundColor;
     };
     
 }
