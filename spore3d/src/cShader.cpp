@@ -18,33 +18,33 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cShader_h_
-#define _cShader_h_
-
-#include <GLFW/glfw3.h>
-#include <OpenGL/gl3.h>
-
-#include "cObject.h"
+#include "cShader.h"
 
 namespace Spore3D {
     
-    class Shader : public CoreObject {
+    Shader::Shader(const std::string &name, const GLuint programId)
+    : CoreObject(name), m_ProgramID(programId) {
         
-    public:
-        Shader(const std::string&,const GLuint);
-        virtual ~Shader();
+    }
+    
+    Shader::~Shader() {
         
-        void enable(void);
-        void disable(void);
-        
-    protected:
-        GLuint m_ProgramID;
-        
-        virtual void deinit(void) override;
-        virtual Shader *clone(void) override;
-        
-    };
+    }
+    
+    void Shader::deinit(void) {
+        glDeleteProgram(m_ProgramID);
+    }
+    
+    Shader *Shader::clone(void) {
+        return new Shader(toString(), m_ProgramID);
+    }
+    
+    void Shader::enable(void) {
+        glUseProgram(m_ProgramID);
+    }
+    
+    void Shader::disable(void) {
+        glUseProgram(0);
+    }
     
 }
-
-#endif /* _cShader_h_ */

@@ -18,52 +18,53 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cSceneManager_h_
-#define _cSceneManager_h_
+#ifndef _cShaderManager_h_
+#define _cShaderManager_h_
 
+#include <map>
 #include <string>
-#include <vector>
+#include <GLFW/glfw3.h>
+#include <OpenGL/gl3.h>
 
 #include "uTypes.h"
 
+
+
 namespace Spore3D {
     
-    class Scene;
-    class GameObject;
+    class Shader;
     
-    class SceneManager {
-        
+    struct ShaderConfig {
+        std::string name;
+        GLenum type;
+    };
+    
+    class ShaderManager {
     public:
-        static SceneManager *getInstance(void);
+        static ShaderManager *getInstance(void);
         
-        Scene *createScene(const std::string&);
-        Scene *getActiveScene(void) const;
-        Scene *getSceneAt(const int32) const;
-        Scene *getSceneByName(const std::string&) const;
-        void moveGameObjectToScene(GameObject*, Scene*);
-        bool setActiveScene(Scene*);
-        bool unloadScene(const std::string&);
-        bool unloadScene(Scene*);
-        size_t getSceneCount(void) const { return m_SceneList.size(); }
+        Shader *getShader(const std::string&);
         
-        ~SceneManager() { /* TODO: deinit! */ }
+        std::string getCurrPath(void) const;
+        void setCurrPath(const std::string&);
         
     private:
         struct _ObjectCreate {
             _ObjectCreate();
         };
         static _ObjectCreate _objectCreate;
+        ShaderManager() {}
+    
+        Shader *loadShader(const std::string&);
         
-        SceneManager() : m_CurrActiveSceneIndex(-1) {}
+        std::map<std::string, Shader*> m_ShaderMap;
         
-//        int32 getSceneIndex(const Scene*) const;
-//        int32 getSceneIndex(const std::string&) const;
-
-        int32 m_CurrActiveSceneIndex;
-        std::vector<Scene*> m_SceneList;
+        std::string m_CurrPath;
         
+        static GLenum getShaderType(const std::string&);
     };
+    
     
 }
 
-#endif /* _cSceneManager_h_ */
+#endif /* _cShaderManager_h_ */

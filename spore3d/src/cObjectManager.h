@@ -75,9 +75,7 @@ namespace Spore3D {
         ~ObjectManager() { /* TODO : deinit! */ delete m_DB; }
     private:
         struct _ObjectCreate {
-            
             _ObjectCreate();
-        
         };
         static _ObjectCreate _objectCreate;
         

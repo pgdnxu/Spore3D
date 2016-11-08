@@ -36,7 +36,10 @@ namespace Spore3D {
             std::string cMeshPath = StringUtils::trimmed(meshPath);
             std::string cMeshFileName = StringUtils::trimmed(meshFileName);
             
-            if (cMeshPath[cMeshPath.length()-1] != '/') {
+//            if (cMeshPath[cMeshPath.length()-1] != '/') {
+//                cMeshPath.append("/");
+//            }
+            if (cMeshPath.at(cMeshPath.length()-1) != '/') {
                 cMeshPath.append("/");
             }
             

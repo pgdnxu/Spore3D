@@ -20,6 +20,9 @@
 		5725B6DC1DCF440D002B051A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57106F4D1DA8DEE800365220 /* main.cpp */; };
 		5725B6E01DD06476002B051A /* cRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6DF1DD06476002B051A /* cRay.cpp */; };
 		5725B6E21DD06776002B051A /* cBounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6E11DD06776002B051A /* cBounds.cpp */; };
+		5725B6E51DD17E26002B051A /* cShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6E41DD17E26002B051A /* cShaderManager.cpp */; };
+		5725B6ED1DD184D6002B051A /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6EB1DD184D6002B051A /* pugixml.cpp */; };
+		5725B6EF1DD1A152002B051A /* cShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5725B6EE1DD1A152002B051A /* cShader.cpp */; };
 		57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C371DCCB4E200491879 /* cSceneManager.cpp */; };
 		57585C3A1DCE3C5400491879 /* cCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C391DCE3C5400491879 /* cCamera.cpp */; };
 		57585C3D1DCEE83A00491879 /* cColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57585C3C1DCEE83A00491879 /* cColor.cpp */; };
@@ -65,6 +68,15 @@
 		5725B6DE1DD05E1D002B051A /* cRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cRay.h; sourceTree = "<group>"; };
 		5725B6DF1DD06476002B051A /* cRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cRay.cpp; sourceTree = "<group>"; };
 		5725B6E11DD06776002B051A /* cBounds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cBounds.cpp; sourceTree = "<group>"; };
+		5725B6E31DD17E10002B051A /* cShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cShaderManager.h; sourceTree = "<group>"; };
+		5725B6E41DD17E26002B051A /* cShaderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cShaderManager.cpp; sourceTree = "<group>"; };
+		5725B6EA1DD184D6002B051A /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
+		5725B6EB1DD184D6002B051A /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		5725B6EC1DD184D6002B051A /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
+		5725B6EE1DD1A152002B051A /* cShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cShader.cpp; sourceTree = "<group>"; };
+		5725B6F21DD1A3C3002B051A /* default.conf */ = {isa = PBXFileReference; lastKnownFileType = text; path = default.conf; sourceTree = "<group>"; };
+		5725B6F31DD1A6A6002B051A /* default.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = default.vert; sourceTree = "<group>"; };
+		5725B6F41DD1A6D6002B051A /* default.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = default.frag; sourceTree = "<group>"; };
 		57585C371DCCB4E200491879 /* cSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cSceneManager.cpp; sourceTree = "<group>"; };
 		57585C391DCE3C5400491879 /* cCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cCamera.cpp; sourceTree = "<group>"; };
 		57585C3B1DCEE81100491879 /* cColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cColor.h; sourceTree = "<group>"; };
@@ -148,6 +160,7 @@
 		57106F4C1DA8DEE800365220 /* spore3d */ = {
 			isa = PBXGroup;
 			children = (
+				5725B6F01DD1A342002B051A /* shaders */,
 				575B6FF11DBA369200E085EB /* platform */,
 				57A8C23F1DAB3EA400366F1E /* shared */,
 				57A8C23E1DAB36D000366F1E /* src */,
@@ -169,6 +182,24 @@
 				57106F551DA8EABC00365220 /* CoreVideo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5725B6F01DD1A342002B051A /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				5725B6F11DD1A381002B051A /* default */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
+		5725B6F11DD1A381002B051A /* default */ = {
+			isa = PBXGroup;
+			children = (
+				5725B6F21DD1A3C3002B051A /* default.conf */,
+				5725B6F31DD1A6A6002B051A /* default.vert */,
+				5725B6F41DD1A6D6002B051A /* default.frag */,
+			);
+			path = default;
 			sourceTree = "<group>";
 		};
 		575B6FF11DBA369200E085EB /* platform */ = {
@@ -195,7 +226,6 @@
 				57D8D9B51DB2742100E66ECE /* cTransform.cpp */,
 				575B6FDB1DB623EB00E085EB /* cMesh.h */,
 				575B6FDC1DB623FE00E085EB /* cMesh.cpp */,
-				575B6FE41DB725E100E085EB /* cShader.h */,
 				575B6FEC1DB8C7F400E085EB /* cRenderer.h */,
 				575B6FED1DB8C80800E085EB /* cTexture.h */,
 				575B6FEE1DB9ECA400E085EB /* cDestoryPool.h */,
@@ -215,6 +245,10 @@
 				5725B6DF1DD06476002B051A /* cRay.cpp */,
 				5725B6DD1DD04F00002B051A /* cBounds.h */,
 				5725B6E11DD06776002B051A /* cBounds.cpp */,
+				575B6FE41DB725E100E085EB /* cShader.h */,
+				5725B6EE1DD1A152002B051A /* cShader.cpp */,
+				5725B6E31DD17E10002B051A /* cShaderManager.h */,
+				5725B6E41DD17E26002B051A /* cShaderManager.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -222,6 +256,9 @@
 		57A8C23F1DAB3EA400366F1E /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				5725B6EA1DD184D6002B051A /* pugiconfig.hpp */,
+				5725B6EB1DD184D6002B051A /* pugixml.cpp */,
+				5725B6EC1DD184D6002B051A /* pugixml.hpp */,
 				57A8C2411DAB88C500366F1E /* uMath.h */,
 				57A8C2491DAF86A900366F1E /* uTypes.h */,
 				57A8C24A1DAF880200366F1E /* uHash.h */,
@@ -298,10 +335,12 @@
 				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
 				57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */,
+				5725B6ED1DD184D6002B051A /* pugixml.cpp in Sources */,
 				575B6FDD1DB623FE00E085EB /* cMesh.cpp in Sources */,
 				575B6FF01DB9EE8B00E085EB /* cDestoryPool.cpp in Sources */,
 				57A8C2481DAF79F100366F1E /* cObject.cpp in Sources */,
 				57A8C2501DB0E44C00366F1E /* cComponent.cpp in Sources */,
+				5725B6EF1DD1A152002B051A /* cShader.cpp in Sources */,
 				5725B6E01DD06476002B051A /* cRay.cpp in Sources */,
 				5725B6DC1DCF440D002B051A /* main.cpp in Sources */,
 				57106F631DA8F13B00365220 /* README.md in Sources */,
@@ -309,6 +348,7 @@
 				5783A5B31DB22908009F1BBC /* cGameObject.cpp in Sources */,
 				57585C3A1DCE3C5400491879 /* cCamera.cpp in Sources */,
 				575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */,
+				5725B6E51DD17E26002B051A /* cShaderManager.cpp in Sources */,
 				576936A01DC375CC008C0DEE /* cScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
