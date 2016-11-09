@@ -38,6 +38,7 @@ namespace Spore3D {
         
         std::vector<GameObject*> getRootGameObjects() const;
         void getRootGameObjects(std::vector<GameObject*>&) const;
+        bool isRootGameObject(GameObject*) const;
         size_t getRootCount(void) const;
         
         bool isLoaded(void) const { return m_IsLoaded; }

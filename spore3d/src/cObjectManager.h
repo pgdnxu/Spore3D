@@ -71,7 +71,7 @@ namespace Spore3D {
         
         Component *createComponent(const ComponentTypeId);
         
-        void init(void);
+        bool init(void);
         ~ObjectManager() { /* TODO : deinit! */ delete m_DB; }
     private:
         struct _ObjectCreate {

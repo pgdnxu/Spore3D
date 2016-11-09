@@ -21,6 +21,7 @@
 #include "cTransform.h"
 #include "cObjectManager.h"
 #include "cGameObject.h"
+#include "uDebug.h"
 
 #include <iostream>
 
@@ -69,6 +70,11 @@ namespace Spore3D {
         if (nullptr != m_Parent) {
             m_Parent->removeChild(this);
         }
+        for (const auto &it : m_ChildernList) {
+            Destory(it->gameObject);
+        }
+        m_ChildernList.clear();
+        m_ChildrenIndexMap.clear();
         Component::deinit();
     }
     
@@ -83,25 +89,25 @@ namespace Spore3D {
     }
     
     Transform::~Transform() {
-        
+        Debug::log("Transform::~Transform() "+toString());
     }
     
-    void Transform::setParent(Transform *parent, bool worldPositionStays) {
-        if (nullptr == parent) return;
-        if (m_Parent == parent) {
-            return;
-        } else {
-            removeFromParent();
+    Transform &Transform::setParent(Transform *parent, bool worldPositionStays) {
+        if (nullptr != parent) {
+            if (m_Parent != parent) {
+                removeFromParent();
+                m_Parent = parent;
+                parent->addChild(this);
+                if (worldPositionStays) {
+                    setLocalPosition(parent->inverseTransformPoint(getLocalPosition()));
+                    setLocalRotation((parent->getRotation()).conjugate() * getLocalRotation());
+                } else {
+                    m_RotationHasChanged = true;
+                    m_PositionHasChanged = true;
+                }
+            }
         }
-        m_Parent = parent;
-        parent->addChild(this);
-        if (worldPositionStays) {
-            setLocalPosition(parent->inverseTransformPoint(getLocalPosition()));
-            setLocalRotation((parent->getRotation()).conjugate() * getLocalRotation());
-        } else {
-            m_RotationHasChanged = true;
-            m_PositionHasChanged = true;
-        }
+        return *this;
     }
     
     bool Transform::addChild(Transform *child) {
@@ -150,7 +156,7 @@ namespace Spore3D {
     }
     
     Transform *Transform::find(const std::string &childName) {
-        if (childName.length() <= 0) return nullptr;
+        if (childName.empty()) return nullptr;
         size_t index = childName.find('/');
         if (std::string::npos == index) {
             if (m_ChildrenIndexMap.find(childName) != m_ChildrenIndexMap.end()) {
@@ -256,10 +262,15 @@ namespace Spore3D {
         return m_Position;
     }
     
-    void Transform::setPosition(const Vec3 &position) {
-        setLocalPosition(m_LocalPosition + m_Parent->inverseTransformDirection(position - getPosition()));
+    Transform &Transform::setPosition(const Vec3 &position) {
+        if (nullptr == m_Parent) {
+            setLocalPosition(position);
+        } else {
+            setLocalPosition(m_LocalPosition + m_Parent->inverseTransformDirection(position - getPosition()));
+        }
         m_Position = position;
         m_PositionHasChanged = false;
+        return *this;
     }
     
     Quaternion Transform::getRotation(void) const {
@@ -274,7 +285,7 @@ namespace Spore3D {
         return m_Rotation;
     }
     
-    void Transform::setRotation(const Quaternion &rotation) {
+    Transform &Transform::setRotation(const Quaternion &rotation) {
         if (nullptr != m_Parent) {
             setLocalRotation(m_Parent->getRotation().inversed() * rotation);
         } else {
@@ -282,7 +293,7 @@ namespace Spore3D {
         }
         m_Rotation = rotation;
         m_RotationHasChanged = false;
-        
+        return *this;
     }
     
     void Transform::positionChanged(void) {
@@ -299,14 +310,16 @@ namespace Spore3D {
         }
     }
     
-    void Transform::setLocalPosition(const Vec3 &localPosition) {
+    Transform &Transform::setLocalPosition(const Vec3 &localPosition) {
         m_LocalPosition = localPosition;
         positionChanged();
+        return *this;
     }
     
-    void Transform::setLocalRotation(const Quaternion &localRotation) {
+    Transform &Transform::setLocalRotation(const Quaternion &localRotation) {
         m_LocalRotation = localRotation;
         rotationChanged();
+        return *this;
     }
     
     void Transform::translate(const Vec3 &translation, Space relativeTo) {

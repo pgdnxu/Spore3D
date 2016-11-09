@@ -20,6 +20,7 @@
 
 #include "cCamera.h"
 #include "cTransform.h"
+#include "uDebug.h"
 
 namespace Spore3D {
     
@@ -42,7 +43,7 @@ namespace Spore3D {
     }
     
     Camera::~Camera() {
-        
+        Debug::log("Camera::~Camera() "+toString());
     }
     
     Camera *Camera::clone(void) {

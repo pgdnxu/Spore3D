@@ -40,13 +40,14 @@ namespace Spore3D {
         ObjectManager::getInstance();
     }
     
-    void ObjectManager::init(void) {
+    bool ObjectManager::init(void) {
         if (nullptr != m_DB) {
             delete m_DB;
         }
         m_DB = new ObjectManagerDB();
-
+        if (nullptr == m_DB) return false;
         registerAllComponentTypes();
+        return true;
     }
     
     bool ObjectManager::addComponentWithComponent(const CObjectId objectId, Component *component) {
@@ -154,7 +155,7 @@ namespace Spore3D {
         Component::registerComponentTypes();
         Transform::registerComponentTypes();
         MeshFilter::registerComponentTypes();
-//        Camera::registerComponentTypes();
+        Camera::registerComponentTypes();
     }
     
     Component *ObjectManager::createComponent(const ComponentTypeId typeId) {

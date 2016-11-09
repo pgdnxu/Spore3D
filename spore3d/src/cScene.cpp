@@ -54,7 +54,7 @@ namespace Spore3D {
 //        m_RootGameObjectIteratorMap.clear();
 //        m_RootGameObjectList.clear();
         for (const auto &it : m_RootGameObjectMap) {
-            if (it.second->isDontDestroyOnLoad()) {
+            if (!it.second->isDontDestroyOnLoad()) {
                 CoreObject::Destory(it.second);
             }
         }
@@ -78,6 +78,11 @@ namespace Spore3D {
 //            }
             m_RootGameObjectMap.erase(gameObject->getInstanceId());
         }
+    }
+    
+    bool Scene::isRootGameObject(GameObject *gameObject) const {
+        if (nullptr == gameObject) return false;
+        return m_RootGameObjectMap.find(gameObject->getInstanceId()) != m_RootGameObjectMap.end();
     }
     
 }

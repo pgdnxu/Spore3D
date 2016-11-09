@@ -27,12 +27,12 @@ namespace Spore3D {
         clear();
     }
     
-    Mesh::Mesh(const std::string &name) : Spore3D::CoreObject(name) {
+    Mesh::Mesh(const std::string &name) : CoreObject(name) {
         
     }
     
     Mesh::~Mesh() {
-        Debug::log("Mesh::~Mesh()");
+        Debug::log("Mesh::~Mesh() "+toString());
     }
     
     Mesh *Mesh::clone(void) {

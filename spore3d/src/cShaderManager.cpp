@@ -49,10 +49,10 @@ namespace Spore3D {
         ShaderManager::getInstance();
     }
 
-    std::string ShaderManager::getCurrPath(void) const {
+    std::string ShaderManager::getPath(void) const {
         return m_CurrPath;
     }
-    void ShaderManager::setCurrPath(const std::string &path) {
+    void ShaderManager::setPath(const std::string &path) {
         m_CurrPath = StringUtils::trimmed(path);
         if (m_CurrPath.at(m_CurrPath.length()-1) != '/') {
             m_CurrPath.append("/");
@@ -72,7 +72,7 @@ namespace Spore3D {
             
             for (pugi::xml_node snode = rootNode.child(CONF_NODE_SNODE);
                  snode;
-                 snode = rootNode.next_sibling(CONF_NODE_SNODE)) {
+                 snode = snode.next_sibling(CONF_NODE_SNODE)) {
                 pugi::xml_node nameNode = snode.child(CONF_NODE_NAME);
                 pugi::xml_node typeNode = snode.child(CONF_NODE_TYPE);
                 
@@ -187,6 +187,13 @@ namespace Spore3D {
             ret = GL_GEOMETRY_SHADER;
         }
         return ret;
+    }
+    
+    void ShaderManager::deinit(void) {
+        for (const auto &it : m_ShaderMap) {
+            CoreObject::Destory(it.second);
+        }
+        m_ShaderMap.clear();
     }
     
 }

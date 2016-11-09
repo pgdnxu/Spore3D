@@ -40,10 +40,11 @@ namespace Spore3D {
         Scene *getActiveScene(void) const;
         Scene *getSceneAt(const int32) const;
         Scene *getSceneByName(const std::string&) const;
-        void moveGameObjectToScene(GameObject*, Scene*);
+        bool moveGameObjectToScene(GameObject*, Scene*);
         bool setActiveScene(Scene*);
         bool unloadScene(const std::string&);
         bool unloadScene(Scene*);
+        void unloadAllScenes(void);
         size_t getSceneCount(void) const { return m_SceneList.size(); }
         
         ~SceneManager() { /* TODO: deinit! */ }
@@ -54,12 +55,13 @@ namespace Spore3D {
         };
         static _ObjectCreate _objectCreate;
         
-        SceneManager() : m_CurrActiveSceneIndex(-1) {}
+        SceneManager() : m_CurrActiveScene(nullptr) {}
         
 //        int32 getSceneIndex(const Scene*) const;
 //        int32 getSceneIndex(const std::string&) const;
 
-        int32 m_CurrActiveSceneIndex;
+//        int32 m_CurrActiveSceneIndex;
+        Scene *m_CurrActiveScene;
         std::vector<Scene*> m_SceneList;
         
     };

@@ -43,7 +43,7 @@ namespace Spore3D {
     
     Scene *SceneManager::getActiveScene(void) const {
 //        return nullptr;
-        return m_SceneList.at(m_CurrActiveSceneIndex);
+        return m_CurrActiveScene;
     }
     
     Scene *SceneManager::getSceneAt(const int32 index) const {
@@ -59,12 +59,22 @@ namespace Spore3D {
         return nullptr;
     }
     
-    void SceneManager::moveGameObjectToScene(GameObject *gameObject, Scene *scene) {
-        if (nullptr == gameObject) return;
+    bool SceneManager::moveGameObjectToScene(GameObject *gameObject, Scene *scene) {
+        if (nullptr == gameObject) return false;
+        if (nullptr == scene) return false;
+        if (nullptr == m_CurrActiveScene) return false;
+        if (scene == m_CurrActiveScene) return true;
+        if (m_CurrActiveScene->isRootGameObject(gameObject)) {
+            m_CurrActiveScene->removeRootGameObject(gameObject);
+            scene->addRootGameObject(gameObject);
+        }
+        return false;
     }
     
     bool SceneManager::setActiveScene(Scene *scene) {
         if (nullptr == scene) return false;
+        if (nullptr == getSceneByName(scene->getName())) return false;
+        m_CurrActiveScene = scene;
         return true;
     }
     
@@ -81,10 +91,15 @@ namespace Spore3D {
         }
         if (it != m_SceneList.end()) {
             m_SceneList.erase(it);
-            (*it)->unload();
+//            (*it)->unload();
+            delete *it;
             return true;
         }
         return false;
+    }
+    
+    void SceneManager::unloadAllScenes(void) {
+        
     }
     
 //    int32 SceneManager::getSceneIndex(const Scene *scene) const {

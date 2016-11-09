@@ -23,8 +23,8 @@
 
 #include <map>
 #include <string>
-#include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
+#include <GLFW/glfw3.h>
 
 #include "uTypes.h"
 
@@ -45,9 +45,10 @@ namespace Spore3D {
         
         Shader *getShader(const std::string&);
         
-        std::string getCurrPath(void) const;
-        void setCurrPath(const std::string&);
+        std::string getPath(void) const;
+        void setPath(const std::string&);
         
+        void deinit(void);
     private:
         struct _ObjectCreate {
             _ObjectCreate();

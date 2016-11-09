@@ -1,6 +1,6 @@
-#version 130
+#version 330 core
 
-in vec4 position;
+layout(location = 1) in vec4 position;
 
 uniform mat4 pr_matrix = mat4(1.0);
 uniform mat4 vm_matrix = mat4(1.0);

@@ -40,7 +40,8 @@ namespace Spore3D {
     }
     
     void Shader::enable(void) {
-        glUseProgram(m_ProgramID);
+        if (glIsShader(m_ProgramID))
+            glUseProgram(m_ProgramID);
     }
     
     void Shader::disable(void) {

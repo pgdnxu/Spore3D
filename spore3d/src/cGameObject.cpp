@@ -40,10 +40,11 @@ namespace Spore3D {
     }
     
     GameObject::~GameObject() {
-        Debug::log("GameObject::~GameObject()");
+        Debug::log("GameObject::~GameObject() "+toString());
     }
     
     void GameObject::deinit(void) {
+        //TODO : remove all children
         ObjectManager::getInstance()->removeGameObject(getInstanceId());
     }
     

@@ -56,14 +56,14 @@ namespace Spore3D {
         virtual void getComponentsInParent(const ComponentTypeId, std::vector<Component*>&) const override;
         virtual void getComponentsInParent(const std::string&, std::vector<Component*>&) const override;
         
-        void setParent(Transform *parent) { setParent(parent, true); }
-        void setParent(Transform *parent, bool worldPositionStays);
+        Transform &setParent(Transform *parent) { setParent(parent, true); return *this;}
+        Transform &setParent(Transform *parent, bool worldPositionStays);
         Transform *getParent() const { return m_Parent; }
         
-        void setPosition(const Vec3&);
-        void setRotation(const Quaternion&);
-        void setLocalPosition(const Vec3&);
-        void setLocalRotation(const Quaternion&);
+        Transform &setPosition(const Vec3&);
+        Transform &setRotation(const Quaternion&);
+        Transform &setLocalPosition(const Vec3&);
+        Transform &setLocalRotation(const Quaternion&);
         
         Vec3 getPosition(void) const;
         Quaternion getRotation(void) const;

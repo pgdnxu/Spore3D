@@ -46,6 +46,12 @@
 #include "cScene.h"
 #include "cColor.h"
 #include "cBounds.h"
+#include "cShader.h"
+#include "cShaderManager.h"
+
+#include "glfwWindow.h"
+
+#include "cEngine.h"
 
 void transformTest2() {
     using namespace std;
@@ -343,9 +349,17 @@ void ColorTest() {
     
 }
 
-int main(void)
+void ShaderTest() {
+    using namespace Spore3D;
+    
+    ShaderManager::getInstance()->setPath("/Users/shannonxu/projects/spore3d/spore3d/shaders/default");
+    
+    ShaderManager::getInstance()->getShader("default");
+}
+
+int main(int argc, char *argv[])
 {
-    ColorTest();
+//    ColorTest();
 //    transformTest2();
 //    transformTest();
 //    cloneTest();
@@ -355,64 +369,14 @@ int main(void)
 //    ObjMtlTest();
 //    ObjMeshLoaderTest();
     
-    Spore3D::PngData *pd = Spore3D::PngReader::read("/Users/shannonxu/Desktop/chr_sword/chr_sword.png");
-    if (nullptr == pd) {
+    
+    
+    if (!Spore3D::Engine::getInstance()->init("Spore3D test", 800, 600)) {
         return -1;
     }
     
+    ShaderTest();
     
-    
-    GLFWwindow* window;
-    
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
-    
-    
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-    
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-    
-    std::cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << std::endl;
-    std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
-    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-    
-//    glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-    
-    /* Loop until the user closes the window */
-//    while (!glfwWindowShouldClose(window))
-    int cn = 0;
-    while(cn < pd->width)
-    {
-        glClearColor(pd->data[cn*4]/255.0f, pd->data[cn*4+1]/255.0f, pd->data[cn*4+2]/255.0f, pd->data[cn*4+3]/255.0f);
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-        
-        /* Poll for and process events */
-        glfwPollEvents();
-        cn++;
-//        sleep(1);
-    }
-    
-    glfwTerminate();
-    return 0;
+    return Spore3D::Engine::getInstance()->run(argc, argv);
+
 }

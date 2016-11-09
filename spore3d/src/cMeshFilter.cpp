@@ -65,6 +65,7 @@ namespace Spore3D {
     }
     
     void MeshFilter::deinit(void) {
+        Destory(m_Mesh);
         Component::deinit();
     }
     
@@ -74,7 +75,7 @@ namespace Spore3D {
     }
     
     MeshFilter::~MeshFilter() {
-        delete m_Mesh;
+//        delete m_Mesh;
     }
     
     Mesh *MeshFilter::getMesh(void) const {
@@ -82,6 +83,7 @@ namespace Spore3D {
     }
     
     void MeshFilter::setMesh(Mesh *mesh) {
+        if (nullptr != mesh && nullptr != m_Mesh && mesh->getInstanceId() == m_Mesh->getInstanceId()) return;
         Destory(m_Mesh);
         m_Mesh = mesh;
     }
