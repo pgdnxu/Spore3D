@@ -18,43 +18,24 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cRenderer_h_
-#define _cRenderer_h_
+#ifndef _cMaterial_h_
+#define _cMaterial_h_
 
-#include "cComponent.h"
+#include "cObject.h"
 
 namespace Spore3D {
     
-    const std::string RENDERER_TYPE_NAME = "Renderer";
-    
-    class Shader;
-    class Texture;
-    
-    class Renderer : public Component {
+    class Material : public CoreObject {
     public:
-        static void registerComponentTypes(void);
-        static ComponentTypeId TypeId(void);
+        Material(const std::string &);
+        virtual ~Material();
         
-        virtual void deinit(void) override;
-    
-        void render(void);
-        
-        void setShader(Shader*);
-        Shader *getShader(void) const;
-        
-        void setTexture(Texture*);
-        Texture *getTexture(void) const;
         
     protected:
-        Renderer(const std::string&);
-        virtual ~Renderer();
-    private:
-        static CoreObject *_alloc_obj(const std::string&);
-        
-        Shader *m_Shader;
-        Texture *m_Texture;
+        virtual void deinit(void) override;
+        virtual Material *clone(void) override;
     };
     
 }
 
-#endif /* _cRenderer_h_ */
+#endif /* cMaterial_h */

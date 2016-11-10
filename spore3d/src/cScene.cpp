@@ -18,8 +18,9 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#include "cObject.h"
 #include "cScene.h"
+#include "cObject.h"
+#include "cRenderer.h"
 
 namespace Spore3D {
     
@@ -83,6 +84,15 @@ namespace Spore3D {
     bool Scene::isRootGameObject(GameObject *gameObject) const {
         if (nullptr == gameObject) return false;
         return m_RootGameObjectMap.find(gameObject->getInstanceId()) != m_RootGameObjectMap.end();
+    }
+    
+    void Scene::render(void) {
+        for (const auto &it : m_RootGameObjectMap) {
+            Renderer *renderer = it.second->getComponent<Renderer>();
+            if (nullptr != renderer) {
+                renderer->render();
+            }
+        }
     }
     
 }

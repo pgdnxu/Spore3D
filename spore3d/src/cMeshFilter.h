@@ -36,9 +36,9 @@ namespace Spore3D {
         
         virtual void deinit(void) override;
     
-        Mesh *getMesh(void) const;
+        Mesh *getMesh(void);
         void setMesh(Mesh*);
-        std::shared_ptr<Mesh> getSharedMesh();
+        Mesh *getSharedMesh(void);
         
     protected:
         MeshFilter(const std::string&);

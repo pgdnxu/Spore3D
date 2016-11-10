@@ -21,5 +21,30 @@
 #ifndef _cRenderCommand_h_
 #define _cRenderCommand_h_
 
+#include "cObject.h"
+
+namespace Spore3D {
+    
+    class MeshFilter;
+    class Renderer;
+    
+    class RenderCommand : public CoreObject {
+    public:
+        virtual ~RenderCommand();
+        RenderCommand(Renderer*, MeshFilter*);
+        
+        MeshFilter *getMeshFilter(void) const;
+        Renderer *getRenderer(void) const;
+        
+    protected:
+        virtual void deinit(void) override;
+        virtual RenderCommand *clone(void) override;
+        
+    private:
+        MeshFilter *m_MeshFilter;
+        Renderer *m_Renderer;
+    };
+    
+}
 
 #endif /* _cRenderCommand_h_ */

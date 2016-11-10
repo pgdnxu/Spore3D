@@ -18,43 +18,35 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cRenderer_h_
-#define _cRenderer_h_
-
-#include "cComponent.h"
+#include "cRenderCommand.h"
+#include "uDebug.h"
 
 namespace Spore3D {
+
+    RenderCommand::RenderCommand(Renderer *renderer, MeshFilter *meshFilter)
+    : Spore3D::CoreObject("RenderCommand"), m_MeshFilter(meshFilter), m_Renderer(renderer){
+        
+    }
     
-    const std::string RENDERER_TYPE_NAME = "Renderer";
+    MeshFilter *RenderCommand::getMeshFilter(void) const {
+        return m_MeshFilter;
+    }
     
-    class Shader;
-    class Texture;
+    Renderer *RenderCommand::getRenderer(void) const {
+        return m_Renderer;
+    }
     
-    class Renderer : public Component {
-    public:
-        static void registerComponentTypes(void);
-        static ComponentTypeId TypeId(void);
-        
-        virtual void deinit(void) override;
+    RenderCommand::~RenderCommand() {
+        Debug::log("RenderCommand::~RenderCommand()"+toString());
+    }
     
-        void render(void);
-        
-        void setShader(Shader*);
-        Shader *getShader(void) const;
-        
-        void setTexture(Texture*);
-        Texture *getTexture(void) const;
-        
-    protected:
-        Renderer(const std::string&);
-        virtual ~Renderer();
-    private:
-        static CoreObject *_alloc_obj(const std::string&);
-        
-        Shader *m_Shader;
-        Texture *m_Texture;
-    };
+    void RenderCommand::deinit(void) {
+        m_MeshFilter = nullptr;
+        m_Renderer = nullptr;
+    }
+    
+    RenderCommand *RenderCommand::clone(void) {
+        return new RenderCommand(m_Renderer, m_MeshFilter);
+    }
     
 }
-
-#endif /* _cRenderer_h_ */

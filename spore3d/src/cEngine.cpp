@@ -68,7 +68,10 @@ namespace Spore3D {
     }
     
     void Engine::proc(void) {
-        
+        Scene *currActiveScene = SceneManager::getInstance()->getActiveScene();
+        if (nullptr != currActiveScene) {
+            currActiveScene->render();
+        }
     }
     
     int Engine::run(int argc, char *argv[]) {

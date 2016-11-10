@@ -33,7 +33,7 @@ namespace Spore3D {
         Mesh(const std::string &name);
         virtual ~Mesh();
     
-        void clear(void);
+//        void clear(void);
         
     public:
         std::vector<Vec3>   vertices;
@@ -48,6 +48,8 @@ namespace Spore3D {
     protected:
         virtual void deinit(void) override;
         virtual Mesh *clone(void) override;
+        
+        void clear(void);
     };
     
 }

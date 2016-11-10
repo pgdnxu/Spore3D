@@ -26,6 +26,7 @@
 #include "cTransform.h"
 #include "cMeshFilter.h"
 #include "cCamera.h"
+#include "cRenderer.h"
 
 namespace Spore3D {
     
@@ -62,7 +63,6 @@ namespace Spore3D {
     
     Component *ObjectManager::addComponentWithComponentTypeId(const CObjectId objectId, const ComponentTypeId typeId) {
         if (m_DB->mObjectMap.find(objectId) == m_DB->mObjectMap.end()) return nullptr;
-//        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
         auto it = m_DB->mComponentTypeInfoMap.find(typeId);
         if (it == m_DB->mComponentTypeInfoMap.end()) return nullptr;
         Component *cmp = static_cast<Component*>((*(it->second->creationMethod))(it->second->typeName));
@@ -150,10 +150,10 @@ namespace Spore3D {
         Transform::registerComponentTypes();
         MeshFilter::registerComponentTypes();
         Camera::registerComponentTypes();
+        Renderer::registerComponentTypes();
     }
     
     Component *ObjectManager::createComponent(const ComponentTypeId typeId) {
-//        ComponentTypeInfoMap::iterator it = m_DB->mComponentTypeInfoMap.find(typeId);
         auto it = m_DB->mComponentTypeInfoMap.find(typeId);
         if (it == m_DB->mComponentTypeInfoMap.end())
             return nullptr;

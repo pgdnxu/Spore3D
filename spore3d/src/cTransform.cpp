@@ -23,8 +23,6 @@
 #include "cGameObject.h"
 #include "uDebug.h"
 
-#include <iostream>
-
 namespace Spore3D {
     
     CoreObject *Transform::_alloc_obj(const std::string &name) {

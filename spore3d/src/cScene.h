@@ -49,6 +49,8 @@ namespace Spore3D {
         
         const std::string &getName(void) const { return m_Name; }
         
+        void render(void);
+        
     private:
         bool m_IsLoaded;
 

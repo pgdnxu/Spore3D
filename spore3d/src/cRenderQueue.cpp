@@ -18,43 +18,33 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cRenderer_h_
-#define _cRenderer_h_
-
-#include "cComponent.h"
+#include "cRenderQueue.h"
+#include "cObject.h"
+#include "cRenderCommand.h"
 
 namespace Spore3D {
     
-    const std::string RENDERER_TYPE_NAME = "Renderer";
+    RenderQueue *RenderQueue::getInstance() {
+        static RenderQueue _instance;
+        return &_instance;
+    }
     
-    class Shader;
-    class Texture;
+    RenderQueue::_ObjectCreate RenderQueue::_objectCreate;
     
-    class Renderer : public Component {
-    public:
-        static void registerComponentTypes(void);
-        static ComponentTypeId TypeId(void);
-        
-        virtual void deinit(void) override;
+    RenderQueue::_ObjectCreate::_ObjectCreate() {
+        RenderQueue::getInstance();
+    }
     
-        void render(void);
+    void RenderQueue::addCommand(RenderCommand *renderCommand) {
+        m_CommandList.push_back(renderCommand);
+    }
+    
+    void RenderQueue::render(void) {
         
-        void setShader(Shader*);
-        Shader *getShader(void) const;
-        
-        void setTexture(Texture*);
-        Texture *getTexture(void) const;
-        
-    protected:
-        Renderer(const std::string&);
-        virtual ~Renderer();
-    private:
-        static CoreObject *_alloc_obj(const std::string&);
-        
-        Shader *m_Shader;
-        Texture *m_Texture;
-    };
+        for (const auto &it : m_CommandList) {
+            CoreObject::Destory(it);
+        }
+        m_CommandList.clear();
+    }
     
 }
-
-#endif /* _cRenderer_h_ */

@@ -56,7 +56,7 @@ namespace Spore3D {
         
         MeshFilter *newMeshFilter = new MeshFilter(toString());
         
-        newMeshFilter->m_Mesh = Instantiate<Mesh>(m_Mesh);
+        newMeshFilter->m_Mesh = nullptr;
         newMeshFilter->m_SharedMesh = m_SharedMesh;
         
         Debug::log(std::to_string(m_SharedMesh.use_count()));
@@ -70,29 +70,34 @@ namespace Spore3D {
     }
     
     MeshFilter::MeshFilter(const std::string &name)
-    : Component(name), m_Mesh(nullptr) {
+    : Component(name), m_Mesh(nullptr), m_SharedMesh(nullptr) {
         m_ComponentTypeId = TypeId();
     }
     
     MeshFilter::~MeshFilter() {
-//        delete m_Mesh;
+        Debug::log("MeshFilter::~MeshFilter() "+toString());
     }
     
-    Mesh *MeshFilter::getMesh(void) const {
+    Mesh *MeshFilter::getMesh(void) {
+        if (nullptr == m_Mesh) {
+            if (nullptr == m_SharedMesh) return nullptr;
+            m_Mesh = Instantiate<Mesh>(m_SharedMesh.get());
+        }
         return m_Mesh;
     }
     
     void MeshFilter::setMesh(Mesh *mesh) {
-        if (nullptr != mesh && nullptr != m_Mesh && mesh->getInstanceId() == m_Mesh->getInstanceId()) return;
-        Destory(m_Mesh);
-        m_Mesh = mesh;
+        if (nullptr == m_Mesh && nullptr == m_SharedMesh) {
+            m_Mesh = mesh;
+        }
     }
     
-    std::shared_ptr<Mesh> MeshFilter::getSharedMesh() {
+    Mesh *MeshFilter::getSharedMesh() {
         if (m_SharedMesh == nullptr) {
+            if (nullptr == m_Mesh) return nullptr;
             Mesh *copy = Instantiate<Mesh>(m_Mesh);
             m_SharedMesh = std::shared_ptr<Mesh>(copy, Destory);
         }
-        return m_SharedMesh;
+        return m_SharedMesh.get();
     };
 }

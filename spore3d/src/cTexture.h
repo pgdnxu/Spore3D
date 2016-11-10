@@ -21,5 +21,14 @@
 #ifndef _cTexture_h_
 #define _cTexture_h_
 
+#include "cObject.h"
+
+namespace Spore3D {
+    
+    class Texture : public CoreObject {
+        
+    };
+    
+}
 
 #endif /* _cTexture_h_ */
