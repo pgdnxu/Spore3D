@@ -78,9 +78,9 @@ namespace Spore3D {
     class Vec3 {
     public:
         
-        static const Vec3 up;
-        static const Vec3 right;
-        static const Vec3 forward;
+        static const Vec3 Up;
+        static const Vec3 Right;
+        static const Vec3 Forward;
         
         float x, y, z;
         

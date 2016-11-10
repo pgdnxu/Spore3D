@@ -21,5 +21,14 @@
 #ifndef _cRenderer_h_
 #define _cRenderer_h_
 
+#include "cComponent.h"
+
+namespace Spore3D {
+    
+    class Renderer : public Component {
+        
+    };
+    
+}
 
 #endif /* _cRenderer_h_ */

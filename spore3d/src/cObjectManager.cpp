@@ -136,11 +136,6 @@ namespace Spore3D {
     }
     
     void ObjectManager::registerComponentType(const ComponentTypeId typeId, const CreationMethod creationMethod, const DestructionMethod destructionMethod, const std::string &typeName) {
-//        ComponentTypeInfo &info = m_DB->mComponentTypeInfoMap[typeId];
-//        info.creationMethod = creationMethod;
-//        info.destructionMethod = destructionMethod;
-//        info.typeId = typeId;
-//        info.typeName = typeName;
         
         ComponentTypeInfo *newComponentTypeInfo =new ComponentTypeInfo();
         newComponentTypeInfo->creationMethod = creationMethod;
@@ -148,7 +143,6 @@ namespace Spore3D {
         newComponentTypeInfo->typeId = typeId;
         newComponentTypeInfo->typeName = typeName;
         m_DB->mComponentTypeInfoMap[typeId] = newComponentTypeInfo;
-        
     }
     
     void ObjectManager::registerAllComponentTypes(void) {

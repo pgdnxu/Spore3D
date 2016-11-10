@@ -42,7 +42,6 @@ namespace Spore3D {
     }
     
     Scene *SceneManager::getActiveScene(void) const {
-//        return nullptr;
         return m_CurrActiveScene;
     }
     
@@ -91,7 +90,6 @@ namespace Spore3D {
         }
         if (it != m_SceneList.end()) {
             m_SceneList.erase(it);
-//            (*it)->unload();
             delete *it;
             return true;
         }
@@ -99,21 +97,10 @@ namespace Spore3D {
     }
     
     void SceneManager::unloadAllScenes(void) {
-        
+        for (const auto &it : m_SceneList) {
+            it->unload();
+        }
+        m_SceneList.clear();
     }
-    
-//    int32 SceneManager::getSceneIndex(const Scene *scene) const {
-//        if (nullptr == scene) return -1;
-//        return getSceneIndex(scene->getName());
-//    }
-//    
-//    int32 SceneManager::getSceneIndex(const std::string &sceneName) const {
-//        int32 index = -1;
-//        for (const auto &it : m_SceneList) {
-//            ++index;
-//            if (it->getName() == sceneName) break;
-//        }
-//        return index;
-//    }
     
 }

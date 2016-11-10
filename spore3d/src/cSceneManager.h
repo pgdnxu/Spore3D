@@ -57,10 +57,6 @@ namespace Spore3D {
         
         SceneManager() : m_CurrActiveScene(nullptr) {}
         
-//        int32 getSceneIndex(const Scene*) const;
-//        int32 getSceneIndex(const std::string&) const;
-
-//        int32 m_CurrActiveSceneIndex;
         Scene *m_CurrActiveScene;
         std::vector<Scene*> m_SceneList;
         

@@ -72,9 +72,9 @@ namespace Spore3D {
         Vec3 getLocalPosition(void) const { return m_LocalPosition; }
         Quaternion getLocalRotation(void) const { return m_LocalRotation; }
         Vec3 getLocalEulerAngle(void) const { return m_LocalEulerAngle; }
-        Vec3 getForward(void) const { return Mat4(m_Rotation) * Vec3::forward; }
-        Vec3 getUp(void) const { return Mat4(m_Rotation) * Vec3::up; }
-        Vec3 getRight(void) const { return Mat4(m_Rotation) * Vec3::right; }
+        Vec3 getForward(void) const { return Mat4(m_Rotation) * Vec3::Forward; }
+        Vec3 getUp(void) const { return Mat4(m_Rotation) * Vec3::Up; }
+        Vec3 getRight(void) const { return Mat4(m_Rotation) * Vec3::Right; }
         
         Mat4 getLocalToWorldMatrix(void) const;
         Mat4 getWorldToLocalMatrix(void) const;
@@ -106,9 +106,9 @@ namespace Spore3D {
         void rotateAround(const Vec3 &point, const Vec3 &axis, const float angle);
         
         void lookAt(const Transform *target);
-        void lookAt(const Transform *target, const Vec3 &worldUp = Vec3::up);
+        void lookAt(const Transform *target, const Vec3 &worldUp = Vec3::Up);
         void lookAt(const Vec3 &worldPosition);
-        void lookAt(const Vec3 &worldPosition, const Vec3 &worldUp = Vec3::up);
+        void lookAt(const Vec3 &worldPosition, const Vec3 &worldUp = Vec3::Up);
         
     protected:
         Transform(const std::string&);

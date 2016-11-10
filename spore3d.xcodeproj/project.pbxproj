@@ -33,6 +33,7 @@
 		575B6FF61DBA993200E085EB /* cMeshFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 575B6FF51DBA993200E085EB /* cMeshFilter.cpp */; };
 		576936A01DC375CC008C0DEE /* cScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5769369F1DC375CC008C0DEE /* cScene.cpp */; };
 		5783A5B31DB22908009F1BBC /* cGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5783A5B21DB22908009F1BBC /* cGameObject.cpp */; };
+		579FC7891DD41C0D00A5A7E4 /* cRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579FC7881DD41C0D00A5A7E4 /* cRenderer.cpp */; };
 		57A8C2481DAF79F100366F1E /* cObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C2471DAF79F100366F1E /* cObject.cpp */; };
 		57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C24D1DB0DB3A00366F1E /* cObjectManager.cpp */; };
 		57A8C2501DB0E44C00366F1E /* cComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C24F1DB0E44C00366F1E /* cComponent.cpp */; };
@@ -108,6 +109,8 @@
 		5769369E1DC37381008C0DEE /* cSceneManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cSceneManager.h; sourceTree = "<group>"; };
 		5769369F1DC375CC008C0DEE /* cScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cScene.cpp; sourceTree = "<group>"; };
 		5783A5B21DB22908009F1BBC /* cGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cGameObject.cpp; sourceTree = "<group>"; };
+		579FC7871DD41A1D00A5A7E4 /* cRenderCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cRenderCommand.h; sourceTree = "<group>"; };
+		579FC7881DD41C0D00A5A7E4 /* cRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cRenderer.cpp; sourceTree = "<group>"; };
 		57A8C2411DAB88C500366F1E /* uMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uMath.h; sourceTree = "<group>"; };
 		57A8C2431DAF6FFD00366F1E /* cObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cObject.h; sourceTree = "<group>"; };
 		57A8C2451DAF737300366F1E /* cComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cComponent.h; sourceTree = "<group>"; };
@@ -230,7 +233,6 @@
 				57D8D9B51DB2742100E66ECE /* cTransform.cpp */,
 				575B6FDB1DB623EB00E085EB /* cMesh.h */,
 				575B6FDC1DB623FE00E085EB /* cMesh.cpp */,
-				575B6FEC1DB8C7F400E085EB /* cRenderer.h */,
 				575B6FED1DB8C80800E085EB /* cTexture.h */,
 				575B6FEE1DB9ECA400E085EB /* cDestoryPool.h */,
 				575B6FEF1DB9EE8B00E085EB /* cDestoryPool.cpp */,
@@ -255,6 +257,9 @@
 				5725B6E41DD17E26002B051A /* cShaderManager.cpp */,
 				5725B6F51DD2C5AB002B051A /* cEngine.h */,
 				5725B6F61DD2CE91002B051A /* cEngine.cpp */,
+				575B6FEC1DB8C7F400E085EB /* cRenderer.h */,
+				579FC7881DD41C0D00A5A7E4 /* cRenderer.cpp */,
+				579FC7871DD41A1D00A5A7E4 /* cRenderCommand.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -339,6 +344,7 @@
 				57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */,
 				5725B6E21DD06776002B051A /* cBounds.cpp in Sources */,
 				5725B6F71DD2CE91002B051A /* cEngine.cpp in Sources */,
+				579FC7891DD41C0D00A5A7E4 /* cRenderer.cpp in Sources */,
 				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
 				57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */,

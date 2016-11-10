@@ -44,7 +44,6 @@ namespace Spore3D {
     }
     
     void GameObject::deinit(void) {
-        //TODO : remove all children
         ObjectManager::getInstance()->removeGameObject(getInstanceId());
     }
     

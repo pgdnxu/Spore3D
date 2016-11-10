@@ -59,7 +59,7 @@ namespace Spore3D {
         delete m_MainWindow;
         m_MainWindow = nullptr;
         
-        SceneManager::getInstance()->unloadScene(m_MainScene);
+        SceneManager::getInstance()->unloadAllScenes();
         m_MainScene = nullptr;
         
         ShaderManager::getInstance()->deinit();
@@ -105,11 +105,15 @@ namespace Spore3D {
             Debug::err("Engine init failed: RootScene is NULL.");
             return false;
         }
+        if (!SceneManager::getInstance()->setActiveScene(m_MainScene)) {
+            Debug::err("Engine init failed: set active scene failed.");
+            return false;
+        }
         
         // init main camera
         GameObject *mainCamera = new GameObject("MainCameraObject");
         mainCamera->addComponent<Camera>();
-        mainCamera->getComponent<Transform>()->setPosition(Vec3(20,20,20)).lookAt(Vec3(0,0,0), Vec3::up);
+        mainCamera->getComponent<Transform>()->setPosition(Vec3(20,20,20)).lookAt(Vec3(0,0,0), Vec3::Up);
         m_MainScene->addRootGameObject(mainCamera);
         
         
