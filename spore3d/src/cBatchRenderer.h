@@ -18,37 +18,48 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#ifndef _cRenderCommand_h_
-#define _cRenderCommand_h_
+#ifndef _cBatchRenderer_h_
+#define _cBatchRenderer_h_
 
-#include "cObject.h"
+#include <OpenGL/gl3.h>
+#include <vector>
+
+#include "uTypes.h"
+#include "uDebug.h"
 
 namespace Spore3D {
     
-    class MeshFilter;
-    class Renderer;
-    class Transform;
+    class RenderCommand;
     
+    typedef std::vector<RenderCommand*> RenderCommandBatch;
     
-    class RenderCommand : public CoreObject {
+    class BatchRenderer {
+        
+        enum VAO_IDs {Triangles, NumVAOs};
+        enum Buffer_IDs {ArrayBuffer, ElementArrayBuffer, NumBuffers};
+        
     public:
-        virtual ~RenderCommand();
-        RenderCommand(Renderer*, MeshFilter*, Transform*);
+        static BatchRenderer *getInstance(void);
         
-        MeshFilter *getMeshFilter(void) const { return m_MeshFilter; }
-        Renderer *getRenderer(void) const { return m_Renderer; }
-        Transform *getTransform(void) const { return m_Transform; }
+        void init(void);
         
-    protected:
-        virtual void deinit(void) override;
-        virtual RenderCommand *clone(void) override;
+        void renderBatch(const RenderCommandBatch&);
+        void beginRender(void);
+        void endRender(void);
         
     private:
-        MeshFilter *m_MeshFilter;
-        Renderer *m_Renderer;
-        Transform *m_Transform;
+        struct _ObjectCreate {
+            _ObjectCreate();
+        };
+        static _ObjectCreate _objectCreate;
+        
+        BatchRenderer() : m_ArrayBufferOffset(0) {}
+        
+        GLuint m_VAOs[NumVAOs];
+        GLuint m_Buffers[NumBuffers];
+        
+        GLuint m_ArrayBufferOffset;
     };
-    
 }
 
-#endif /* _cRenderCommand_h_ */
+#endif /* _cBatchRenderer_h_ */

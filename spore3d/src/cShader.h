@@ -23,8 +23,10 @@
 
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
+#include <map>
 
 #include "cObject.h"
+#include "uMath.h"
 
 namespace Spore3D {
     
@@ -37,12 +39,21 @@ namespace Spore3D {
         void enable(void);
         void disable(void);
         
+        void reload(void);
+        
+        void setUniform(const std::string&, const float);
+        void setUniform(const std::string&, const Vec2&);
+        void setUniform(const std::string&, const Vec3&);
+        void setUniform(const std::string&, const Vec4&);
+        void setUniform(const std::string&, const Mat4&);
+        
     protected:
         GLuint m_ProgramID;
+        std::map<std::string, int32> m_UniformLocationCache;
         
         virtual void deinit(void) override;
         virtual Shader *clone(void) override;
-        
+        int32 getUniformLocation(const std::string&);
     };
     
 }

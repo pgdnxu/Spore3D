@@ -57,7 +57,7 @@ namespace Spore3D {
         MeshFilter *newMeshFilter = new MeshFilter(toString());
         
         newMeshFilter->m_Mesh = nullptr;
-        newMeshFilter->m_SharedMesh = m_SharedMesh;
+        newMeshFilter->m_SharedMesh = getSharedPtrMesh();
         
         Debug::log(std::to_string(m_SharedMesh.use_count()));
         
@@ -91,13 +91,15 @@ namespace Spore3D {
             m_Mesh = mesh;
         }
     }
-    
-    Mesh *MeshFilter::getSharedMesh() {
+    std::shared_ptr<Mesh> MeshFilter::getSharedPtrMesh(void) {
         if (m_SharedMesh == nullptr) {
             if (nullptr == m_Mesh) return nullptr;
             Mesh *copy = Instantiate<Mesh>(m_Mesh);
             m_SharedMesh = std::shared_ptr<Mesh>(copy, Destory);
         }
-        return m_SharedMesh.get();
+        return m_SharedMesh;
+    }
+    Mesh *MeshFilter::getSharedMesh() {
+        return getSharedPtrMesh().get();
     };
 }

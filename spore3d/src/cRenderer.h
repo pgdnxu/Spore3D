@@ -27,8 +27,7 @@ namespace Spore3D {
     
     const std::string RENDERER_TYPE_NAME = "Renderer";
     
-    class Shader;
-    class Texture;
+    class Material;
     
     class Renderer : public Component {
     public:
@@ -39,20 +38,19 @@ namespace Spore3D {
     
         void render(void);
         
-        void setShader(Shader*);
-        Shader *getShader(void) const;
-        
-        void setTexture(Texture*);
-        Texture *getTexture(void) const;
+        void setMaterial(Material*);
+        Material *getMaterial(void);
         
     protected:
         Renderer(const std::string&);
         virtual ~Renderer();
+        
+        virtual Renderer *clone(void) override;
+        virtual Renderer *cloneFromGameObject(void) override;
     private:
         static CoreObject *_alloc_obj(const std::string&);
         
-        Shader *m_Shader;
-        Texture *m_Texture;
+        Material *m_Material;
     };
     
 }

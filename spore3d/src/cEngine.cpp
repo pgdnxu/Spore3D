@@ -34,6 +34,11 @@
 #include "cMesh.h"
 #include "uObjMtl.h"
 #include "uObjMeshLoader.h"
+#include "cRenderer.h"
+#include "cShader.h"
+#include "cMaterial.h"
+#include "cRenderQueue.h"
+#include "cBatchRenderer.h"
 
 namespace Spore3D {
     
@@ -72,12 +77,14 @@ namespace Spore3D {
         if (nullptr != currActiveScene) {
             currActiveScene->render();
         }
+        RenderQueue::getInstance()->render();
     }
     
     int Engine::run(int argc, char *argv[]) {
         if (nullptr == m_MainWindow) return -1;
-        
+        BatchRenderer::getInstance()->init();
         while(!m_MainWindow->closed()) {
+            m_MainWindow->clear();
             proc();
             m_MainWindow->update();
             DestoryPool::getInstance()->destoryAll();
@@ -115,8 +122,12 @@ namespace Spore3D {
         
         // init main camera
         GameObject *mainCamera = new GameObject("MainCameraObject");
-        mainCamera->addComponent<Camera>();
-        mainCamera->getComponent<Transform>()->setPosition(Vec3(20,20,20)).lookAt(Vec3(0,0,0), Vec3::Up);
+        Camera *camera = mainCamera->addComponent<Camera>();
+        Viewport vp = Viewport(0, 0, m_MainWindow->getWidth(), m_MainWindow->getHeight());
+        camera->setViewport(vp);
+        camera->setBackgroundColor(Color::black);
+        glViewport(vp.x, vp.y, vp.width*2, vp.height*2);
+        mainCamera->transform->setPosition(Vec3(0,30,-60)).lookAt(Vec3(0,0,0), Vec3::Up);
         m_MainScene->addRootGameObject(mainCamera);
         
         
@@ -126,7 +137,33 @@ namespace Spore3D {
         ObjMtl om;
         ObjMeshLoader::loadMesh("/Users/shannonxu/Desktop/chr_sword", "chr_sword.obj", *mesh, om);
         warrior->addComponent<MeshFilter>()->setMesh(mesh);
+        warrior->transform->setPosition(Vec3(0,0,-20));
         m_MainScene->addRootGameObject(warrior);
+        Renderer *renderer = warrior->addComponent<Renderer>();
+        ShaderManager::getInstance()->setPath("/Users/shannonxu/projects/spore3d/spore3d/shaders/");
+        Shader *shader = ShaderManager::getInstance()->getShader("default");
+        Material *material = new Material("dfltMaterial");
+        material->setShader(shader);
+        renderer->setMaterial(material);
+        renderer->setMaterial(material);
+        
+        GameObject *warrior2 = CoreObject::Instantiate(warrior);
+        warrior2->transform->setPosition(Vec3(20,0,0));
+        m_MainScene->addRootGameObject(warrior2);
+        
+        GameObject *warrior3 = CoreObject::Instantiate(warrior);
+        warrior3->transform->setPosition(Vec3(-20,0,0));
+        m_MainScene->addRootGameObject(warrior3);
+
+        GameObject *warrior4 = CoreObject::Instantiate(warrior);
+        warrior4->transform->setPosition(Vec3(-20,0,20));
+        warrior4->transform->setRotation(Quaternion(20, 30, 40));
+        m_MainScene->addRootGameObject(warrior4);
+        
+        GameObject *warrior5 = CoreObject::Instantiate(warrior);
+        warrior5->transform->setPosition(Vec3(20,0,20));
+        warrior5->transform->setRotation(Quaternion(0, -30, 0));
+        m_MainScene->addRootGameObject(warrior5);
         
         return true;
     }

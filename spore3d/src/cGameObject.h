@@ -31,6 +31,7 @@ namespace Spore3D {
     class Transform;
     class MeshFilter;
     class Scene;
+    class Renderer;
     
     class GameObject : public CoreObject {
         friend ObjectManager;
@@ -38,6 +39,7 @@ namespace Spore3D {
         friend Transform;
         friend MeshFilter;
         friend Scene;
+        friend Renderer;
     public:
         template<typename T>
         T *addComponent(void) {

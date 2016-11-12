@@ -70,9 +70,6 @@ namespace Spore3D {
         
     }
     
-    
-    
-    
     //Vector
     
     class Vec3 {
@@ -300,7 +297,7 @@ namespace Spore3D {
     public:
         float x, y, z, w;
         
-        Vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+        Vec4() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
         
         explicit Vec4(math::NoInitHint) {}
         
@@ -679,9 +676,51 @@ namespace Spore3D {
             rm.s[8] = (right + left) / (right - left);
             rm.s[9] = (top + bottom) / (top - bottom);
             rm.s[10] = (far + near) / (far - near);
+//            rm.s[10] = (far + near) / (near - far);
             rm.s[11] = -1.0f;
             rm.s[14] = -2.0f * far * near / (far - near);
+//            rm.s[14] = -2.0f * far * near / (near - far);
             rm.s[15] = 0.0f;
+            
+//            rm.s[0] = 2.0f * near / (right - left);
+//            rm.s[5] = 2.0f * near / (top - bottom);
+//            rm.s[8] = 2.0f * (right + left) / (right - left);
+//            rm.s[9] = 2.0f * (top + bottom) / (top - bottom);
+//            rm.s[10] = (far + near) / (near - far);
+//            rm.s[11] = -1.0f;
+//            rm.s[14] = -2.0f * far * near / (near - far);
+//            rm.s[15] = 0.0f;
+//            
+            return rm;
+        }
+        
+        static Mat4 PerspectiveMat(const float fov, const float width, const float height, const float near, const float far) {
+            Mat4 rm(math::NO_INIT);
+            const float ar = width / height;
+            const float zNear = near;
+            const float zFar = far;
+            const float zRange = zNear - zFar;
+            const float tanHalfFOV = tanf(math::degToRad(fov / 2.0));
+            
+            rm.e[0][0] = 1.0f / (tanHalfFOV * ar);
+            rm.e[0][1] = 0.0f;
+            rm.e[0][2] = 0.0f;
+            rm.e[0][3] = 0.0f;
+            
+            rm.e[1][0] = 0.0f;
+            rm.e[1][1] = 1.0f / tanHalfFOV;
+            rm.e[1][2] = 0.0f;
+            rm.e[1][3] = 0.0f;
+            
+            rm.e[2][0] = 0.0f;
+            rm.e[2][1] = 0.0f;
+            rm.e[2][2] = (zNear + zFar) / zRange;
+            rm.e[2][3] = -1.0f;
+            
+            rm.e[3][0] = 0.0f;
+            rm.e[3][1] = 0.0f;
+            rm.e[3][2] = 2.0f * zFar * zNear / zRange;
+            rm.e[3][3] = 0.0f;
             
             return rm;
         }

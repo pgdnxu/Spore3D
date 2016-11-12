@@ -30,11 +30,12 @@
 namespace Spore3D {
     
     class SceneManager;
+    class Camera;
     
     class Scene {
         friend SceneManager;
     public:
-        Scene(const std::string &name) : m_Name(name) {}
+        Scene(const std::string &name) : m_Name(name),m_MainCamera(nullptr) {}
         
         std::vector<GameObject*> getRootGameObjects() const;
         void getRootGameObjects(std::vector<GameObject*>&) const;
@@ -51,12 +52,18 @@ namespace Spore3D {
         
         void render(void);
         
+        Camera *getMainCamera(void) { return m_MainCamera; }
+        
     private:
         bool m_IsLoaded;
 
+        Camera *m_MainCamera;
+        
         std::map<CObjectId, GameObject*> m_RootGameObjectMap;
         std::string m_Name;
         ~Scene();
+        
+        void setMainCamera(Camera*);
     };
     
 }

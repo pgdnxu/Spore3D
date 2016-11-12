@@ -52,7 +52,6 @@ namespace Spore3D {
         ComponentTypeId getTypeId(void) { return m_ComponentTypeId; }
         
         virtual void deinit(void) override;
-        virtual Component *cloneFromGameObject(void);
         
         template<typename T>
         T *getComponent(void) const {
@@ -102,6 +101,7 @@ namespace Spore3D {
         Component(const std::string&);
         virtual ~Component();
         virtual Component *clone(void) override;
+        virtual Component *cloneFromGameObject(void);
         
         ComponentTypeId m_ComponentTypeId;
         static ComponentTypeId genTypeId(const std::string&);

@@ -23,21 +23,13 @@
 
 namespace Spore3D {
 
-    RenderCommand::RenderCommand(Renderer *renderer, MeshFilter *meshFilter)
-    : Spore3D::CoreObject("RenderCommand"), m_MeshFilter(meshFilter), m_Renderer(renderer){
+    RenderCommand::RenderCommand(Renderer *renderer, MeshFilter *meshFilter, Transform *transform)
+    : Spore3D::CoreObject("RenderCommand"), m_MeshFilter(meshFilter), m_Renderer(renderer), m_Transform(transform){
         
     }
-    
-    MeshFilter *RenderCommand::getMeshFilter(void) const {
-        return m_MeshFilter;
-    }
-    
-    Renderer *RenderCommand::getRenderer(void) const {
-        return m_Renderer;
-    }
-    
+
     RenderCommand::~RenderCommand() {
-        Debug::log("RenderCommand::~RenderCommand()"+toString());
+//        Debug::log("RenderCommand::~RenderCommand()"+toString());
     }
     
     void RenderCommand::deinit(void) {
@@ -46,7 +38,7 @@ namespace Spore3D {
     }
     
     RenderCommand *RenderCommand::clone(void) {
-        return new RenderCommand(m_Renderer, m_MeshFilter);
+        return new RenderCommand(m_Renderer, m_MeshFilter, m_Transform);
     }
     
 }

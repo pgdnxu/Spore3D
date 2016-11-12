@@ -22,6 +22,9 @@
 #define _cMaterial_h_
 
 #include "cObject.h"
+#include "cShader.h"
+#include "cTexture.h"
+#include "uDebug.h"
 
 namespace Spore3D {
     
@@ -30,10 +33,23 @@ namespace Spore3D {
         Material(const std::string &);
         virtual ~Material();
         
+        void setShader(Shader*);
+        Shader *getShader(void) const;
+        
+        void setTexture(Texture*);
+        Texture *getTexture(void) const;
+        
+        bool operator==(const Material &material) {
+            return m_Shader->getInstanceId() == material.getInstanceId();
+        }
         
     protected:
         virtual void deinit(void) override;
         virtual Material *clone(void) override;
+        
+    private:
+                Shader *m_Shader;
+                Texture *m_Texture;
     };
     
 }

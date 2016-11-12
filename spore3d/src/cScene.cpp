@@ -21,6 +21,7 @@
 #include "cScene.h"
 #include "cObject.h"
 #include "cRenderer.h"
+#include "cCamera.h"
 
 namespace Spore3D {
     
@@ -29,14 +30,12 @@ namespace Spore3D {
     }
     
     std::vector<GameObject*> Scene::getRootGameObjects() const {
-//        return m_RootGameObjectList;
         std::vector<GameObject*> ret;
         getRootGameObjects(ret);
         return ret;
     }
     
     void Scene::getRootGameObjects(std::vector<GameObject*> &rootGameObjectList) const {
-//        rootGameObjectList = m_RootGameObjectList;
         for (const auto &it : m_RootGameObjectMap) {
             rootGameObjectList.push_back(it.second);
         }
@@ -47,37 +46,43 @@ namespace Spore3D {
     }
     
     void Scene::unload(void) {
-//        for (const auto &gameObject : m_RootGameObjectList) {
-//            if (!gameObject->isDontDestroyOnLoad()) {
-//                CoreObject::Destory(gameObject);
-//            }
-//        }
-//        m_RootGameObjectIteratorMap.clear();
-//        m_RootGameObjectList.clear();
         for (const auto &it : m_RootGameObjectMap) {
             if (!it.second->isDontDestroyOnLoad()) {
                 CoreObject::Destory(it.second);
             }
         }
         m_RootGameObjectMap.clear();
+        m_MainCamera = nullptr;
+    }
+    
+    void Scene::setMainCamera(Camera *camera) {
+        if (nullptr == camera) return;
+        if (camera->isEnable()) {
+            m_MainCamera = camera;
+        }
     }
     
     void Scene::addRootGameObject(GameObject *gameObject) {
         if (nullptr != gameObject) {
-//            m_RootGameObjectList.push_back(gameObject);
-//            std::vector<GameObject*>::const_iterator last = m_RootGameObjectList.end();
-//            m_RootGameObjectIteratorMap[gameObject->getInstanceId()] = --last;
+            if (nullptr == m_MainCamera) {
+                setMainCamera(gameObject->getComponent<Camera>());
+            }
             m_RootGameObjectMap[gameObject->getInstanceId()] = gameObject;
         }
     }
     void Scene::removeRootGameObject(GameObject *gameObject) {
         if (nullptr != gameObject) {
-//            auto it = m_RootGameObjectIteratorMap.find(gameObject->getInstanceId());
-//            if (it != m_RootGameObjectIteratorMap.end()) {
-//                m_RootGameObjectList.erase(it->second);
-//                m_RootGameObjectIteratorMap.erase(it);
-//            }
             m_RootGameObjectMap.erase(gameObject->getInstanceId());
+            Camera *camera = gameObject->getComponent<Camera>();
+            if (nullptr != camera) {
+                if (nullptr == m_MainCamera || m_MainCamera->getInstanceId() == camera->getInstanceId()) {
+                    m_MainCamera = nullptr;
+                    for (const auto &it : m_RootGameObjectMap) {
+                        setMainCamera(it.second->getComponent<Camera>());
+                        if (nullptr != m_MainCamera) break;
+                    }
+                }
+            }
         }
     }
     

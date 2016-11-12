@@ -27,7 +27,7 @@
 
 #include "uTypes.h"
 #include "uHash.h"
-
+#include "uDebug.h"
 
 namespace Spore3D {
     
@@ -48,20 +48,12 @@ namespace Spore3D {
         static void Destory(CoreObject*);
         static void DontDestroyOnLoad(CoreObject*);
         
-        bool operator==(const CoreObject *object) const {
-            if (nullptr == object) return false;
-            return this->getInstanceId() == object->getInstanceId();
-        }
         bool operator==(const CoreObject &object) const {
-            return (*this == &object);
-        }
-        
-        bool operator!=(const CoreObject *object) const {
-            return !(*this == object);
+            return getInstanceId() == object.getInstanceId();
         }
         
         bool operator!=(const CoreObject &object) const {
-            return (*this != &object);
+            return !(*this == object);
         }
         
         bool isDontDestroyOnLoad(void) const { return m_DontDestroyOnLoad; }

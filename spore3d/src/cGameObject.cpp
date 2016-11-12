@@ -66,6 +66,7 @@ namespace Spore3D {
                 }
             }
         }
+        newObject->transform = newObject->getComponent<Transform>();
         return newObject;
     }
     

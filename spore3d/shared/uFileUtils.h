@@ -117,16 +117,17 @@ namespace Spore3D {
             
             std::size_t flen = _getFileLength(fd);
             
-//            assert(flen < 10 * 1024 * 1024);
-            
             char *buffer = new char[flen];
+            memset(buffer, 0, flen);
             if (nullptr == buffer) {
                 Debug::err(std::string("file: ").append(filePath).append(" size to large. out of memory."));
+                fclose(fd);
                 return NullRFI;
             }
             
             if (flen != fread(buffer, 1, flen, fd)) {
                 Debug::err(std::string("read file: ").append(filePath).append(" failed."));
+                fclose(fd);
                 delete [] buffer;
                 return NullRFI;
             }

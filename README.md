@@ -5,7 +5,7 @@
 
 * High performance , Lightweight 3D Game Engine.
 * Next will support Lua, Collada, and perhaps Jx9.
-* Animation module, particle module, physics engine, skeleton module, terrain system, UI, all in the plan.
+* Animation module, particle module, physics engine, skeleton module, terrain system, UI, etc. all under plan. :P
 * github.com/pgdnxu/Spore3D
 
 ---

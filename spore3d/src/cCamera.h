@@ -40,6 +40,16 @@ namespace Spore3D {
         Nothing
     };
     
+    struct Viewport {
+        float x;
+        float y;
+        float width;
+        float height;
+        Viewport() : x(0.f), y(0.f), width(0.f), height(0.f) {}
+        Viewport(const float x, const float y, const float width, const float height)
+        :x(x), y(y), width(width), height(height) {}
+    };
+    
     class Camera : public Behaviour {
     public:
         static void registerComponentTypes(void);
@@ -60,6 +70,8 @@ namespace Spore3D {
         }
         
         Mat4 getCameraToWorldMatrix(void) const;
+        void setViewport(const Viewport &viewport) { m_Viewport = viewport;  };
+        Viewport getViewport(void) { return m_Viewport; }
         
     protected:
         Camera(const std::string&);
@@ -71,6 +83,8 @@ namespace Spore3D {
         static CoreObject *_alloc_obj(const std::string&);
         
         Color m_BackgroundColor;
+        
+        Viewport m_Viewport;
     };
     
 }

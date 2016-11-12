@@ -21,6 +21,11 @@
 #include "cRenderQueue.h"
 #include "cObject.h"
 #include "cRenderCommand.h"
+#include "cBatchRenderer.h"
+#include "cRenderer.h"
+#include "cMaterial.h"
+
+#include <map>
 
 namespace Spore3D {
     
@@ -40,6 +45,24 @@ namespace Spore3D {
     }
     
     void RenderQueue::render(void) {
+        
+        std::map<CObjectId, RenderCommandBatch> batchMap;
+        
+        for (const auto &it : m_CommandList) {
+            Renderer *renderer = it->getRenderer();
+            if (nullptr != renderer) {
+                Material *material = renderer->getMaterial();
+                if (nullptr != material) {
+                    batchMap[material->getInstanceId()].push_back(it);
+                }
+            }
+        }
+        
+        BatchRenderer::getInstance()->beginRender();
+        for (const auto &it : batchMap) {
+            BatchRenderer::getInstance()->renderBatch(it.second);
+        }
+        BatchRenderer::getInstance()->endRender();
         
         for (const auto &it : m_CommandList) {
             CoreObject::Destory(it);

@@ -26,6 +26,8 @@
 #include "cRenderQueue.h"
 #include "cMeshFilter.h"
 
+#include <OpenGL/gl3.h>
+
 namespace Spore3D {
     
     CoreObject *Renderer::_alloc_obj(const std::string &name) {
@@ -42,7 +44,7 @@ namespace Spore3D {
     }
     
     void Renderer::deinit(void) {
-        
+        m_Material = nullptr;
     }
     
     Renderer::Renderer(const std::string &name)
@@ -52,22 +54,6 @@ namespace Spore3D {
     
     Renderer::~Renderer() {
         Debug::log("Renderer::~Renderer()"+toString());
-    }
-    
-    void Renderer::setShader(Shader *shader) {
-        m_Shader = shader;
-    }
-    
-    Shader *Renderer::getShader(void) const {
-        return m_Shader;
-    }
-    
-    void Renderer::setTexture(Texture *texture) {
-        m_Texture = texture;
-    }
-    
-    Texture *Renderer::getTexture(void) const {
-        return m_Texture;
     }
     
     void Renderer::render(void) {
@@ -83,7 +69,35 @@ namespace Spore3D {
                 }
             }
 
-            RenderQueue::getInstance()->addCommand(new RenderCommand(this, getComponent<MeshFilter>()));
+            RenderQueue::getInstance()->addCommand(new RenderCommand(this, getComponent<MeshFilter>(), gameObject->transform));
         }
+    }
+    
+    void Renderer::setMaterial(Material *material) {
+        m_Material = material;
+    }
+    
+    Material *Renderer::getMaterial(void) {
+        return m_Material;
+    }
+    
+    Renderer *Renderer::clone(void) {
+        Renderer *newRenderer = cloneFromGameObject();
+        GameObject *relGameObject = nullptr;
+        if (nullptr != gameObject) {
+            relGameObject = gameObject->cloneFromComponent(getTypeId());
+            ObjectManager::getInstance()->addComponentWithComponent(relGameObject->getInstanceId(), newRenderer);
+        }
+        
+        return newRenderer;
+    }
+    
+    Renderer *Renderer::cloneFromGameObject(void) {
+        
+        Renderer *newRenderer = new Renderer(toString());
+        
+        newRenderer->m_Material = m_Material;
+        
+        return newRenderer;
     }
 }

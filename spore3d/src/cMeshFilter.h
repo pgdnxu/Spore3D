@@ -51,6 +51,7 @@ namespace Spore3D {
         
         Mesh *m_Mesh;
         std::shared_ptr<Mesh> m_SharedMesh;
+        std::shared_ptr<Mesh> getSharedPtrMesh(void);
     };
     
 }

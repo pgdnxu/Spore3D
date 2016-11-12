@@ -43,6 +43,7 @@
 		57A8C24E1DB0DB3A00366F1E /* cObjectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C24D1DB0DB3A00366F1E /* cObjectManager.cpp */; };
 		57A8C2501DB0E44C00366F1E /* cComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A8C24F1DB0E44C00366F1E /* cComponent.cpp */; };
 		57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D8D9B51DB2742100E66ECE /* cTransform.cpp */; };
+		57F79F021DD59F66001DCE96 /* cBatchRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F79F011DD59F66001DCE96 /* cBatchRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -136,6 +137,8 @@
 		57A8C24F1DB0E44C00366F1E /* cComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cComponent.cpp; sourceTree = "<group>"; };
 		57D8D9B41DB26D5400E66ECE /* cTransform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cTransform.h; sourceTree = "<group>"; };
 		57D8D9B51DB2742100E66ECE /* cTransform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cTransform.cpp; sourceTree = "<group>"; };
+		57F79F001DD59F3F001DCE96 /* cBatchRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cBatchRenderer.h; sourceTree = "<group>"; };
+		57F79F011DD59F66001DCE96 /* cBatchRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cBatchRenderer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +284,8 @@
 				579FC7931DD4561800A5A7E4 /* cMaterialManager.cpp */,
 				575B6FED1DB8C80800E085EB /* cTexture.h */,
 				579FC7951DD458A100A5A7E4 /* cTexture.cpp */,
+				57F79F001DD59F3F001DCE96 /* cBatchRenderer.h */,
+				57F79F011DD59F66001DCE96 /* cBatchRenderer.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -370,6 +375,7 @@
 				571504AE1DC8652A005C8BEF /* uMath.cpp in Sources */,
 				57D8D9B61DB2742100E66ECE /* cTransform.cpp in Sources */,
 				57585C381DCCB4E200491879 /* cSceneManager.cpp in Sources */,
+				57F79F021DD59F66001DCE96 /* cBatchRenderer.cpp in Sources */,
 				5725B6ED1DD184D6002B051A /* pugixml.cpp in Sources */,
 				5725B6F91DD2CED4002B051A /* glfwWindow.cpp in Sources */,
 				579FC7911DD4551600A5A7E4 /* cMaterial.cpp in Sources */,

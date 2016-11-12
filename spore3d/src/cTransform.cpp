@@ -182,8 +182,16 @@ namespace Spore3D {
         return Mat4::RotMat(getRotation().conjugate()) * Mat4::TransMat(-getPosition()) ;
     }
     
+    Vec4 Transform::transformPoint(const Vec4 &point) const {
+        return getLocalToWorldMatrix() * point;
+    }
+    
     Vec3 Transform::transformPoint(const Vec3 &point) const {
         return getLocalToWorldMatrix() * point;
+    }
+    
+    Vec4 Transform::inverseTransformPoint(const Vec4 &point) const {
+        return getWorldToLocalMatrix() * point;
     }
     
     Vec3 Transform::inverseTransformPoint(const Vec3 &point) const {

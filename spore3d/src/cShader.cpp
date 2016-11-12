@@ -22,6 +22,8 @@
 
 namespace Spore3D {
     
+    const int32 LNF = -1;
+    
     Shader::Shader(const std::string &name, const GLuint programId)
     : CoreObject(name), m_ProgramID(programId) {
         
@@ -40,12 +42,64 @@ namespace Spore3D {
     }
     
     void Shader::enable(void) {
-        if (glIsShader(m_ProgramID))
+        if (glIsProgram(m_ProgramID))
             glUseProgram(m_ProgramID);
     }
     
     void Shader::disable(void) {
         glUseProgram(0);
+    }
+    
+    void Shader::reload(void) {
+        glLinkProgram(m_ProgramID);
+        m_UniformLocationCache.clear();
+    }
+    
+    int32 Shader::getUniformLocation(const std::string &uniformName) {
+        if (m_UniformLocationCache.find(uniformName) == m_UniformLocationCache.end()) {
+            int32 location = glGetUniformLocation(m_ProgramID, uniformName.c_str());
+            if (LNF != location) {
+                m_UniformLocationCache[uniformName] = location;
+            }
+            return location;
+        }
+        return m_UniformLocationCache[uniformName];
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const float value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniform1f(location, value);
+        }
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const Vec2 &value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniform2f(location, value.x, value.y);
+        }
+        
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const Vec3 &value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniform3f(location, value.x, value.y, value.z);
+        }
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const Vec4 &value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniform4f(location, value.x, value.y, value.z, value.w);
+        }
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const Mat4 &value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniformMatrix4fv(location, 1, GL_FALSE, value.s);
+        }
     }
     
 }

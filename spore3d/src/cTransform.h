@@ -72,13 +72,16 @@ namespace Spore3D {
         Vec3 getLocalPosition(void) const { return m_LocalPosition; }
         Quaternion getLocalRotation(void) const { return m_LocalRotation; }
         Vec3 getLocalEulerAngle(void) const { return m_LocalEulerAngle; }
+        
         Vec3 getForward(void) const { return Mat4(m_Rotation) * Vec3::Forward; }
         Vec3 getUp(void) const { return Mat4(m_Rotation) * Vec3::Up; }
         Vec3 getRight(void) const { return Mat4(m_Rotation) * Vec3::Right; }
         
         Mat4 getLocalToWorldMatrix(void) const;
         Mat4 getWorldToLocalMatrix(void) const;
+        Vec4 transformPoint(const Vec4&) const;
         Vec3 transformPoint(const Vec3&) const;
+        Vec4 inverseTransformPoint(const Vec4&) const;
         Vec3 inverseTransformPoint(const Vec3&) const;
         Vec3 transformDirection(const Vec3&) const;
         Vec3 inverseTransformDirection(const Vec3&) const;

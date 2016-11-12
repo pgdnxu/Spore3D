@@ -32,10 +32,30 @@ namespace Spore3D {
     }
     
     void Material::deinit(void) {
-        
+        m_Texture = nullptr;
+        m_Shader = nullptr;
     }
     
     Material *Material::clone(void) {
-        return nullptr;
+        Material *ret = new Material(toString());
+        ret->m_Shader = m_Shader;
+        ret->m_Texture = m_Texture;
+        return ret;
+    }
+    
+    void Material::setShader(Shader *shader) {
+        m_Shader = shader;
+    }
+    
+    Shader *Material::getShader(void) const {
+        return m_Shader;
+    }
+    
+    void Material::setTexture(Texture *texture) {
+        m_Texture = texture;
+    }
+    
+    Texture *Material::getTexture(void) const {
+        return m_Texture;
     }
 }

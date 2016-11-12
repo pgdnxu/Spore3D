@@ -1,14 +1,12 @@
 #version 330 core
 
-layout(location = 1) in vec4 position;
+layout(location = 0) in vec3 position;
 
-uniform mat4 pr_matrix = mat4(1.0);
-uniform mat4 vm_matrix = mat4(1.0);
-uniform mat4 ml_matrix = mat4(1.0);
+uniform mat4 pr_matrix;
+uniform mat4 view_matrix;
 
 void main(void) {
-    
-    gl_Position = pr_matrix * vm_matrix * ml_matrix * position;
-    
+    vec4 tPosition = (pr_matrix * view_matrix * vec4(position,1));
+    gl_Position = vec4(tPosition.x, tPosition.y, tPosition.z, -tPosition.w*1.01);
 }
 

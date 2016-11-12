@@ -108,24 +108,24 @@ namespace Spore3D {
                 std::vector<std::string> inds = StringUtils::split(v[i], '/');
                 if (inds.size() == 1) {
                     if (inds[0].length() > 0) {
-                        mesh.vertIndex.push_back(std::stoi(inds[0]));
+                        mesh.vertIndex.push_back(std::stoi(inds[0])-1);
                     }
                 } else if (inds.size() == 2) {
                     if (inds[0].length() > 0) {
-                        mesh.vertIndex.push_back(std::stoi(inds[0]));
+                        mesh.vertIndex.push_back(std::stoi(inds[0])-1);
                     }
                     if (inds[1].length() > 0) {
-                        mesh.textureIndex.push_back(std::stoi(inds[1]));
+                        mesh.textureIndex.push_back(std::stoi(inds[1])-1);
                     }
                 } else if (inds.size() >= 3) {
                     if (inds[0].length() > 0) {
-                        mesh.vertIndex.push_back(std::stoi(inds[0]));
+                        mesh.vertIndex.push_back(std::stoi(inds[0])-1);
                     }
                     if (inds[1].length() > 0) {
-                        mesh.textureIndex.push_back(std::stoi(inds[1]));
+                        mesh.textureIndex.push_back(std::stoi(inds[1])-1);
                     }
                     if (inds[2].length() > 0) {
-                        mesh.normalIndex.push_back(std::stoi(inds[2]));
+                        mesh.normalIndex.push_back(std::stoi(inds[2])-1);
                     }
                 }
             }

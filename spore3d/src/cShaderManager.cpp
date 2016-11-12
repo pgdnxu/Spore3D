@@ -25,6 +25,8 @@
 #include "pugixml.hpp"
 #include "cShader.h"
 
+#include <cstring>
+
 namespace Spore3D {
     
     static const char* CONF_NODE_SHADER = "shader";
@@ -63,7 +65,8 @@ namespace Spore3D {
         GLint rslt;
         bool hasVertShader = false;
         bool hasFragShader = false;
-        std::string confPath = m_CurrPath + shaderName + ".conf";
+        std::string shaderPath = m_CurrPath + shaderName + "/";
+        std::string confPath = shaderPath + shaderName + ".conf";
 
         std::map<GLenum, std::vector<ShaderConfig>> configMap;
         pugi::xml_document doc;
@@ -102,21 +105,30 @@ namespace Spore3D {
             std::vector<GLuint> shaderIdList;
             for (const auto &it : configMap) {
                 uint32 index = 0;
-                const char *srcList[it.second.size()];
+                char *srcList[it.second.size()];
+                GLint srcLen[it.second.size()];
                 for (const auto &conf : it.second) {
-                    std::string filePath = m_CurrPath + conf.name;
+                    std::string filePath = shaderPath + conf.name;
                     std::string shaderSrc;
                     FileUtils::readTextFile(filePath, shaderSrc);
                     if (shaderSrc.empty()) {
                         Debug::err("Load shader failed : read "+conf.name+" failed.");
                         return nullptr;
                     }
-                    srcList[index++] = shaderSrc.c_str();
+                    srcList[index] = new char[shaderSrc.length()+1];
+                    strcpy(srcList[index], shaderSrc.c_str());
+                    srcList[shaderSrc.length()] = 0;
+                    srcLen[index] = GLint(shaderSrc.length());
+                    index++;
                 }
                 
                 GLuint shaderId = glCreateShader(it.first);
-                glShaderSource(shaderId, 1, srcList, nullptr);
+                glShaderSource(shaderId, index, srcList, srcLen);
                 glCompileShader(shaderId);
+                
+                for (int i = 0; i < index; i++) {
+                    delete [] srcList[i];
+                }
                 
                 glGetShaderiv(shaderId, GL_COMPILE_STATUS, &rslt);
                 if (GL_FALSE == rslt) {
@@ -125,7 +137,7 @@ namespace Spore3D {
                     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
                     std::vector<GLchar> error(length);
                     glGetShaderInfoLog(shaderId, length, &length, &error[0]);
-                    Debug::err(&error[0]);
+                    Debug::err("1:"+std::string(&error[0]));
 #endif /* _DEBUG */
                     
                     return nullptr;
@@ -145,7 +157,7 @@ namespace Spore3D {
                 glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &length);
                 std::vector<GLchar> error(length);
                 glGetProgramInfoLog(programId, length, &length, &error[0]);
-                Debug::err(&error[0]);
+                Debug::err("2:"+std::string(&error[0]));
 #endif /* _DEBUG */
                 return nullptr;
             }

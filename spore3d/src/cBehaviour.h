@@ -28,9 +28,9 @@ namespace Spore3D {
     class Behaviour : public Component {
     public:
         void setEnable(const bool enable) { m_Enable = enable; }
+        bool isEnable(void) { return m_Enable; }
     protected:
-    protected:
-        Behaviour(const std::string &name) : Component(name) {}
+        Behaviour(const std::string &name) : Component(name) ,m_Enable(true) {}
     private:
         bool m_Enable;
     };
