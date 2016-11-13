@@ -54,6 +54,8 @@ namespace Spore3D {
         
         Camera *getMainCamera(void) { return m_MainCamera; }
         
+        void update(void);
+        
     private:
         bool m_IsLoaded;
 

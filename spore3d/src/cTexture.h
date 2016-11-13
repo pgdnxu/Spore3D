@@ -21,12 +21,35 @@
 #ifndef _cTexture_h_
 #define _cTexture_h_
 
+#include <OpenGL/gl3.h>
 #include "cObject.h"
 
 namespace Spore3D {
+
+    class PngData;
+    class TextureManager;
     
     class Texture : public CoreObject {
+        friend TextureManager;
+    public:
+        Texture(const std::string &name, GLenum target);
+        virtual ~Texture();
         
+        void enable(void) const;
+        void disable(void) const;
+        
+        PngData *getData(void) const { return m_Data; }
+        
+    protected:
+        virtual void deinit(void) override;
+        virtual Texture *clone(void) override;
+        
+    private:
+        void setData(PngData*);
+        
+        GLuint m_TextureId;
+        GLenum m_Target;
+        PngData *m_Data;
     };
     
 }

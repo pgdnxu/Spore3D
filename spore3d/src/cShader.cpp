@@ -38,15 +38,16 @@ namespace Spore3D {
     }
     
     Shader *Shader::clone(void) {
+        // TODO : deep copy
         return new Shader(toString(), m_ProgramID);
     }
     
-    void Shader::enable(void) {
+    void Shader::enable(void) const {
         if (glIsProgram(m_ProgramID))
             glUseProgram(m_ProgramID);
     }
     
-    void Shader::disable(void) {
+    void Shader::disable(void) const {
         glUseProgram(0);
     }
     
@@ -99,6 +100,13 @@ namespace Spore3D {
         int32 location = getUniformLocation(uniformName);
         if (LNF != location) {
             glUniformMatrix4fv(location, 1, GL_FALSE, value.s);
+        }
+    }
+    
+    void Shader::setUniform(const std::string &uniformName, const int32 value) {
+        int32 location = getUniformLocation(uniformName);
+        if (LNF != location) {
+            glUniform1i(location, value);
         }
     }
     

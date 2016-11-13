@@ -40,7 +40,7 @@ namespace Spore3D {
         uint32 dataSize;
         
         PngData() : data(nullptr), dataSize(0) {}
-        ~PngData() { delete [] data;}
+        ~PngData() { delete [] data; data = nullptr;}
     };
     
     class PngReader {

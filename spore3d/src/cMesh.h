@@ -32,8 +32,6 @@ namespace Spore3D {
     public:
         Mesh(const std::string &name);
         virtual ~Mesh();
-    
-//        void clear(void);
         
     public:
         std::vector<Vec3>   vertices;

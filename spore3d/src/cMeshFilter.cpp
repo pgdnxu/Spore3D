@@ -59,8 +59,6 @@ namespace Spore3D {
         newMeshFilter->m_Mesh = nullptr;
         newMeshFilter->m_SharedMesh = getSharedPtrMesh();
         
-        Debug::log(std::to_string(m_SharedMesh.use_count()));
-        
         return newMeshFilter;
     }
     

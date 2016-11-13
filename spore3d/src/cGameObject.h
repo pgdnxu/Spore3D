@@ -41,6 +41,9 @@ namespace Spore3D {
         friend Scene;
         friend Renderer;
     public:
+        
+        void testUpdate(void);
+        
         template<typename T>
         T *addComponent(void) {
             return static_cast<T*>(ObjectManager::getInstance()->addComponentWithComponentTypeId(getInstanceId(), T::TypeId()));

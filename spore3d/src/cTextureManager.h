@@ -18,45 +18,32 @@
 //
 // .--. --. -.. -. .. -. ..-. --.-. --. -- .- .. .-.. .-.-.- -.-. --- --
 
-#include "cMaterial.h"
+#ifndef _cTextureManager_h_
+#define _cTextureManager_h_
+
+#include <map>
+#include <string>
 
 namespace Spore3D {
     
-    Material::Material(const std::string &name)
-    : CoreObject(name) {
+    class Texture;
+    
+    class TextureManager {
+    public:
+        static TextureManager *getInstance(void);
         
-    }
-    
-    Material::~Material() {
+        Texture *getTexture(const std::string&, const std::string&);
         
-    }
+        void deinit(void);
+    private:
+        struct _ObjectCreate {
+            _ObjectCreate();
+        };
+        static _ObjectCreate _objectCreate;
+        
+        std::map<std::string, Texture*> m_TextureMap;
+    };
     
-    void Material::deinit(void) {
-        m_Texture = nullptr;
-        m_Shader = nullptr;
-    }
-    
-    Material *Material::clone(void) {
-        //TODO : deep copy
-        Material *ret = new Material(toString());
-        ret->m_Shader = m_Shader;
-        ret->m_Texture = m_Texture;
-        return ret;
-    }
-    
-    void Material::setShader(Shader *shader) {
-        m_Shader = shader;
-    }
-    
-    Shader *Material::getShader(void) const {
-        return m_Shader;
-    }
-    
-    void Material::setTexture(Texture *texture) {
-        m_Texture = texture;
-    }
-    
-    Texture *Material::getTexture(void) const {
-        return m_Texture;
-    }
 }
+
+#endif /* _cTextureManager_h_ */

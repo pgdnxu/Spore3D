@@ -39,6 +39,8 @@
 #include "cMaterial.h"
 #include "cRenderQueue.h"
 #include "cBatchRenderer.h"
+#include "cTexture.h"
+#include "cTextureManager.h"
 
 namespace Spore3D {
     
@@ -75,6 +77,7 @@ namespace Spore3D {
     void Engine::proc(void) {
         Scene *currActiveScene = SceneManager::getInstance()->getActiveScene();
         if (nullptr != currActiveScene) {
+            currActiveScene->update();
             currActiveScene->render();
         }
         RenderQueue::getInstance()->render();
@@ -124,10 +127,11 @@ namespace Spore3D {
         GameObject *mainCamera = new GameObject("MainCameraObject");
         Camera *camera = mainCamera->addComponent<Camera>();
         Viewport vp = Viewport(0, 0, m_MainWindow->getWidth(), m_MainWindow->getHeight());
+        camera->setFOV(60)->setHeight(vp.height)->setWidth(vp.width)->setFar(1000)->setNear(0);
         camera->setViewport(vp);
         camera->setBackgroundColor(Color::black);
         glViewport(vp.x, vp.y, vp.width*2, vp.height*2);
-        mainCamera->transform->setPosition(Vec3(0,30,-60)).lookAt(Vec3(0,0,0), Vec3::Up);
+        mainCamera->transform->setPosition(Vec3(0,40,-50)).lookAt(Vec3(0,0,0), Vec3::Up);
         m_MainScene->addRootGameObject(mainCamera);
         
         
@@ -144,26 +148,19 @@ namespace Spore3D {
         Shader *shader = ShaderManager::getInstance()->getShader("default");
         Material *material = new Material("dfltMaterial");
         material->setShader(shader);
-        renderer->setMaterial(material);
-        renderer->setMaterial(material);
+        Texture *texture = TextureManager::getInstance()->getTexture("/Users/shannonxu/Desktop/chr_sword", "chr_sword.png");
+        material->setTexture(texture);
         
-        GameObject *warrior2 = CoreObject::Instantiate(warrior);
-        warrior2->transform->setPosition(Vec3(20,0,0));
-        m_MainScene->addRootGameObject(warrior2);
-        
-        GameObject *warrior3 = CoreObject::Instantiate(warrior);
-        warrior3->transform->setPosition(Vec3(-20,0,0));
-        m_MainScene->addRootGameObject(warrior3);
+        renderer->setMaterial(material);
 
-        GameObject *warrior4 = CoreObject::Instantiate(warrior);
-        warrior4->transform->setPosition(Vec3(-20,0,20));
-        warrior4->transform->setRotation(Quaternion(20, 30, 40));
-        m_MainScene->addRootGameObject(warrior4);
         
-        GameObject *warrior5 = CoreObject::Instantiate(warrior);
-        warrior5->transform->setPosition(Vec3(20,0,20));
-        warrior5->transform->setRotation(Quaternion(0, -30, 0));
-        m_MainScene->addRootGameObject(warrior5);
+        for (int i = 0; i < 25; i++) {
+            GameObject *warriorClone = CoreObject::Instantiate(warrior);
+            warriorClone->transform->setPosition(Vec3((i%5)*20-40,0,(i/5+1)*20-10));
+            m_MainScene->addRootGameObject(warriorClone);
+        }
+        
+        warrior->transform->setRotation(Quaternion(0, 180, 0));
         
         return true;
     }

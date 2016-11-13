@@ -73,6 +73,17 @@ namespace Spore3D {
         void setViewport(const Viewport &viewport) { m_Viewport = viewport;  };
         Viewport getViewport(void) { return m_Viewport; }
         
+        Camera *setFOV(const float fov) { m_FOV = fov; return this; }
+        Camera *setWidth(const float width) { m_Width = width; return this; }
+        Camera *setHeight(const float height) { m_Height = height; return this; }
+        Camera *setNear(const float near) { m_Near = near; return this; }
+        Camera *setFar(const float far) { m_Far = far; return this; }
+        float getFOV(void) const { return m_FOV; }
+        float getWidth(void) const { return m_Width; }
+        float getHeight(void) const { return m_Height; }
+        float getNear(void) const { return m_Near; }
+        float getFar(void) const { return m_Far; }
+        
     protected:
         Camera(const std::string&);
         virtual ~Camera();
@@ -85,6 +96,12 @@ namespace Spore3D {
         Color m_BackgroundColor;
         
         Viewport m_Viewport;
+        
+        float m_FOV;
+        float m_Width;
+        float m_Height;
+        float m_Near;
+        float m_Far;
     };
     
 }

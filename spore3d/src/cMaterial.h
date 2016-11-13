@@ -40,7 +40,8 @@ namespace Spore3D {
         Texture *getTexture(void) const;
         
         bool operator==(const Material &material) {
-            return m_Shader->getInstanceId() == material.getInstanceId();
+            return (m_Shader->getInstanceId() == material.getShader()->getInstanceId())
+            && (m_Texture->getInstanceId() == material.getTexture()->getInstanceId());
         }
         
     protected:

@@ -35,16 +35,8 @@ namespace Spore3D {
         static bool loadMesh(const std::string &meshPath, const std::string &meshFileName, Mesh &mesh, ObjMtl &objMtl) {
             std::string cMeshPath = StringUtils::trimmed(meshPath);
             std::string cMeshFileName = StringUtils::trimmed(meshFileName);
-            
-//            if (cMeshPath[cMeshPath.length()-1] != '/') {
-//                cMeshPath.append("/");
-//            }
-            if (cMeshPath.at(cMeshPath.length()-1) != '/') {
-                cMeshPath.append("/");
-            }
-            
+            StringUtils::appendSlash(cMeshPath);
             std::string meshPathName = cMeshPath + cMeshFileName;
-            
             std::string meshContent;
             if (!FileUtils::readTextFile(meshPathName, meshContent)) {
                 return false;
@@ -54,15 +46,12 @@ namespace Spore3D {
             
             std::vector<std::string> lines;
             StringUtils::split(meshContent, '\n', lines);
-//            std::vector<std::string>::iterator itline = lines.begin();
             auto itline = lines.begin();
             
             uint32 vindex = 0;
             ObjMtlInfo *currObjMtlInfo = nullptr;
             
             for (; itline != lines.end(); itline++) {
-//                Debug::log(*itline);
-                
                 std::string tLine = StringUtils::trimmed(*itline);
                 
                 if (tLine[0] != '#') {

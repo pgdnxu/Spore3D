@@ -100,4 +100,10 @@ namespace Spore3D {
         }
     }
     
+    void Scene::update(void) {
+        for (const auto &it : m_RootGameObjectMap) {
+            it.second->testUpdate();
+        }
+    }
+    
 }

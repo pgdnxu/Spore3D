@@ -71,7 +71,7 @@ namespace Spore3D {
     }
     
     GameObject *GameObject::_clone(void) {
-        GameObject *rawGameObject = new GameObject(toString(), true);
+        GameObject *rawGameObject = new GameObject(toString()+"_clone", true);
         return rawGameObject;
     }
     
@@ -128,5 +128,20 @@ namespace Spore3D {
             return m_ActiveSelf && parent->gameObject->isActiveInHierarchy();
         }
         return m_ActiveSelf;
+    }
+    
+    void GameObject::testUpdate(void) {
+        if (toString() == "Warrior") {
+            Quaternion q = transform->getRotation();
+            transform->setRotation(Quaternion(0, q.eulerAngle().y+5, 0));
+        } else if (toString() == "Warrior_clone") {
+            if (getInstanceId()%3==0) {
+                Quaternion q = transform->getRotation();
+                transform->setRotation(Quaternion(0, q.eulerAngle().y-2, 0));
+            } else if (getInstanceId()%3==1) {
+                Quaternion q = transform->getRotation();
+                transform->setRotation(Quaternion(0, q.eulerAngle().y+1, 0));
+            }
+        }
     }
 }

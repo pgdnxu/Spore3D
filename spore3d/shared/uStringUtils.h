@@ -79,10 +79,16 @@ namespace Spore3D {
             trim(s);
             return s;
         }
-
+        
+        static void appendSlash(std::string &s) {
+            if (s.empty()) {
+                s.append("/");
+            } else {
+                if ('/' != s.at(s.length()-1))
+                    s.append("/");
+            }
+        }
     };
-    
-    
 }
 
 #endif /* _uStringUtils_h_ */

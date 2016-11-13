@@ -56,9 +56,7 @@ namespace Spore3D {
     }
     void ShaderManager::setPath(const std::string &path) {
         m_CurrPath = StringUtils::trimmed(path);
-        if (m_CurrPath.at(m_CurrPath.length()-1) != '/') {
-            m_CurrPath.append("/");
-        }
+        StringUtils::appendSlash(m_CurrPath);
     }
     
     Shader *ShaderManager::loadShader(const std::string &shaderName) {

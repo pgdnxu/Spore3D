@@ -36,7 +36,7 @@ namespace Spore3D {
     class BatchRenderer {
         
         enum VAO_IDs {Triangles, NumVAOs};
-        enum Buffer_IDs {ArrayBuffer, ElementArrayBuffer, NumBuffers};
+        enum Buffer_IDs {ArrayBuffer, ElementArrayBuffer, TexCoodBuffer, NumBuffers};
         
     public:
         static BatchRenderer *getInstance(void);

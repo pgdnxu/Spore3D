@@ -36,10 +36,12 @@ namespace Spore3D {
         Shader(const std::string&,const GLuint);
         virtual ~Shader();
         
-        void enable(void);
-        void disable(void);
+        void enable(void) const;
+        void disable(void) const;
         
         void reload(void);
+        
+        void setUniform(const std::string&, const int32);
         
         void setUniform(const std::string&, const float);
         void setUniform(const std::string&, const Vec2&);

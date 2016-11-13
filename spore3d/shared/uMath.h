@@ -668,31 +668,31 @@ namespace Spore3D {
             return Mat4(Quaternion(axis.x, axis.y, axis.z, cosf(rad * 0.5f)));
         }
         
-        static Mat4 PerspectiveMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
-            Mat4 rm;
-            
-            rm.s[0] = -2.0f * near / (right - left);
-            rm.s[5] = -2.0f * near / (top - bottom);
-            rm.s[8] = (right + left) / (right - left);
-            rm.s[9] = (top + bottom) / (top - bottom);
-            rm.s[10] = (far + near) / (far - near);
-//            rm.s[10] = (far + near) / (near - far);
-            rm.s[11] = -1.0f;
-            rm.s[14] = -2.0f * far * near / (far - near);
-//            rm.s[14] = -2.0f * far * near / (near - far);
-            rm.s[15] = 0.0f;
-            
-//            rm.s[0] = 2.0f * near / (right - left);
-//            rm.s[5] = 2.0f * near / (top - bottom);
-//            rm.s[8] = 2.0f * (right + left) / (right - left);
-//            rm.s[9] = 2.0f * (top + bottom) / (top - bottom);
-//            rm.s[10] = (far + near) / (near - far);
+//        static Mat4 PerspectiveMat(const float left, const float right, const float bottom, const float top, const float near, const float far) {
+//            Mat4 rm;
+//            
+//            rm.s[0] = -2.0f * near / (right - left);
+//            rm.s[5] = -2.0f * near / (top - bottom);
+//            rm.s[8] = (right + left) / (right - left);
+//            rm.s[9] = (top + bottom) / (top - bottom);
+//            rm.s[10] = (far + near) / (far - near);
+////            rm.s[10] = (far + near) / (near - far);
 //            rm.s[11] = -1.0f;
-//            rm.s[14] = -2.0f * far * near / (near - far);
+//            rm.s[14] = -2.0f * far * near / (far - near);
+////            rm.s[14] = -2.0f * far * near / (near - far);
 //            rm.s[15] = 0.0f;
 //            
-            return rm;
-        }
+////            rm.s[0] = 2.0f * near / (right - left);
+////            rm.s[5] = 2.0f * near / (top - bottom);
+////            rm.s[8] = 2.0f * (right + left) / (right - left);
+////            rm.s[9] = 2.0f * (top + bottom) / (top - bottom);
+////            rm.s[10] = (far + near) / (near - far);
+////            rm.s[11] = -1.0f;
+////            rm.s[14] = -2.0f * far * near / (near - far);
+////            rm.s[15] = 0.0f;
+////            
+//            return rm;
+//        }
         
         static Mat4 PerspectiveMat(const float fov, const float width, const float height, const float near, const float far) {
             Mat4 rm(math::NO_INIT);

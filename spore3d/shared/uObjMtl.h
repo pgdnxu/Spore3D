@@ -63,9 +63,7 @@ namespace Spore3D {
         void setFilePath(const std::string &path) {
             m_MtlFilePath = path;
             StringUtils::trim(m_MtlFilePath);
-            if (m_MtlFilePath[m_MtlFilePath.length()-1] != '/') {
-                m_MtlFilePath.append("/");
-            }
+            StringUtils::appendSlash(m_MtlFilePath);
         }
         
         void setFileName(const std::string &name) {
@@ -86,7 +84,6 @@ namespace Spore3D {
             
             ObjMtlInfo *currOMI = nullptr;
             
-//            std::vector<std::string>::iterator itline = lines.begin();
             auto itline = lines.begin();
             for (;itline != lines.end(); itline++) {
                 std::string tLine = StringUtils::trimmed(*itline);

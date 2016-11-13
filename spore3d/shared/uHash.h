@@ -108,15 +108,13 @@ namespace Spore3D {
                 char c = *strOffset++;
                 
 #ifdef CONVERT_BACKSLASH
-                if (c == '\\')
-                {
+                if (c == '\\') {
                     c = '/';
                 }
 #endif
                 
 #ifdef CASE_INSENSITIVE
-                if ((c >= 'a') && (c <= 'z'))
-                {
+                if ((c >= 'a') && (c <= 'z')) {
                     c -= 'a' - 'A';
                 }
 #endif
