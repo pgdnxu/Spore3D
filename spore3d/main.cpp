@@ -22,7 +22,7 @@
 
 int main(int argc, char *argv[])
 {
-    if (!Spore3D::Engine::getInstance()->init("Spore3D-demo", 800, 600)) {
+    if (!Spore3D::Engine::getInstance()->init("Spore3D-demo", 1000, 800)) {
         return -1;
     }
     return Spore3D::Engine::getInstance()->run(argc, argv);

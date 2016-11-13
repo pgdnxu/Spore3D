@@ -64,6 +64,10 @@ namespace Spore3D {
         bool isKeyPressed(unsigned int keycode) const;
         bool isMouseButtonPressed(unsigned int button) const;
         void getMousePosition(double& x, double& y) const;
+        
+        //test code
+        bool startToRotate;
+        bool startToTranslate;
     private:
         bool init();
     };

@@ -150,9 +150,24 @@ namespace Spore3D {
         material->setShader(shader);
         Texture *texture = TextureManager::getInstance()->getTexture("/Users/shannonxu/Desktop/chr_sword", "chr_sword.png");
         material->setTexture(texture);
-        
         renderer->setMaterial(material);
 
+        GameObject *terrain = new GameObject("Terrain");
+        Mesh *meshT = new Spore3D::Mesh("monu9");
+        ObjMtl omT;
+        ObjMeshLoader::loadMesh("/Users/shannonxu/Desktop/monu9", "monu9.obj", *meshT, omT);
+        terrain->addComponent<MeshFilter>()->setMesh(meshT);
+        terrain->transform->setPosition(Vec3(0,0,30));
+        m_MainScene->addRootGameObject(terrain);
+        Renderer *rendererT = terrain->addComponent<Renderer>();
+        ShaderManager::getInstance()->setPath("/Users/shannonxu/projects/spore3d/spore3d/shaders/");
+//        Shader *shader = ShaderManager::getInstance()->getShader("default");
+        Material *materialT = new Material("dfltMaterialT");
+        materialT->setShader(shader);
+        Texture *textureT = TextureManager::getInstance()->getTexture("/Users/shannonxu/Desktop/monu9", "monu9.png");
+        materialT->setTexture(textureT);
+        rendererT->setMaterial(materialT);
+        
         
         for (int i = 0; i < 25; i++) {
             GameObject *warriorClone = CoreObject::Instantiate(warrior);

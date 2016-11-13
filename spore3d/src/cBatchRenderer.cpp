@@ -144,8 +144,8 @@ namespace Spore3D {
         float *texCoodIndexBufferOffset = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
         
         for (const auto &it : rcb) {
-            uint32 dd = 0;
-            float cc = 0.0f;
+//            uint32 dd = 0;
+//            float cc = 0.0f;
             Mesh *mesh = it->getMeshFilter()->getMesh();
             std::vector<uint32> textureIndex = mesh->textureIndex;
             for (uint32 i = 0; i < textureIndex.size(); i++) {
@@ -172,7 +172,7 @@ namespace Spore3D {
     
     void BatchRenderer::beginRender(void) {
 //        glEnable(GL_CULL_FACE);
-//        glCullFace(GL_FRONT);
+//        glCullFace(GL_BACK);
     }
     
     void BatchRenderer::endRender(void) {

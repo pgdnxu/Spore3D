@@ -20,6 +20,14 @@
 
 #include "glfwWindow.h"
 
+//test code
+#include "uDebug.h"
+#include "cSceneManager.h"
+#include "cCamera.h"
+#include "cTransform.h"
+#include "cScene.h"
+#include "uMath.h"
+
 namespace Spore3D {
     
     void window_resize(GLFWwindow *window, int width, int height);
@@ -27,10 +35,8 @@ namespace Spore3D {
     void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
     void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
     
-    GlfwWindow::GlfwWindow(const char *title, int width, int height) {
-        m_Title = title;
-        m_Width = width;
-        m_Height = height;
+    GlfwWindow::GlfwWindow(const char *title, int width, int height)
+    : startToRotate(false), m_Title(title), m_Width(width), m_Height(height) {
         if (!init()) {
             glfwTerminate();
         }
@@ -51,14 +57,8 @@ namespace Spore3D {
         glfwSwapBuffers(m_Window);
     }
     
-    bool GlfwWindow::init()
-    {
-        
-//        Spore3D::PngData *pd = Spore3D::PngReader::read("/Users/shannonxu/Desktop/chr_sword/chr_sword.png");
-//        if (nullptr == pd) {
-//            return -1;
-//        }
-        
+    bool GlfwWindow::init() {
+
         /* Initialize the library */
         if (!glfwInit())
             return -1;
@@ -84,33 +84,6 @@ namespace Spore3D {
         glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
         glfwSetCursorPosCallback(m_Window, cursor_position_callback);
         
-        
-//        std::cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << std::endl;
-//        std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
-//        std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-//        std::cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-        
-        //    glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-        
-        /* Loop until the user closes the window */
-        //    while (!glfwWindowShouldClose(window))
-//        int cn = 0;
-//        while(cn < pd->width)
-//        {
-//            glClearColor(pd->data[cn*4]/255.0f, pd->data[cn*4+1]/255.0f, pd->data[cn*4+2]/255.0f, pd->data[cn*4+3]/255.0f);
-//            /* Render here */
-//            glClear(GL_COLOR_BUFFER_BIT);
-//            
-//            /* Swap front and back buffers */
-//            glfwSwapBuffers(window);
-//            
-//            /* Poll for and process events */
-//            glfwPollEvents();
-//            cn++;
-//            //        sleep(1);
-//        }
-        
-//        glfwTerminate();
         return true;
 
     }
@@ -149,15 +122,63 @@ namespace Spore3D {
     void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
         GlfwWindow *win = (GlfwWindow*)glfwGetWindowUserPointer(window);
         win->m_Keys[key] = action != GLFW_RELEASE;
+        if (win->m_Keys[key]) {
+            Scene *currScene = SceneManager::getInstance()->getActiveScene();
+            Camera *currCamera = nullptr;
+            if (nullptr != currScene) {
+                currCamera = currScene->getMainCamera();
+            }
+            if (nullptr != currCamera) {
+                if ('W' == key) {
+//                    Debug::log("w");
+                    Vec3 nf = currCamera->transform->getForward();
+                    currCamera->transform->translate(nf.normalized()*10,Space::World);
+                } else if ('S' == key) {
+                    Vec3 nb = currCamera->transform->getForward();
+                    currCamera->transform->translate(-nb.normalized()*10,Space::World);
+//                    Debug::log("s");
+                } else if ('D' == key) {
+                    Vec3 nr = currCamera->transform->getRight();
+                    currCamera->transform->translate(nr.normalized()*10,Space::World);
+//                    Debug::log("d");
+                } else if ('A' == key) {
+                    Vec3 nl = currCamera->transform->getRight();
+                    currCamera->transform->translate(-nl.normalized()*10,Space::World);
+//                    Debug::log("a");
+                }
+            }
+        }
     }
     
     void mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
         GlfwWindow *win = (GlfwWindow*)glfwGetWindowUserPointer(window);
         win->m_MouseButtons[button] = action != GLFW_RELEASE;
+        if (!win->startToRotate) {
+            win->startToRotate = true;
+        } else {
+            win->startToRotate = false;
+        }
     }
     
     void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
         GlfwWindow *win = (GlfwWindow*)glfwGetWindowUserPointer(window);
+        
+        if (win->startToRotate) {
+            Scene *currScene = SceneManager::getInstance()->getActiveScene();
+            Camera *currCamera = nullptr;
+            if (nullptr != currScene) {
+                currCamera = currScene->getMainCamera();
+            }
+            if (nullptr != currCamera) {
+            
+                Vec3 r = currCamera->transform->getRotation().eulerAngle();
+                float nrx = math::clamp(-(ypos-win->m_my)/5+r.x,-179,179);
+                float nry = math::clamp(-(xpos-win->m_mx)/5+r.y,-179,179);
+                
+                currCamera->transform->setRotation(Quaternion(nrx, nry,0));
+            
+            }
+        }
         win->m_mx = xpos;
         win->m_my = ypos;
     }
